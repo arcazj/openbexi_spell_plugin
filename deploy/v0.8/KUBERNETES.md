@@ -2,7 +2,22 @@
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](../../docs/v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 
-# Kubernetes: isolated **prelaunch staging** profile
+# Kubernetes staging and native Jobs
+
+## Single-use native Job
+
+The separate `render_native_job.py` template runs one provisioned worker. Supply the OCI manifest digests of the assigned worker and the Python service image, and the SHA-256 of the approved gzip-compressed tar archive of regular procedure files. Import both immutable images on every selected node. Provide a `no-api` service account, a dedicated immutable `identity-<slot>` Secret with the worker configuration and TLS files, an immutable `source-snapshot` ConfigMap with the `source.tar.gz` key, and a separate `audit-<slot>` durable PVC. The source and credentials are read-only in the worker. Install the default-deny network policy before starting the Job. Permit DNS and the private authorized Context route.
+
+```bash
+python3.13 deploy/v0.8/render_native_job.py \
+  --namespace "$NAMESPACE" --slot "$SLOT" --node "$NODE" \
+  --worker-image "$WORKER_OCI_REF" --init-image "$SERVICE_OCI_REF" \
+  --source-sha256 "$SOURCE_ARCHIVE_SHA256" --output native-job.json
+```
+
+The initializer runs as UID/GID 10003 and creates `records` on that slot's PVC at mode 0700. It checks directory ownership before the worker starts. The main container mounts only this subdirectory at `/audit`. Original ASRUN files survive Job completion. The tested local-path provisioner created a root-owned PVC root, which the native audit writer rejected when mounted directly. The Job uses one attempt and the application retains a spent worker slot across authority recovery. Provision a fresh slot identity and PVC for a new worker.
+
+## Isolated prelaunch services
 
 `render_kubernetes.py` produces a Kubernetes `List` that can be checked
 and applied to a throwaway test namespace **openbexi-v08**. It is deliberately

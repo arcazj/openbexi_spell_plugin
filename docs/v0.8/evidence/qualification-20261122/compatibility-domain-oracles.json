@@ -1,0 +1,3133 @@
+{
+  "schema": "openbexi.v08.compatibility-domain-oracles/1",
+  "historical_domains": [
+    {
+      "report": "conformance/evidence/child_arguments.json",
+      "report_sha256": "fe85c5785c5616155ed2464ecbe332569d1a24f7ee4210c5a8f633580b29741a",
+      "direct_inherited_ids": 3,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_arguments.py",
+          "usage": [
+            "python",
+            "conformance/run_child_arguments.py",
+            "--help"
+          ],
+          "pinned_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655",
+          "current_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/child_arguments_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_arguments_cases.py",
+        "conformance/child_arguments_report.py",
+        "tests/test_child_arguments_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/child_execution.json",
+      "report_sha256": "d9953dd2109e747d51e881d22e51c2ce70ebf969ee04fdf691b35cce1ae5e90e",
+      "direct_inherited_ids": 3,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_start.py",
+          "usage": [
+            "python",
+            "conformance/run_child_start.py",
+            "--help"
+          ],
+          "pinned_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53",
+          "current_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53"
+        },
+        {
+          "entrypoint": "conformance/run_child_modes.py",
+          "usage": [
+            "python",
+            "conformance/run_child_modes.py",
+            "--help"
+          ],
+          "pinned_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd",
+          "current_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd"
+        }
+      ],
+      "controllers": [
+        "conformance/child_start_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/child_modes_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_start_cases.py",
+        "conformance/child_start_report.py",
+        "conformance/child_modes_cases.py",
+        "conformance/child_return_report.py",
+        "conformance/prompt_control_report.py",
+        "tests/test_child_return_report.py",
+        "conformance/child_execution_report.py",
+        "tests/test_child_execution_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/child_policy.json",
+      "report_sha256": "5e5e3b1b86ec4d296043365a5c607a347225f7ee23db5e86f4e0eb56654b5042",
+      "direct_inherited_ids": 5,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_start.py",
+          "usage": [
+            "python",
+            "conformance/run_child_start.py",
+            "--help"
+          ],
+          "pinned_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53",
+          "current_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53"
+        },
+        {
+          "entrypoint": "conformance/run_child_modes.py",
+          "usage": [
+            "python",
+            "conformance/run_child_modes.py",
+            "--help"
+          ],
+          "pinned_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd",
+          "current_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd"
+        },
+        {
+          "entrypoint": "conformance/run_child_policy.py",
+          "usage": [
+            "python",
+            "conformance/run_child_policy.py",
+            "--help"
+          ],
+          "pinned_sha256": "ef170b43511b16f80b59c8aa314219085c50bff53f589d4e43455d2024b097db",
+          "current_sha256": "ef170b43511b16f80b59c8aa314219085c50bff53f589d4e43455d2024b097db"
+        }
+      ],
+      "controllers": [
+        "conformance/child_start_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/child_modes_controller.py",
+        "conformance/child_policy_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_start_cases.py",
+        "conformance/child_start_report.py",
+        "conformance/child_modes_cases.py",
+        "conformance/child_return_report.py",
+        "conformance/prompt_control_report.py",
+        "tests/test_child_return_report.py",
+        "conformance/child_policy_cases.py",
+        "conformance/child_policy_report.py",
+        "tests/test_child_policy_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/child_returns.json",
+      "report_sha256": "2cd9d3ab15b73843126dd2745a470d8e9ed54f1657af3f4cb4ed1a7e6f091434",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_start.py",
+          "usage": [
+            "python",
+            "conformance/run_child_start.py",
+            "--help"
+          ],
+          "pinned_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53",
+          "current_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53"
+        },
+        {
+          "entrypoint": "conformance/run_child_modes.py",
+          "usage": [
+            "python",
+            "conformance/run_child_modes.py",
+            "--help"
+          ],
+          "pinned_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd",
+          "current_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd"
+        }
+      ],
+      "controllers": [
+        "conformance/child_start_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/child_modes_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_start_cases.py",
+        "conformance/child_start_report.py",
+        "conformance/child_modes_cases.py",
+        "conformance/child_return_report.py",
+        "conformance/prompt_control_report.py",
+        "tests/test_child_return_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/cmd.json",
+      "report_sha256": "7f6c4f672d12e8cb969c51fee18b98adc2ae27f556a775a2e8a42a10108eac72",
+      "direct_inherited_ids": 21,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_cmd.py",
+          "usage": [
+            "python",
+            "conformance/run_cmd.py",
+            "--help"
+          ],
+          "pinned_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156",
+          "current_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156"
+        }
+      ],
+      "controllers": [
+        "conformance/cmd_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/cmd_cases.py",
+        "conformance/cmd_contracts.py",
+        "conformance/cmd_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/cmd.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/command_display_composed.json",
+      "report_sha256": "d22687f0cf0d203299d1a0d90f16bc2db2ef4193cebdf43214a270a6f73b921d",
+      "direct_inherited_ids": 50,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_command_scheduling.py",
+          "usage": [
+            "python",
+            "conformance/run_command_scheduling.py",
+            "--help"
+          ],
+          "pinned_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916",
+          "current_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916"
+        },
+        {
+          "entrypoint": "conformance/run_command_catalog.py",
+          "usage": [
+            "python",
+            "conformance/run_command_catalog.py",
+            "--help"
+          ],
+          "pinned_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42",
+          "current_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42"
+        },
+        {
+          "entrypoint": "conformance/run_command_group.py",
+          "usage": [
+            "python",
+            "conformance/run_command_group.py",
+            "--help"
+          ],
+          "pinned_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3",
+          "current_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3"
+        },
+        {
+          "entrypoint": "conformance/run_display.py",
+          "usage": [
+            "python",
+            "conformance/run_display.py",
+            "--help"
+          ],
+          "pinned_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf",
+          "current_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/command_scheduling_controller.py",
+        "conformance/command_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/command_catalog_controller.py",
+        "conformance/command_catalog_provenance.py",
+        "conformance/command_group_controller.py",
+        "conformance/command_group_provenance.py",
+        "conformance/display_controller.py",
+        "conformance/display_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/command_scheduling_cases.py",
+        "conformance/command_catalog_cases.py",
+        "conformance/command_group_cases.py",
+        "conformance/display_cases.py",
+        "conformance/display_contracts.py",
+        "conformance/command_display_composed_report.py",
+        "conformance/command_features_report.py",
+        "conformance/display_report.py",
+        "tests/test_command_display_composed_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/command.Dockerfile",
+        "conformance/command.Dockerfile.dockerignore",
+        "conformance/command_catalog.Dockerfile",
+        "conformance/command_catalog.Dockerfile.dockerignore",
+        "conformance/command_group.Dockerfile",
+        "conformance/command_group.Dockerfile.dockerignore",
+        "conformance/display.Dockerfile",
+        "conformance/display.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/common-silence.json",
+      "report_sha256": "9fa62e7ad5ebef6cecbd6eae0d6d86b9fa01f3c2090e1327453d0e7dfbe64103",
+      "direct_inherited_ids": 4,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_silence.py",
+          "usage": [
+            "python",
+            "conformance/run_silence.py",
+            "--help"
+          ],
+          "pinned_sha256": "fd7e12cda43d18e5a6455033338314ebd7dc253aa2df51c0a803695d7492ea6e",
+          "current_sha256": "fd7e12cda43d18e5a6455033338314ebd7dc253aa2df51c0a803695d7492ea6e"
+        }
+      ],
+      "controllers": [
+        "conformance/silence_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [],
+      "original_image_recipes": [
+        "conformance/common.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/common.json",
+      "report_sha256": "af72e48181d80e489503e4a6aca5f1af30e3d996faf20d1a2e6f5019dc31bf23",
+      "direct_inherited_ids": 36,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_common.py",
+          "usage": [
+            "python",
+            "conformance/run_common.py",
+            "--help"
+          ],
+          "pinned_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799",
+          "current_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/common_contracts.py"
+      ],
+      "original_image_recipes": [
+        "conformance/common.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/data-race.json",
+      "report_sha256": "e0fa86804a6fb82beb01346a394916456679bfd48e82f5ac68e98b996ac907c2",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_data_race.py",
+          "usage": [
+            "python",
+            "conformance/run_data_race.py",
+            "--help"
+          ],
+          "pinned_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d",
+          "current_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d"
+        }
+      ],
+      "controllers": [
+        "conformance/data_race_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/data.json",
+      "report_sha256": "a3d46e4a9e8a88e862011201f23520fc2c2bed596e0f5c92ea6860bc0e1c1368",
+      "direct_inherited_ids": 27,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_data_files.py",
+          "usage": [
+            "python",
+            "conformance/run_data_files.py",
+            "--help"
+          ],
+          "pinned_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f",
+          "current_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/data_contracts.py"
+      ],
+      "original_image_recipes": [
+        "conformance/data_files.Dockerfile",
+        "conformance/data_files_native.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/database_import.json",
+      "report_sha256": "e3b55912e1bcad68f9f80a4030245e4a2947cb71cb8d5502fca7f086d2ee567f",
+      "direct_inherited_ids": 5,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_database_import.py",
+          "usage": [
+            "python",
+            "conformance/run_database_import.py",
+            "--help"
+          ],
+          "pinned_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75",
+          "current_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75"
+        }
+      ],
+      "controllers": [
+        "conformance/database_import_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/database_import_cases.py",
+        "conformance/database_import_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/database_scope.json",
+      "report_sha256": "7af6f8f7ce628b6cac3b3b6fb3d6c153f5ddf77211b38856dcc3dc46549b5fa0",
+      "direct_inherited_ids": 1,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_database_import.py",
+          "usage": [
+            "python",
+            "conformance/run_database_import.py",
+            "--help"
+          ],
+          "pinned_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75",
+          "current_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75"
+        }
+      ],
+      "controllers": [
+        "conformance/database_import_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/database_import_cases.py",
+        "conformance/database_scope_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/database_values_composed.json",
+      "report_sha256": "d98b3b2701530c02983674a0ab675fc90b741c8aa44864b33e311655f08a187f",
+      "direct_inherited_ids": 1,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_database_values.py",
+          "usage": [
+            "python",
+            "conformance/run_database_values.py",
+            "--help"
+          ],
+          "pinned_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f",
+          "current_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f"
+        },
+        {
+          "entrypoint": "conformance/run_user_database.py",
+          "usage": [
+            "python",
+            "conformance/run_user_database.py",
+            "--help"
+          ],
+          "pinned_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88",
+          "current_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88"
+        }
+      ],
+      "controllers": [
+        "conformance/database_values_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/database_values_provenance.py",
+        "conformance/user_database_controller.py",
+        "conformance/database_values_user_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/database_values_cases.py",
+        "conformance/database_import_cases.py",
+        "conformance/user_database_cases.py",
+        "conformance/database_values_composed_report.py",
+        "conformance/database_values_report.py",
+        "tests/test_database_values_composed_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore",
+        "conformance/database_values.Dockerfile",
+        "conformance/database_values.Dockerfile.dockerignore",
+        "conformance/user_database.Dockerfile",
+        "conformance/user_database.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/dta.json",
+      "report_sha256": "95479ae89bb05a4bdf5d741593d1d376549b18a5bd335ab6c8d2e3d00c49bbc1",
+      "direct_inherited_ids": 12,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_dta.py",
+          "usage": [
+            "python",
+            "conformance/run_dta.py",
+            "--help"
+          ],
+          "pinned_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4",
+          "current_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4"
+        }
+      ],
+      "controllers": [
+        "conformance/dta_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/dta_contracts.py"
+      ],
+      "original_image_recipes": [
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/events.json",
+      "report_sha256": "994aa880ec3eca6d6bc64496c0a94e640dfaffde5249e46e07bc779a06e6333b",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_events.py",
+          "usage": [
+            "python",
+            "conformance/run_events.py",
+            "--help"
+          ],
+          "pinned_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844",
+          "current_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844"
+        }
+      ],
+      "controllers": [
+        "conformance/events_controller.py",
+        "conformance/event_text_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/events_cases.py",
+        "conformance/events_contracts.py",
+        "conformance/cmd_contracts.py",
+        "conformance/events_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/cmd.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/files.json",
+      "report_sha256": "c2bdf2a38a8dc8f088fefeb0ee1d441faf8d18889cade01597cbbc4d0622de40",
+      "direct_inherited_ids": 40,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_data_files.py",
+          "usage": [
+            "python",
+            "conformance/run_data_files.py",
+            "--help"
+          ],
+          "pinned_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f",
+          "current_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/files_contracts.py"
+      ],
+      "original_image_recipes": [
+        "conformance/data_files.Dockerfile",
+        "conformance/data_files_native.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/flow.json",
+      "report_sha256": "a4a1685216f7e5daa92c275a75cd2db14ecea0e7db87a9e7fd6936e62dff41e8",
+      "direct_inherited_ids": 23,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_flow.py",
+          "usage": [
+            "python",
+            "conformance/run_flow.py",
+            "--help"
+          ],
+          "pinned_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8",
+          "current_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8"
+        }
+      ],
+      "controllers": [
+        "conformance/flow_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/legacy_compare_composed.json",
+      "report_sha256": "6a5c9a574efd55acc398a86451bdf175459f038e98b5264253db1170bcdee837",
+      "direct_inherited_ids": 1,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_legacy_compare.py",
+          "usage": [
+            "python",
+            "conformance/run_legacy_compare.py",
+            "--help"
+          ],
+          "pinned_sha256": "edf3db3ace0e3ef32328ecd4194c2b84e852662bc96c1ab8694abb769af95c21",
+          "current_sha256": "edf3db3ace0e3ef32328ecd4194c2b84e852662bc96c1ab8694abb769af95c21"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/legacy_compare_controller.py",
+        "conformance/legacy_compare_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/legacy_compare_cases.py",
+        "conformance/legacy_compare_composed_report.py",
+        "conformance/legacy_compare_report.py",
+        "tests/test_legacy_compare_composed_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/legacy_compare.Dockerfile",
+        "conformance/legacy_compare.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/limit.json",
+      "report_sha256": "3912dc85a2beb5859f884624937c621c6600f1068c644bc76fb1e96729a59011",
+      "direct_inherited_ids": 18,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [],
+      "controllers": [
+        "conformance/limit_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/limit_cases.py",
+        "conformance/limit_contracts.py",
+        "conformance/limit_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/limit_runtime.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/notification.json",
+      "report_sha256": "c851f55303ea030dcfa5df88d094a88e39e7a3a7cac201b158916178ae2391a3",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [],
+      "controllers": [
+        "conformance/notification_controller.py",
+        "conformance/notification_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/notification_contracts.py",
+        "conformance/notification_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/notification.Dockerfile",
+        "conformance/notification.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/obs.json",
+      "report_sha256": "55a28ee127ada7949d90601fdc848fc7e0d7f7acaf8993d2b84238fa9eab203c",
+      "direct_inherited_ids": 73,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_obs.py",
+          "usage": [
+            "python",
+            "conformance/run_obs.py",
+            "--help"
+          ],
+          "pinned_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df",
+          "current_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df"
+        }
+      ],
+      "controllers": [
+        "conformance/obs_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/obs_cases.py",
+        "conformance/obs_qualification_cases.py",
+        "conformance/obs_policy_cases.py",
+        "conformance/obs_contracts.py",
+        "conformance/obs_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/predefined_containers.json",
+      "report_sha256": "6f90c5bd6d0d036ad1b4daa898d6b591f0e3ddfe5e35c53f75e5d9e85358739d",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_dta.py",
+          "usage": [
+            "python",
+            "conformance/run_dta.py",
+            "--help"
+          ],
+          "pinned_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4",
+          "current_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4"
+        },
+        {
+          "entrypoint": "conformance/run_dta_edit.py",
+          "usage": [
+            "python",
+            "conformance/run_dta_edit.py",
+            "--help"
+          ],
+          "pinned_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700",
+          "current_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700"
+        },
+        {
+          "entrypoint": "conformance/run_child_arguments.py",
+          "usage": [
+            "python",
+            "conformance/run_child_arguments.py",
+            "--help"
+          ],
+          "pinned_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655",
+          "current_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/dta_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/dta_edit_controller.py",
+        "conformance/child_arguments_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/dta_contracts.py",
+        "conformance/child_arguments_cases.py",
+        "conformance/child_arguments_report.py",
+        "tests/test_child_arguments_report.py",
+        "conformance/predefined_containers_report.py",
+        "tests/test_predefined_containers_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/proc_dictionary_composed.json",
+      "report_sha256": "ae675a17fc5e8baf769a1be57cff233172d5094ecace5f716efb4e51384b3a11",
+      "direct_inherited_ids": 10,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_proc_metadata.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_metadata.py",
+            "--help"
+          ],
+          "pinned_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c",
+          "current_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c"
+        },
+        {
+          "entrypoint": "conformance/run_proc_lifecycle.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_lifecycle.py",
+            "--help"
+          ],
+          "pinned_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7",
+          "current_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/proc_metadata_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/proc_lifecycle_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/proc_metadata_cases.py",
+        "conformance/proc_lifecycle_cases.py",
+        "conformance/proc_dictionary_composed_report.py",
+        "conformance/proc_dictionary_report.py",
+        "tests/test_proc_dictionary_composed_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/prompt_timeout.json",
+      "report_sha256": "3199424672a5bd89b550469ad5cca79da4ca368c8f2ea5a5cdb58b8a79ac976e",
+      "direct_inherited_ids": 1,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_prompt_timeout.py",
+          "usage": [
+            "python",
+            "conformance/run_prompt_timeout.py",
+            "--help"
+          ],
+          "pinned_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2",
+          "current_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/prompt_timeout_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/prompt_timeout_cases.py",
+        "conformance/prompt_timeout_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/python.json",
+      "report_sha256": "3b5c9e53e675ee598e7bde28b836f7a597a5d23ede4e5424306c6614ad3082b2",
+      "direct_inherited_ids": 117,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_python.py",
+          "usage": [
+            "python",
+            "conformance/run_python.py",
+            "--help"
+          ],
+          "pinned_sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8",
+          "current_sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/python_contracts.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/python_sections.json",
+      "report_sha256": "0b00980cf506ef819fc17d1fa60c19e2e6b773ea25607f2e8291670d14099e8b",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_python.py",
+          "usage": [
+            "python",
+            "conformance/run_python.py",
+            "--help"
+          ],
+          "pinned_sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8",
+          "current_sha256": "f5f2f4f25e085953cbce0eecb1da339adefd820fdc79ed98131c445208dbabd8"
+        },
+        {
+          "entrypoint": "conformance/run_legacy_compare.py",
+          "usage": [
+            "python",
+            "conformance/run_legacy_compare.py",
+            "--help"
+          ],
+          "pinned_sha256": "edf3db3ace0e3ef32328ecd4194c2b84e852662bc96c1ab8694abb769af95c21",
+          "current_sha256": "edf3db3ace0e3ef32328ecd4194c2b84e852662bc96c1ab8694abb769af95c21"
+        },
+        {
+          "entrypoint": "conformance/run_database_import.py",
+          "usage": [
+            "python",
+            "conformance/run_database_import.py",
+            "--help"
+          ],
+          "pinned_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75",
+          "current_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75"
+        },
+        {
+          "entrypoint": "conformance/run_database_values.py",
+          "usage": [
+            "python",
+            "conformance/run_database_values.py",
+            "--help"
+          ],
+          "pinned_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f",
+          "current_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f"
+        },
+        {
+          "entrypoint": "conformance/run_user_database.py",
+          "usage": [
+            "python",
+            "conformance/run_user_database.py",
+            "--help"
+          ],
+          "pinned_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88",
+          "current_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/legacy_compare_controller.py",
+        "conformance/legacy_compare_provenance.py",
+        "conformance/database_import_controller.py",
+        "conformance/database_values_controller.py",
+        "conformance/database_values_provenance.py",
+        "conformance/user_database_controller.py",
+        "conformance/database_values_user_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/python_contracts.py",
+        "conformance/legacy_compare_cases.py",
+        "conformance/legacy_compare_composed_report.py",
+        "conformance/legacy_compare_report.py",
+        "tests/test_legacy_compare_composed_report.py",
+        "conformance/database_import_cases.py",
+        "conformance/database_scope_report.py",
+        "conformance/database_values_cases.py",
+        "conformance/user_database_cases.py",
+        "conformance/database_values_composed_report.py",
+        "conformance/database_values_report.py",
+        "tests/test_database_values_composed_report.py",
+        "conformance/python_sections_report.py",
+        "tests/test_python_sections_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/legacy_compare.Dockerfile",
+        "conformance/legacy_compare.Dockerfile.dockerignore",
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore",
+        "conformance/database_values.Dockerfile",
+        "conformance/database_values.Dockerfile.dockerignore",
+        "conformance/user_database.Dockerfile",
+        "conformance/user_database.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/resource.json",
+      "report_sha256": "edc95ceeb69aa3214c6ade993863ffacae1154882c37adcbb7f4838f5d1c0cfc",
+      "direct_inherited_ids": 7,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_resource.py",
+          "usage": [
+            "python",
+            "conformance/run_resource.py",
+            "--help"
+          ],
+          "pinned_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5",
+          "current_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5"
+        }
+      ],
+      "controllers": [
+        "conformance/resource_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/resource_cases.py",
+        "conformance/resource_contracts.py",
+        "conformance/resource_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/resource.Dockerfile",
+        "conformance/resource.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/rng.json",
+      "report_sha256": "db2098185607d27faa2e1e8a9fdbfe85e0925c903739ae109589a2f99d3c0cc0",
+      "direct_inherited_ids": 3,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_rng.py",
+          "usage": [
+            "python",
+            "conformance/run_rng.py",
+            "--help"
+          ],
+          "pinned_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202",
+          "current_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202"
+        }
+      ],
+      "controllers": [
+        "conformance/rng_controller.py",
+        "conformance/rng_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/rng_cases.py",
+        "conformance/rng_contracts.py",
+        "conformance/rng_report.py",
+        "tests/test_rng_report.py",
+        "conformance/baselines/rng_cases.py"
+      ],
+      "original_image_recipes": [
+        "conformance/rng.Dockerfile",
+        "conformance/rng.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/scdb.json",
+      "report_sha256": "e739dc41e5483f98c236002f4631f7d23b7b56c39ce08b4ffa938b8b3b76dbc1",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [],
+      "controllers": [
+        "conformance/scdb_controller.py",
+        "conformance/scdb_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/scdb_cases.py",
+        "conformance/scdb_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/scdb.Dockerfile",
+        "conformance/scdb.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/scheduler.json",
+      "report_sha256": "3de6f256666deb53d8e1a33b9f1e505ad8baca98f731889a5a7bba8b4305e8aa",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_scheduler.py",
+          "usage": [
+            "python",
+            "conformance/run_scheduler.py",
+            "--help"
+          ],
+          "pinned_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490",
+          "current_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490"
+        }
+      ],
+      "controllers": [
+        "conformance/scheduler_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/scheduler_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/scheduler_native.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/time.json",
+      "report_sha256": "9f5e6da146618a8dc7a505ad070ca818b790dec3accdab3ec9915f3fbfd1c9c9",
+      "direct_inherited_ids": 42,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_native.py",
+          "usage": [
+            "python",
+            "conformance/run_native.py",
+            "--help"
+          ],
+          "pinned_sha256": "035fd25e081820b94359c75050b0caa4df8b836ffe7479bef7d70dfb790df5b2",
+          "current_sha256": "035fd25e081820b94359c75050b0caa4df8b836ffe7479bef7d70dfb790df5b2"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/time_contracts.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/timing.json",
+      "report_sha256": "9baf61769c7cf4be359799a31feeaad2a7ea823b2e214b6c1e450825ddd3006f",
+      "direct_inherited_ids": 1,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_timing.py",
+          "usage": [
+            "python",
+            "conformance/run_timing.py",
+            "--help"
+          ],
+          "pinned_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+          "current_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+        }
+      ],
+      "controllers": [
+        "conformance/timing_controller.py",
+        "conformance/timing_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/timing_cases.py",
+        "conformance/timing_contracts.py",
+        "conformance/timing_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/cmd.Dockerfile",
+        "conformance/timing.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/ui.json",
+      "report_sha256": "59c36eea42d069cf22e344c248f985204f9dc4f35ff1f4795c508be795a313f4",
+      "direct_inherited_ids": 25,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_ui.py",
+          "usage": [
+            "python",
+            "conformance/run_ui.py",
+            "--help"
+          ],
+          "pinned_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6",
+          "current_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6"
+        }
+      ],
+      "controllers": [
+        "conformance/ui_controller.py",
+        "conformance/ui_edge_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/ui_contracts.py"
+      ],
+      "original_image_recipes": [
+        "conformance/common.Dockerfile",
+        "conformance/ui_native.Dockerfile",
+        "conformance/combined_native.Dockerfile",
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/user_database.json",
+      "report_sha256": "fd690b7a31819dfd3618df4c100cbcac052bef044ed8c753d9a8b18d2f677c12",
+      "direct_inherited_ids": 10,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_user_database.py",
+          "usage": [
+            "python",
+            "conformance/run_user_database.py",
+            "--help"
+          ],
+          "pinned_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88",
+          "current_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88"
+        }
+      ],
+      "controllers": [
+        "conformance/user_database_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/user_database_cases.py",
+        "conformance/user_database_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/user_database.Dockerfile",
+        "conformance/user_database.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_command_complete.json",
+      "report_sha256": "dc0dcf811283b30eb810f527d1efe03bfde6374b50962351aba33b0853a33c99",
+      "direct_inherited_ids": 19,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_arguments.py",
+          "usage": [
+            "python",
+            "conformance/run_child_arguments.py",
+            "--help"
+          ],
+          "pinned_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655",
+          "current_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655"
+        },
+        {
+          "entrypoint": "conformance/run_cmd.py",
+          "usage": [
+            "python",
+            "conformance/run_cmd.py",
+            "--help"
+          ],
+          "pinned_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156",
+          "current_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156"
+        },
+        {
+          "entrypoint": "conformance/run_command_scheduling.py",
+          "usage": [
+            "python",
+            "conformance/run_command_scheduling.py",
+            "--help"
+          ],
+          "pinned_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916",
+          "current_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916"
+        },
+        {
+          "entrypoint": "conformance/run_command_catalog.py",
+          "usage": [
+            "python",
+            "conformance/run_command_catalog.py",
+            "--help"
+          ],
+          "pinned_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42",
+          "current_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42"
+        },
+        {
+          "entrypoint": "conformance/run_command_group.py",
+          "usage": [
+            "python",
+            "conformance/run_command_group.py",
+            "--help"
+          ],
+          "pinned_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3",
+          "current_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3"
+        },
+        {
+          "entrypoint": "conformance/run_display.py",
+          "usage": [
+            "python",
+            "conformance/run_display.py",
+            "--help"
+          ],
+          "pinned_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf",
+          "current_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf"
+        },
+        {
+          "entrypoint": "conformance/run_timing.py",
+          "usage": [
+            "python",
+            "conformance/run_timing.py",
+            "--help"
+          ],
+          "pinned_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+          "current_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+        },
+        {
+          "entrypoint": "conformance/run_send_verify.py",
+          "usage": [
+            "python",
+            "conformance/run_send_verify.py",
+            "--help"
+          ],
+          "pinned_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271",
+          "current_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271"
+        },
+        {
+          "entrypoint": "conformance/run_send_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_send_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "7c0b86c2eb8baeaa71048e48c692551a2cbb11d9cebfbe0c11ec50bd35eab7a9",
+          "current_sha256": "7c0b86c2eb8baeaa71048e48c692551a2cbb11d9cebfbe0c11ec50bd35eab7a9"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        },
+        {
+          "entrypoint": "conformance/run_limit_features.py",
+          "usage": [
+            "python",
+            "conformance/run_limit_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935",
+          "current_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_features.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da",
+          "current_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_policy.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_policy.py",
+            "--help"
+          ],
+          "pinned_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c",
+          "current_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c"
+        },
+        {
+          "entrypoint": "conformance/run_obs.py",
+          "usage": [
+            "python",
+            "conformance/run_obs.py",
+            "--help"
+          ],
+          "pinned_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df",
+          "current_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df"
+        },
+        {
+          "entrypoint": "conformance/run_scheduler.py",
+          "usage": [
+            "python",
+            "conformance/run_scheduler.py",
+            "--help"
+          ],
+          "pinned_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490",
+          "current_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490"
+        },
+        {
+          "entrypoint": "conformance/run_wait_time.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_time.py",
+            "--help"
+          ],
+          "pinned_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca",
+          "current_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca"
+        },
+        {
+          "entrypoint": "conformance/run_wait_control.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_control.py",
+            "--help"
+          ],
+          "pinned_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3",
+          "current_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3"
+        },
+        {
+          "entrypoint": "conformance/run_wait_interval.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_interval.py",
+            "--help"
+          ],
+          "pinned_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823",
+          "current_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823"
+        }
+      ],
+      "controllers": [
+        "conformance/child_arguments_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/cmd_controller.py",
+        "conformance/command_scheduling_controller.py",
+        "conformance/command_provenance.py",
+        "conformance/command_catalog_controller.py",
+        "conformance/command_catalog_provenance.py",
+        "conformance/command_group_controller.py",
+        "conformance/command_group_provenance.py",
+        "conformance/display_controller.py",
+        "conformance/display_provenance.py",
+        "conformance/timing_controller.py",
+        "conformance/timing_provenance.py",
+        "conformance/send_verify_controller.py",
+        "conformance/send_verify_provenance.py",
+        "conformance/send_complete_provenance.py",
+        "conformance/send_complete_controller.py",
+        "conformance/telemetry_features_provenance.py",
+        "conformance/limit_controller.py",
+        "conformance/limit_features_controller.py",
+        "conformance/limit_features_provenance.py",
+        "conformance/telemetry_features_controller.py",
+        "conformance/telemetry_policy_controller.py",
+        "conformance/obs_controller.py",
+        "conformance/scheduler_controller.py",
+        "conformance/wait_time_controller.py",
+        "conformance/wait_control_controller.py",
+        "conformance/wait_interval_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_arguments_cases.py",
+        "conformance/cmd_cases.py",
+        "conformance/cmd_contracts.py",
+        "conformance/command_scheduling_cases.py",
+        "conformance/command_catalog_cases.py",
+        "conformance/command_group_cases.py",
+        "conformance/display_cases.py",
+        "conformance/display_contracts.py",
+        "conformance/timing_cases.py",
+        "conformance/timing_contracts.py",
+        "conformance/timing_report.py",
+        "conformance/send_verify_cases.py",
+        "conformance/send_verify_contracts.py",
+        "conformance/send_verify_report.py",
+        "conformance/memory_native_cases.py",
+        "conformance/send_complete_cases.py",
+        "conformance/telemetry_surface_cases.py",
+        "conformance/cmd_report.py",
+        "conformance/command_display_composed_report.py",
+        "conformance/command_features_report.py",
+        "conformance/display_report.py",
+        "tests/test_command_display_composed_report.py",
+        "conformance/child_arguments_report.py",
+        "tests/test_child_arguments_report.py",
+        "conformance/limit_cases.py",
+        "conformance/limit_contracts.py",
+        "conformance/limit_features_cases.py",
+        "conformance/telemetry_features_cases.py",
+        "conformance/telemetry_policy_cases.py",
+        "conformance/obs_cases.py",
+        "conformance/obs_qualification_cases.py",
+        "conformance/obs_policy_cases.py",
+        "conformance/obs_contracts.py",
+        "conformance/wait_time_cases.py",
+        "conformance/wait_control_cases.py",
+        "conformance/wait_interval_cases.py",
+        "conformance/obs_report.py",
+        "conformance/wait_control_report.py",
+        "tests/test_wait_control_report.py",
+        "conformance/wait_interval_report.py",
+        "tests/test_wait_interval_report.py",
+        "conformance/wait_time_report.py",
+        "tests/test_wait_time_report.py",
+        "conformance/scheduler_report.py",
+        "conformance/limit_full_report.py",
+        "conformance/observation_complete_report.py",
+        "conformance/command_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/cmd.Dockerfile",
+        "conformance/command.Dockerfile",
+        "conformance/command.Dockerfile.dockerignore",
+        "conformance/command_catalog.Dockerfile",
+        "conformance/command_catalog.Dockerfile.dockerignore",
+        "conformance/command_group.Dockerfile",
+        "conformance/command_group.Dockerfile.dockerignore",
+        "conformance/display.Dockerfile",
+        "conformance/display.Dockerfile.dockerignore",
+        "conformance/timing.Dockerfile",
+        "conformance/send_verify.Dockerfile",
+        "conformance/send_complete.Dockerfile",
+        "conformance/send_complete.Dockerfile.dockerignore",
+        "conformance/telemetry_features.Dockerfile",
+        "conformance/telemetry_features.Dockerfile.dockerignore",
+        "conformance/limit_runtime.Dockerfile",
+        "conformance/limit_features.Dockerfile",
+        "conformance/limit_features.Dockerfile.dockerignore",
+        "conformance/scheduler_native.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_common_complete.json",
+      "report_sha256": "21c4f4fd9c40a491ad07d63764715a87d73b888de399f9e32e7a4e5795527414",
+      "direct_inherited_ids": 17,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_resource.py",
+          "usage": [
+            "python",
+            "conformance/run_resource.py",
+            "--help"
+          ],
+          "pinned_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5",
+          "current_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5"
+        },
+        {
+          "entrypoint": "conformance/run_native.py",
+          "usage": [
+            "python",
+            "conformance/run_native.py",
+            "--help"
+          ],
+          "pinned_sha256": "035fd25e081820b94359c75050b0caa4df8b836ffe7479bef7d70dfb790df5b2",
+          "current_sha256": "035fd25e081820b94359c75050b0caa4df8b836ffe7479bef7d70dfb790df5b2"
+        },
+        {
+          "entrypoint": "conformance/run_limit_features.py",
+          "usage": [
+            "python",
+            "conformance/run_limit_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935",
+          "current_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935"
+        },
+        {
+          "entrypoint": "conformance/run_common.py",
+          "usage": [
+            "python",
+            "conformance/run_common.py",
+            "--help"
+          ],
+          "pinned_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799",
+          "current_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799"
+        },
+        {
+          "entrypoint": "conformance/run_value_units.py",
+          "usage": [
+            "python",
+            "conformance/run_value_units.py",
+            "--help"
+          ],
+          "pinned_sha256": "23468cd34904ab51cbebfee0650339c65cf672d1f313d9ea1a2c019535b12800",
+          "current_sha256": "23468cd34904ab51cbebfee0650339c65cf672d1f313d9ea1a2c019535b12800"
+        },
+        {
+          "entrypoint": "conformance/run_driver_extension.py",
+          "usage": [
+            "python",
+            "conformance/run_driver_extension.py",
+            "--help"
+          ],
+          "pinned_sha256": "e5222701898beb835c577572398856ae726581be0f461e65e7c8462ee0eada97",
+          "current_sha256": "e5222701898beb835c577572398856ae726581be0f461e65e7c8462ee0eada97"
+        },
+        {
+          "entrypoint": "conformance/run_data_files.py",
+          "usage": [
+            "python",
+            "conformance/run_data_files.py",
+            "--help"
+          ],
+          "pinned_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f",
+          "current_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f"
+        },
+        {
+          "entrypoint": "conformance/run_data_race.py",
+          "usage": [
+            "python",
+            "conformance/run_data_race.py",
+            "--help"
+          ],
+          "pinned_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d",
+          "current_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d"
+        },
+        {
+          "entrypoint": "conformance/run_dta.py",
+          "usage": [
+            "python",
+            "conformance/run_dta.py",
+            "--help"
+          ],
+          "pinned_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4",
+          "current_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4"
+        },
+        {
+          "entrypoint": "conformance/run_dta_edit.py",
+          "usage": [
+            "python",
+            "conformance/run_dta_edit.py",
+            "--help"
+          ],
+          "pinned_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700",
+          "current_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700"
+        },
+        {
+          "entrypoint": "conformance/run_database_values.py",
+          "usage": [
+            "python",
+            "conformance/run_database_values.py",
+            "--help"
+          ],
+          "pinned_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f",
+          "current_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f"
+        },
+        {
+          "entrypoint": "conformance/run_database_formats.py",
+          "usage": [
+            "python",
+            "conformance/run_database_formats.py",
+            "--help"
+          ],
+          "pinned_sha256": "15ad24201817bdb2a7a30b74c4c57ea414a26458b6527c499d5b7628390f1a97",
+          "current_sha256": "15ad24201817bdb2a7a30b74c4c57ea414a26458b6527c499d5b7628390f1a97"
+        },
+        {
+          "entrypoint": "conformance/run_user_database.py",
+          "usage": [
+            "python",
+            "conformance/run_user_database.py",
+            "--help"
+          ],
+          "pinned_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88",
+          "current_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88"
+        },
+        {
+          "entrypoint": "conformance/run_proc_metadata.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_metadata.py",
+            "--help"
+          ],
+          "pinned_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c",
+          "current_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c"
+        },
+        {
+          "entrypoint": "conformance/run_proc_lifecycle.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_lifecycle.py",
+            "--help"
+          ],
+          "pinned_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7",
+          "current_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7"
+        },
+        {
+          "entrypoint": "conformance/run_database_import.py",
+          "usage": [
+            "python",
+            "conformance/run_database_import.py",
+            "--help"
+          ],
+          "pinned_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75",
+          "current_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75"
+        },
+        {
+          "entrypoint": "conformance/run_manoeuvre_candidate.py",
+          "usage": [
+            "python",
+            "conformance/run_manoeuvre_candidate.py",
+            "--help"
+          ],
+          "pinned_sha256": "c0248ac2f11dfa8aac057c38315a2424b3413dfb2b1e40fa3514aa7d771a5929",
+          "current_sha256": "c0248ac2f11dfa8aac057c38315a2424b3413dfb2b1e40fa3514aa7d771a5929"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        },
+        {
+          "entrypoint": "conformance/run_rng.py",
+          "usage": [
+            "python",
+            "conformance/run_rng.py",
+            "--help"
+          ],
+          "pinned_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202",
+          "current_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202"
+        },
+        {
+          "entrypoint": "conformance/run_rng_state.py",
+          "usage": [
+            "python",
+            "conformance/run_rng_state.py",
+            "--help"
+          ],
+          "pinned_sha256": "5afeaa6ca0a28c99c7629ec1683db022cd0644d859ebe44f4c24fa15b85aab13",
+          "current_sha256": "5afeaa6ca0a28c99c7629ec1683db022cd0644d859ebe44f4c24fa15b85aab13"
+        },
+        {
+          "entrypoint": "conformance/run_ranging_candidate.py",
+          "usage": [
+            "python",
+            "conformance/run_ranging_candidate.py",
+            "--help"
+          ],
+          "pinned_sha256": "0fd921db0d14da6a5bef9e31edc1508771e9ba3fa63f1b40cd6ab48a752e0748",
+          "current_sha256": "0fd921db0d14da6a5bef9e31edc1508771e9ba3fa63f1b40cd6ab48a752e0748"
+        },
+        {
+          "entrypoint": "conformance/run_memory_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_memory_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "d85320f784aa153a224746535990181b2877f91f34c9d400ee058f840ca764fb",
+          "current_sha256": "d85320f784aa153a224746535990181b2877f91f34c9d400ee058f840ca764fb"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_features.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da",
+          "current_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_policy.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_policy.py",
+            "--help"
+          ],
+          "pinned_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c",
+          "current_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c"
+        },
+        {
+          "entrypoint": "conformance/run_obs.py",
+          "usage": [
+            "python",
+            "conformance/run_obs.py",
+            "--help"
+          ],
+          "pinned_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df",
+          "current_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df"
+        },
+        {
+          "entrypoint": "conformance/run_scheduler.py",
+          "usage": [
+            "python",
+            "conformance/run_scheduler.py",
+            "--help"
+          ],
+          "pinned_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490",
+          "current_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490"
+        },
+        {
+          "entrypoint": "conformance/run_wait_time.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_time.py",
+            "--help"
+          ],
+          "pinned_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca",
+          "current_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca"
+        },
+        {
+          "entrypoint": "conformance/run_wait_control.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_control.py",
+            "--help"
+          ],
+          "pinned_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3",
+          "current_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3"
+        },
+        {
+          "entrypoint": "conformance/run_wait_interval.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_interval.py",
+            "--help"
+          ],
+          "pinned_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823",
+          "current_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823"
+        },
+        {
+          "entrypoint": "conformance/run_timing.py",
+          "usage": [
+            "python",
+            "conformance/run_timing.py",
+            "--help"
+          ],
+          "pinned_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+          "current_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+        },
+        {
+          "entrypoint": "conformance/run_child_arguments.py",
+          "usage": [
+            "python",
+            "conformance/run_child_arguments.py",
+            "--help"
+          ],
+          "pinned_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655",
+          "current_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655"
+        },
+        {
+          "entrypoint": "conformance/run_cmd.py",
+          "usage": [
+            "python",
+            "conformance/run_cmd.py",
+            "--help"
+          ],
+          "pinned_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156",
+          "current_sha256": "408746e5c550156ccc1b5c7b0dd1b51237e0bf8d5124d276d2db30a306bea156"
+        },
+        {
+          "entrypoint": "conformance/run_command_scheduling.py",
+          "usage": [
+            "python",
+            "conformance/run_command_scheduling.py",
+            "--help"
+          ],
+          "pinned_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916",
+          "current_sha256": "da578d7a695dbf1f15c1d89609e87298b0f0fd67e16bb52e97fcdd1d21d57916"
+        },
+        {
+          "entrypoint": "conformance/run_command_catalog.py",
+          "usage": [
+            "python",
+            "conformance/run_command_catalog.py",
+            "--help"
+          ],
+          "pinned_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42",
+          "current_sha256": "ce60bdeb1ffd2e166a83ad4da903f24a696c28b53d24969469095abd67723c42"
+        },
+        {
+          "entrypoint": "conformance/run_command_group.py",
+          "usage": [
+            "python",
+            "conformance/run_command_group.py",
+            "--help"
+          ],
+          "pinned_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3",
+          "current_sha256": "37fd45579405e39283a5822cf8c5c97c7ab3312c0991762ba4d5c6a47da986d3"
+        },
+        {
+          "entrypoint": "conformance/run_display.py",
+          "usage": [
+            "python",
+            "conformance/run_display.py",
+            "--help"
+          ],
+          "pinned_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf",
+          "current_sha256": "233ff53799d786cf7a7e95a0cbb81621bb756f7eb18208c4dfc18e1bd70dbabf"
+        },
+        {
+          "entrypoint": "conformance/run_send_verify.py",
+          "usage": [
+            "python",
+            "conformance/run_send_verify.py",
+            "--help"
+          ],
+          "pinned_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271",
+          "current_sha256": "40d000a9ab13ee855f301c709c2738cdbf46184b1a03a65eb3cf51be6330f271"
+        },
+        {
+          "entrypoint": "conformance/run_send_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_send_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "7c0b86c2eb8baeaa71048e48c692551a2cbb11d9cebfbe0c11ec50bd35eab7a9",
+          "current_sha256": "7c0b86c2eb8baeaa71048e48c692551a2cbb11d9cebfbe0c11ec50bd35eab7a9"
+        },
+        {
+          "entrypoint": "conformance/run_flow.py",
+          "usage": [
+            "python",
+            "conformance/run_flow.py",
+            "--help"
+          ],
+          "pinned_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8",
+          "current_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8"
+        },
+        {
+          "entrypoint": "conformance/run_ui.py",
+          "usage": [
+            "python",
+            "conformance/run_ui.py",
+            "--help"
+          ],
+          "pinned_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6",
+          "current_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6"
+        },
+        {
+          "entrypoint": "conformance/run_prompt_timeout.py",
+          "usage": [
+            "python",
+            "conformance/run_prompt_timeout.py",
+            "--help"
+          ],
+          "pinned_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2",
+          "current_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2"
+        },
+        {
+          "entrypoint": "conformance/run_events.py",
+          "usage": [
+            "python",
+            "conformance/run_events.py",
+            "--help"
+          ],
+          "pinned_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844",
+          "current_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844"
+        },
+        {
+          "entrypoint": "conformance/run_child_visibility.py",
+          "usage": [
+            "python",
+            "conformance/run_child_visibility.py",
+            "--help"
+          ],
+          "pinned_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230",
+          "current_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230"
+        },
+        {
+          "entrypoint": "conformance/run_prompt_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_prompt_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "913e10f31cdd12e685b33b5a4151cbcffea2cafd27eab3479eafb2a6ec09b18d",
+          "current_sha256": "913e10f31cdd12e685b33b5a4151cbcffea2cafd27eab3479eafb2a6ec09b18d"
+        }
+      ],
+      "controllers": [
+        "conformance/resource_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/limit_controller.py",
+        "conformance/limit_features_controller.py",
+        "conformance/limit_features_provenance.py",
+        "conformance/value_units_controller.py",
+        "conformance/value_units_provenance.py",
+        "conformance/driver_extension_controller.py",
+        "conformance/data_race_controller.py",
+        "conformance/dta_controller.py",
+        "conformance/dta_edit_controller.py",
+        "conformance/database_values_controller.py",
+        "conformance/database_values_provenance.py",
+        "conformance/database_format_controller.py",
+        "conformance/database_format_provenance.py",
+        "conformance/user_database_controller.py",
+        "conformance/proc_metadata_controller.py",
+        "conformance/proc_lifecycle_controller.py",
+        "conformance/database_import_controller.py",
+        "conformance/manoeuvre_candidate_controller.py",
+        "conformance/manoeuvre_database_provenance.py",
+        "conformance/scdb_controller.py",
+        "conformance/scdb_provenance.py",
+        "conformance/database_values_user_controller.py",
+        "conformance/rng_controller.py",
+        "conformance/rng_provenance.py",
+        "conformance/rng_state_controller.py",
+        "conformance/rng_state_provenance.py",
+        "conformance/ranging_candidate_controller.py",
+        "conformance/ranging_complete_provenance.py",
+        "conformance/memory_complete_controller.py",
+        "conformance/memory_features_provenance.py",
+        "conformance/telemetry_features_controller.py",
+        "conformance/telemetry_features_provenance.py",
+        "conformance/telemetry_policy_controller.py",
+        "conformance/obs_controller.py",
+        "conformance/scheduler_controller.py",
+        "conformance/wait_time_controller.py",
+        "conformance/wait_control_controller.py",
+        "conformance/wait_interval_controller.py",
+        "conformance/timing_controller.py",
+        "conformance/timing_provenance.py",
+        "conformance/child_arguments_controller.py",
+        "conformance/cmd_controller.py",
+        "conformance/command_scheduling_controller.py",
+        "conformance/command_provenance.py",
+        "conformance/command_catalog_controller.py",
+        "conformance/command_catalog_provenance.py",
+        "conformance/command_group_controller.py",
+        "conformance/command_group_provenance.py",
+        "conformance/display_controller.py",
+        "conformance/display_provenance.py",
+        "conformance/send_verify_controller.py",
+        "conformance/send_verify_provenance.py",
+        "conformance/send_complete_provenance.py",
+        "conformance/send_complete_controller.py",
+        "conformance/flow_controller.py",
+        "conformance/ui_controller.py",
+        "conformance/ui_edge_controller.py",
+        "conformance/prompt_timeout_controller.py",
+        "conformance/events_controller.py",
+        "conformance/event_text_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/resource_cases.py",
+        "conformance/resource_contracts.py",
+        "conformance/time_contracts.py",
+        "conformance/limit_cases.py",
+        "conformance/limit_contracts.py",
+        "conformance/limit_features_cases.py",
+        "conformance/common_contracts.py",
+        "conformance/value_units_cases.py",
+        "conformance/value_units_contracts.py",
+        "conformance/value_units_report.py",
+        "conformance/memory_native_cases.py",
+        "conformance/driver_extension_cases.py",
+        "conformance/data_contracts.py",
+        "conformance/dta_contracts.py",
+        "conformance/data_aggregate_report.py",
+        "conformance/database_values_cases.py",
+        "conformance/database_import_cases.py",
+        "conformance/database_format_cases.py",
+        "conformance/user_database_cases.py",
+        "conformance/proc_metadata_cases.py",
+        "conformance/proc_lifecycle_cases.py",
+        "conformance/manoeuvre_database_cases.py",
+        "conformance/scdb_cases.py",
+        "conformance/scdb_report.py",
+        "conformance/database_aggregate_report.py",
+        "conformance/database_values_composed_report.py",
+        "conformance/database_values_report.py",
+        "tests/test_database_values_composed_report.py",
+        "conformance/proc_dictionary_composed_report.py",
+        "conformance/proc_dictionary_report.py",
+        "tests/test_proc_dictionary_composed_report.py",
+        "conformance/database_complete_report.py",
+        "conformance/rng_cases.py",
+        "conformance/rng_contracts.py",
+        "conformance/rng_state_cases.py",
+        "conformance/rng_state_contracts.py",
+        "conformance/ranging_complete_cases.py",
+        "conformance/memory_complete_cases.py",
+        "conformance/rng_state_report.py",
+        "tests/test_rng_state_report.py",
+        "conformance/rng_report.py",
+        "tests/test_rng_report.py",
+        "conformance/special_complete_report.py",
+        "conformance/telemetry_features_cases.py",
+        "conformance/telemetry_surface_cases.py",
+        "conformance/telemetry_policy_cases.py",
+        "conformance/obs_cases.py",
+        "conformance/obs_qualification_cases.py",
+        "conformance/obs_policy_cases.py",
+        "conformance/obs_contracts.py",
+        "conformance/wait_time_cases.py",
+        "conformance/wait_control_cases.py",
+        "conformance/wait_interval_cases.py",
+        "conformance/timing_cases.py",
+        "conformance/timing_contracts.py",
+        "conformance/timing_report.py",
+        "conformance/obs_report.py",
+        "conformance/wait_control_report.py",
+        "tests/test_wait_control_report.py",
+        "conformance/wait_interval_report.py",
+        "tests/test_wait_interval_report.py",
+        "conformance/wait_time_report.py",
+        "tests/test_wait_time_report.py",
+        "conformance/scheduler_report.py",
+        "conformance/limit_full_report.py",
+        "conformance/observation_complete_report.py",
+        "conformance/child_arguments_cases.py",
+        "conformance/cmd_cases.py",
+        "conformance/cmd_contracts.py",
+        "conformance/command_scheduling_cases.py",
+        "conformance/command_catalog_cases.py",
+        "conformance/command_group_cases.py",
+        "conformance/display_cases.py",
+        "conformance/display_contracts.py",
+        "conformance/send_verify_cases.py",
+        "conformance/send_verify_contracts.py",
+        "conformance/send_verify_report.py",
+        "conformance/send_complete_cases.py",
+        "conformance/cmd_report.py",
+        "conformance/command_display_composed_report.py",
+        "conformance/command_features_report.py",
+        "conformance/display_report.py",
+        "tests/test_command_display_composed_report.py",
+        "conformance/child_arguments_report.py",
+        "tests/test_child_arguments_report.py",
+        "conformance/command_complete_report.py",
+        "conformance/ui_contracts.py",
+        "conformance/prompt_timeout_cases.py",
+        "conformance/events_cases.py",
+        "conformance/events_contracts.py",
+        "conformance/child_visibility_cases.py",
+        "conformance/prompt_complete_cases.py",
+        "conformance/prompt_timeout_report.py",
+        "conformance/events_report.py",
+        "conformance/resource_report.py",
+        "conformance/ui_complete_report.py",
+        "conformance/common_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/resource.Dockerfile",
+        "conformance/resource.Dockerfile.dockerignore",
+        "conformance/limit_runtime.Dockerfile",
+        "conformance/limit_features.Dockerfile",
+        "conformance/limit_features.Dockerfile.dockerignore",
+        "conformance/common.Dockerfile",
+        "conformance/cmd.Dockerfile",
+        "conformance/value_units.Dockerfile",
+        "conformance/data_files.Dockerfile",
+        "conformance/data_files_native.Dockerfile",
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore",
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore",
+        "conformance/database_values.Dockerfile",
+        "conformance/database_values.Dockerfile.dockerignore",
+        "conformance/database_format.Dockerfile",
+        "conformance/database_format.Dockerfile.dockerignore",
+        "conformance/user_database.Dockerfile",
+        "conformance/user_database.Dockerfile.dockerignore",
+        "conformance/manoeuvre_database.Dockerfile",
+        "conformance/manoeuvre_database.Dockerfile.dockerignore",
+        "conformance/scdb.Dockerfile",
+        "conformance/scdb.Dockerfile.dockerignore",
+        "conformance/rng.Dockerfile",
+        "conformance/rng.Dockerfile.dockerignore",
+        "conformance/rng_state.Dockerfile",
+        "conformance/rng_state.Dockerfile.dockerignore",
+        "conformance/ranging_complete.Dockerfile",
+        "conformance/memory_features.Dockerfile",
+        "conformance/memory_features.Dockerfile.dockerignore",
+        "conformance/telemetry_features.Dockerfile",
+        "conformance/telemetry_features.Dockerfile.dockerignore",
+        "conformance/scheduler_native.Dockerfile",
+        "conformance/timing.Dockerfile",
+        "conformance/command.Dockerfile",
+        "conformance/command.Dockerfile.dockerignore",
+        "conformance/command_catalog.Dockerfile",
+        "conformance/command_catalog.Dockerfile.dockerignore",
+        "conformance/command_group.Dockerfile",
+        "conformance/command_group.Dockerfile.dockerignore",
+        "conformance/display.Dockerfile",
+        "conformance/display.Dockerfile.dockerignore",
+        "conformance/send_verify.Dockerfile",
+        "conformance/send_complete.Dockerfile",
+        "conformance/send_complete.Dockerfile.dockerignore",
+        "conformance/ui_native.Dockerfile",
+        "conformance/combined_native.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_data_complete.json",
+      "report_sha256": "37e4330e1a85b6ca2a12ccd84500c0db52d1478ea614a29a9934fd46b7bac79f",
+      "direct_inherited_ids": 6,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_data_files.py",
+          "usage": [
+            "python",
+            "conformance/run_data_files.py",
+            "--help"
+          ],
+          "pinned_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f",
+          "current_sha256": "bee76b1b80b72efcf95eac2b49d82afe66e67ab208240e6c5d2ff5b6500b628f"
+        },
+        {
+          "entrypoint": "conformance/run_data_race.py",
+          "usage": [
+            "python",
+            "conformance/run_data_race.py",
+            "--help"
+          ],
+          "pinned_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d",
+          "current_sha256": "051f5e2e8e3afd983a178347ef1ffd61384c30bf1f264445ebb8720c4f4d217d"
+        },
+        {
+          "entrypoint": "conformance/run_dta.py",
+          "usage": [
+            "python",
+            "conformance/run_dta.py",
+            "--help"
+          ],
+          "pinned_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4",
+          "current_sha256": "bda58f8a7d025a3f6e04012bde8d7bbf3f2980d23fb28c82cbe1ecbce57cf4b4"
+        },
+        {
+          "entrypoint": "conformance/run_dta_edit.py",
+          "usage": [
+            "python",
+            "conformance/run_dta_edit.py",
+            "--help"
+          ],
+          "pinned_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700",
+          "current_sha256": "40fa07857681642fa9e6a22a9f287e113a5b54c72ef5dc8ca0293649a3bda700"
+        }
+      ],
+      "controllers": [
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/data_race_controller.py",
+        "conformance/dta_controller.py",
+        "conformance/dta_edit_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/data_contracts.py",
+        "conformance/dta_contracts.py",
+        "conformance/data_aggregate_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/data_files.Dockerfile",
+        "conformance/data_files_native.Dockerfile",
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_database_complete.json",
+      "report_sha256": "68b887103c1fb014b221b9117eb2bdea8f01d8f8362e4acedc65759a449ba3df",
+      "direct_inherited_ids": 12,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_database_values.py",
+          "usage": [
+            "python",
+            "conformance/run_database_values.py",
+            "--help"
+          ],
+          "pinned_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f",
+          "current_sha256": "5db965eba199c9860e94e0e4f41d5b809f24f2e566e6da42a0f14bd3a4694f1f"
+        },
+        {
+          "entrypoint": "conformance/run_database_formats.py",
+          "usage": [
+            "python",
+            "conformance/run_database_formats.py",
+            "--help"
+          ],
+          "pinned_sha256": "15ad24201817bdb2a7a30b74c4c57ea414a26458b6527c499d5b7628390f1a97",
+          "current_sha256": "15ad24201817bdb2a7a30b74c4c57ea414a26458b6527c499d5b7628390f1a97"
+        },
+        {
+          "entrypoint": "conformance/run_user_database.py",
+          "usage": [
+            "python",
+            "conformance/run_user_database.py",
+            "--help"
+          ],
+          "pinned_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88",
+          "current_sha256": "8bf0369c5dab366ede373982213619265be488eb7b6164f9185835c01fd2aa88"
+        },
+        {
+          "entrypoint": "conformance/run_proc_metadata.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_metadata.py",
+            "--help"
+          ],
+          "pinned_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c",
+          "current_sha256": "434c856c94a0adbbf8322573253cf2ba1e22516875f538f9775628038bf3e47c"
+        },
+        {
+          "entrypoint": "conformance/run_proc_lifecycle.py",
+          "usage": [
+            "python",
+            "conformance/run_proc_lifecycle.py",
+            "--help"
+          ],
+          "pinned_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7",
+          "current_sha256": "a531e6dd0eba23b6a75d3cd06f4e558576259f49113d68f4fe2f20c3e0c816e7"
+        },
+        {
+          "entrypoint": "conformance/run_resource.py",
+          "usage": [
+            "python",
+            "conformance/run_resource.py",
+            "--help"
+          ],
+          "pinned_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5",
+          "current_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5"
+        },
+        {
+          "entrypoint": "conformance/run_database_import.py",
+          "usage": [
+            "python",
+            "conformance/run_database_import.py",
+            "--help"
+          ],
+          "pinned_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75",
+          "current_sha256": "1a9e95b0e19d947447c2f8da3f9fc10995a1957079420b8cd18fd9eded5e2e75"
+        },
+        {
+          "entrypoint": "conformance/run_manoeuvre_candidate.py",
+          "usage": [
+            "python",
+            "conformance/run_manoeuvre_candidate.py",
+            "--help"
+          ],
+          "pinned_sha256": "c0248ac2f11dfa8aac057c38315a2424b3413dfb2b1e40fa3514aa7d771a5929",
+          "current_sha256": "c0248ac2f11dfa8aac057c38315a2424b3413dfb2b1e40fa3514aa7d771a5929"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/database_values_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/database_values_provenance.py",
+        "conformance/database_format_controller.py",
+        "conformance/database_format_provenance.py",
+        "conformance/user_database_controller.py",
+        "conformance/proc_metadata_controller.py",
+        "conformance/proc_lifecycle_controller.py",
+        "conformance/resource_controller.py",
+        "conformance/database_import_controller.py",
+        "conformance/manoeuvre_candidate_controller.py",
+        "conformance/manoeuvre_database_provenance.py",
+        "conformance/scdb_controller.py",
+        "conformance/scdb_provenance.py",
+        "conformance/database_values_user_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/database_values_cases.py",
+        "conformance/database_import_cases.py",
+        "conformance/database_format_cases.py",
+        "conformance/user_database_cases.py",
+        "conformance/proc_metadata_cases.py",
+        "conformance/proc_lifecycle_cases.py",
+        "conformance/resource_cases.py",
+        "conformance/resource_contracts.py",
+        "conformance/manoeuvre_database_cases.py",
+        "conformance/memory_native_cases.py",
+        "conformance/scdb_cases.py",
+        "conformance/scdb_report.py",
+        "conformance/database_aggregate_report.py",
+        "conformance/database_values_composed_report.py",
+        "conformance/database_values_report.py",
+        "tests/test_database_values_composed_report.py",
+        "conformance/proc_dictionary_composed_report.py",
+        "conformance/proc_dictionary_report.py",
+        "tests/test_proc_dictionary_composed_report.py",
+        "conformance/database_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/database_import.Dockerfile",
+        "conformance/database_import.Dockerfile.dockerignore",
+        "conformance/database_values.Dockerfile",
+        "conformance/database_values.Dockerfile.dockerignore",
+        "conformance/database_format.Dockerfile",
+        "conformance/database_format.Dockerfile.dockerignore",
+        "conformance/user_database.Dockerfile",
+        "conformance/user_database.Dockerfile.dockerignore",
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/resource.Dockerfile",
+        "conformance/resource.Dockerfile.dockerignore",
+        "conformance/manoeuvre_database.Dockerfile",
+        "conformance/manoeuvre_database.Dockerfile.dockerignore",
+        "conformance/scdb.Dockerfile",
+        "conformance/scdb.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_flow_complete.json",
+      "report_sha256": "ddfee2d7c1cf491d2a4cc0790002273512399c2d2bc00e2cd9f1621e0ed46b6e",
+      "direct_inherited_ids": 15,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_child_arguments.py",
+          "usage": [
+            "python",
+            "conformance/run_child_arguments.py",
+            "--help"
+          ],
+          "pinned_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655",
+          "current_sha256": "1472f70aabd09dfaff82a196f7975f4a4b35d64a91b206a8f33a2e3c23292655"
+        },
+        {
+          "entrypoint": "conformance/run_child_start.py",
+          "usage": [
+            "python",
+            "conformance/run_child_start.py",
+            "--help"
+          ],
+          "pinned_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53",
+          "current_sha256": "0f0f9f5b99502876aa23d9b15a6a27e8b5d94d2ed28ebcdafc3719245d4a3a53"
+        },
+        {
+          "entrypoint": "conformance/run_child_policy.py",
+          "usage": [
+            "python",
+            "conformance/run_child_policy.py",
+            "--help"
+          ],
+          "pinned_sha256": "ef170b43511b16f80b59c8aa314219085c50bff53f589d4e43455d2024b097db",
+          "current_sha256": "ef170b43511b16f80b59c8aa314219085c50bff53f589d4e43455d2024b097db"
+        },
+        {
+          "entrypoint": "conformance/run_procedure_candidate.py",
+          "usage": [
+            "python",
+            "conformance/run_procedure_candidate.py",
+            "--help"
+          ],
+          "pinned_sha256": "4397bca5fa0f6d352bd86d7d11d75c055241542a5588a69bbefeb221afa2e49f",
+          "current_sha256": "4397bca5fa0f6d352bd86d7d11d75c055241542a5588a69bbefeb221afa2e49f"
+        },
+        {
+          "entrypoint": "conformance/run_child_modes.py",
+          "usage": [
+            "python",
+            "conformance/run_child_modes.py",
+            "--help"
+          ],
+          "pinned_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd",
+          "current_sha256": "e68928ca2eca5cd06139c9e6e092f8010e36501e01d9cd8668be7f3cc249d4fd"
+        },
+        {
+          "entrypoint": "conformance/run_child_visibility.py",
+          "usage": [
+            "python",
+            "conformance/run_child_visibility.py",
+            "--help"
+          ],
+          "pinned_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230",
+          "current_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/child_arguments_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/child_start_controller.py",
+        "conformance/child_policy_controller.py",
+        "conformance/procedure_candidate_controller.py",
+        "conformance/procedure_library_provenance.py",
+        "conformance/child_modes_controller.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/child_arguments_cases.py",
+        "conformance/child_start_cases.py",
+        "conformance/child_policy_cases.py",
+        "conformance/procedure_library_cases.py",
+        "conformance/child_modes_cases.py",
+        "conformance/child_visibility_cases.py",
+        "conformance/child_start_report.py",
+        "conformance/child_return_report.py",
+        "conformance/prompt_control_report.py",
+        "tests/test_child_return_report.py",
+        "conformance/child_execution_report.py",
+        "tests/test_child_execution_report.py",
+        "conformance/child_policy_report.py",
+        "tests/test_child_policy_report.py",
+        "conformance/child_arguments_report.py",
+        "tests/test_child_arguments_report.py",
+        "conformance/flow_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/procedure_library.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_limit_complete.json",
+      "report_sha256": "7019c73237e6c860772e53f5f11c2bc0dc4b14e479904adbfe250bf2a336c5d7",
+      "direct_inherited_ids": 52,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_limit_features.py",
+          "usage": [
+            "python",
+            "conformance/run_limit_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935",
+          "current_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935"
+        }
+      ],
+      "controllers": [
+        "conformance/limit_features_controller.py",
+        "conformance/limit_features_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/limit_features_cases.py",
+        "conformance/limit_full_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/limit_features.Dockerfile",
+        "conformance/limit_features.Dockerfile.dockerignore"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_observation_complete.json",
+      "report_sha256": "5da0312f7793038c3555f4d5d19991b5802e3a3a014e866f0073e92b02117436",
+      "direct_inherited_ids": 16,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_limit_features.py",
+          "usage": [
+            "python",
+            "conformance/run_limit_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935",
+          "current_sha256": "fb43e63e80ddf371fd5011c647eeb86d9bf88893a1b98c5e8ffd7e76c0600935"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_features.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_features.py",
+            "--help"
+          ],
+          "pinned_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da",
+          "current_sha256": "392cc10cea94e67258edd0bfed5418c45744822adbf3721643c8a32978c494da"
+        },
+        {
+          "entrypoint": "conformance/run_telemetry_policy.py",
+          "usage": [
+            "python",
+            "conformance/run_telemetry_policy.py",
+            "--help"
+          ],
+          "pinned_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c",
+          "current_sha256": "91a31381ae8753b531ad675e92d2e7fcea186a248ce6447a510b63a30916433c"
+        },
+        {
+          "entrypoint": "conformance/run_obs.py",
+          "usage": [
+            "python",
+            "conformance/run_obs.py",
+            "--help"
+          ],
+          "pinned_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df",
+          "current_sha256": "b0871fc3d9ad883c216214f850843f74cc3feddf116804d9b3ee9f99041268df"
+        },
+        {
+          "entrypoint": "conformance/run_scheduler.py",
+          "usage": [
+            "python",
+            "conformance/run_scheduler.py",
+            "--help"
+          ],
+          "pinned_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490",
+          "current_sha256": "f786906280d85954a99b664adc325ddd6879295bb0939791677201078e7e8490"
+        },
+        {
+          "entrypoint": "conformance/run_wait_time.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_time.py",
+            "--help"
+          ],
+          "pinned_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca",
+          "current_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca"
+        },
+        {
+          "entrypoint": "conformance/run_wait_control.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_control.py",
+            "--help"
+          ],
+          "pinned_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3",
+          "current_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3"
+        },
+        {
+          "entrypoint": "conformance/run_wait_interval.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_interval.py",
+            "--help"
+          ],
+          "pinned_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823",
+          "current_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823"
+        },
+        {
+          "entrypoint": "conformance/run_timing.py",
+          "usage": [
+            "python",
+            "conformance/run_timing.py",
+            "--help"
+          ],
+          "pinned_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef",
+          "current_sha256": "35dfdee2255d575a7331c066f87f4747f221b917af7f7d6a6fe8393828e5b5ef"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/limit_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/limit_features_controller.py",
+        "conformance/limit_features_provenance.py",
+        "conformance/telemetry_features_controller.py",
+        "conformance/telemetry_features_provenance.py",
+        "conformance/telemetry_policy_controller.py",
+        "conformance/obs_controller.py",
+        "conformance/scheduler_controller.py",
+        "conformance/wait_time_controller.py",
+        "conformance/wait_control_controller.py",
+        "conformance/wait_interval_controller.py",
+        "conformance/timing_controller.py",
+        "conformance/timing_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/limit_cases.py",
+        "conformance/limit_contracts.py",
+        "conformance/limit_features_cases.py",
+        "conformance/telemetry_features_cases.py",
+        "conformance/telemetry_surface_cases.py",
+        "conformance/telemetry_policy_cases.py",
+        "conformance/obs_cases.py",
+        "conformance/obs_qualification_cases.py",
+        "conformance/obs_policy_cases.py",
+        "conformance/obs_contracts.py",
+        "conformance/wait_time_cases.py",
+        "conformance/wait_control_cases.py",
+        "conformance/wait_interval_cases.py",
+        "conformance/timing_cases.py",
+        "conformance/timing_contracts.py",
+        "conformance/timing_report.py",
+        "conformance/obs_report.py",
+        "conformance/wait_control_report.py",
+        "tests/test_wait_control_report.py",
+        "conformance/wait_interval_report.py",
+        "tests/test_wait_interval_report.py",
+        "conformance/wait_time_report.py",
+        "tests/test_wait_time_report.py",
+        "conformance/scheduler_report.py",
+        "conformance/limit_full_report.py",
+        "conformance/observation_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/limit_runtime.Dockerfile",
+        "conformance/limit_features.Dockerfile",
+        "conformance/limit_features.Dockerfile.dockerignore",
+        "conformance/telemetry_features.Dockerfile",
+        "conformance/telemetry_features.Dockerfile.dockerignore",
+        "conformance/scheduler_native.Dockerfile",
+        "conformance/cmd.Dockerfile",
+        "conformance/timing.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_special_complete.json",
+      "report_sha256": "afa051b03a79640dbb6c07614241be38a371f4e9b198986b325185d945fec386",
+      "direct_inherited_ids": 45,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_rng.py",
+          "usage": [
+            "python",
+            "conformance/run_rng.py",
+            "--help"
+          ],
+          "pinned_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202",
+          "current_sha256": "8e2b4baba2f1b380cca6b42c23fd11d98269968f27acd92ffb72629c9967c202"
+        },
+        {
+          "entrypoint": "conformance/run_rng_state.py",
+          "usage": [
+            "python",
+            "conformance/run_rng_state.py",
+            "--help"
+          ],
+          "pinned_sha256": "5afeaa6ca0a28c99c7629ec1683db022cd0644d859ebe44f4c24fa15b85aab13",
+          "current_sha256": "5afeaa6ca0a28c99c7629ec1683db022cd0644d859ebe44f4c24fa15b85aab13"
+        },
+        {
+          "entrypoint": "conformance/run_ranging_candidate.py",
+          "usage": [
+            "python",
+            "conformance/run_ranging_candidate.py",
+            "--help"
+          ],
+          "pinned_sha256": "0fd921db0d14da6a5bef9e31edc1508771e9ba3fa63f1b40cd6ab48a752e0748",
+          "current_sha256": "0fd921db0d14da6a5bef9e31edc1508771e9ba3fa63f1b40cd6ab48a752e0748"
+        },
+        {
+          "entrypoint": "conformance/run_memory_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_memory_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "d85320f784aa153a224746535990181b2877f91f34c9d400ee058f840ca764fb",
+          "current_sha256": "d85320f784aa153a224746535990181b2877f91f34c9d400ee058f840ca764fb"
+        },
+        {
+          "entrypoint": "conformance/run_common.py",
+          "usage": [
+            "python",
+            "conformance/run_common.py",
+            "--help"
+          ],
+          "pinned_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799",
+          "current_sha256": "234b11a94adee9a207cfee638b90641774c27f738c133fe34c0b4a2b08194799"
+        }
+      ],
+      "controllers": [
+        "conformance/rng_controller.py",
+        "conformance/rng_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/rng_state_controller.py",
+        "conformance/rng_state_provenance.py",
+        "conformance/ranging_candidate_controller.py",
+        "conformance/ranging_complete_provenance.py",
+        "conformance/memory_complete_controller.py",
+        "conformance/memory_features_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/rng_cases.py",
+        "conformance/rng_contracts.py",
+        "conformance/rng_state_cases.py",
+        "conformance/rng_state_contracts.py",
+        "conformance/ranging_complete_cases.py",
+        "conformance/memory_native_cases.py",
+        "conformance/memory_complete_cases.py",
+        "conformance/common_contracts.py",
+        "conformance/rng_state_report.py",
+        "tests/test_rng_state_report.py",
+        "conformance/rng_report.py",
+        "tests/test_rng_report.py",
+        "conformance/special_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/rng.Dockerfile",
+        "conformance/rng.Dockerfile.dockerignore",
+        "conformance/rng_state.Dockerfile",
+        "conformance/rng_state.Dockerfile.dockerignore",
+        "conformance/ranging_complete.Dockerfile",
+        "conformance/memory_features.Dockerfile",
+        "conformance/memory_features.Dockerfile.dockerignore",
+        "conformance/common.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/v05_ui_complete.json",
+      "report_sha256": "fecd334407bd39292b0f74413f209478906c4eb03d98ae2f8052e64eeb56ac92",
+      "direct_inherited_ids": 8,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_flow.py",
+          "usage": [
+            "python",
+            "conformance/run_flow.py",
+            "--help"
+          ],
+          "pinned_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8",
+          "current_sha256": "71c8a469a8d445ace52a1776205cb97ad12990cc3486bd0da39e2f70dcc47ee8"
+        },
+        {
+          "entrypoint": "conformance/run_resource.py",
+          "usage": [
+            "python",
+            "conformance/run_resource.py",
+            "--help"
+          ],
+          "pinned_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5",
+          "current_sha256": "2aff369a00ab3840b7ad486b58560bd248716521f4f4549f2d93d4b96d0104d5"
+        },
+        {
+          "entrypoint": "conformance/run_ui.py",
+          "usage": [
+            "python",
+            "conformance/run_ui.py",
+            "--help"
+          ],
+          "pinned_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6",
+          "current_sha256": "10e223234e91fc42b1c9410dc632540cf21eb5aff6dc681b81e9e4c3cf840bd6"
+        },
+        {
+          "entrypoint": "conformance/run_prompt_timeout.py",
+          "usage": [
+            "python",
+            "conformance/run_prompt_timeout.py",
+            "--help"
+          ],
+          "pinned_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2",
+          "current_sha256": "71a7068234737f5f24306d6657de49a7706b1fddb8eff1097e32c06c200ee4e2"
+        },
+        {
+          "entrypoint": "conformance/run_events.py",
+          "usage": [
+            "python",
+            "conformance/run_events.py",
+            "--help"
+          ],
+          "pinned_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844",
+          "current_sha256": "843e197f3b971938eca297340126807e0bdf89b6a624f409608e90a466d7c844"
+        },
+        {
+          "entrypoint": "conformance/run_child_visibility.py",
+          "usage": [
+            "python",
+            "conformance/run_child_visibility.py",
+            "--help"
+          ],
+          "pinned_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230",
+          "current_sha256": "211a7c0a60e132e6f911d5bfbca2dbaf4978498ad3ea3742986735c5383ed230"
+        },
+        {
+          "entrypoint": "conformance/run_prompt_complete.py",
+          "usage": [
+            "python",
+            "conformance/run_prompt_complete.py",
+            "--help"
+          ],
+          "pinned_sha256": "913e10f31cdd12e685b33b5a4151cbcffea2cafd27eab3479eafb2a6ec09b18d",
+          "current_sha256": "913e10f31cdd12e685b33b5a4151cbcffea2cafd27eab3479eafb2a6ec09b18d"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/flow_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py",
+        "conformance/resource_controller.py",
+        "conformance/ui_controller.py",
+        "conformance/ui_edge_controller.py",
+        "conformance/prompt_timeout_controller.py",
+        "conformance/events_controller.py",
+        "conformance/event_text_provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/resource_cases.py",
+        "conformance/resource_contracts.py",
+        "conformance/ui_contracts.py",
+        "conformance/prompt_timeout_cases.py",
+        "conformance/events_cases.py",
+        "conformance/events_contracts.py",
+        "conformance/cmd_contracts.py",
+        "conformance/child_visibility_cases.py",
+        "conformance/prompt_complete_cases.py",
+        "conformance/prompt_timeout_report.py",
+        "conformance/events_report.py",
+        "conformance/resource_report.py",
+        "conformance/ui_complete_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/resource.Dockerfile",
+        "conformance/resource.Dockerfile.dockerignore",
+        "conformance/common.Dockerfile",
+        "conformance/ui_native.Dockerfile",
+        "conformance/combined_native.Dockerfile",
+        "conformance/dta_native.Dockerfile",
+        "conformance/dta_ipc.Dockerfile",
+        "conformance/dta_ipc.Dockerfile.dockerignore",
+        "conformance/cmd.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/value_units.json",
+      "report_sha256": "df555483616dbfd951b83057517a3c5d8e9bf5b6d5943f706539bc0aad783b9e",
+      "direct_inherited_ids": 2,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_value_units.py",
+          "usage": [
+            "python",
+            "conformance/run_value_units.py",
+            "--help"
+          ],
+          "pinned_sha256": "23468cd34904ab51cbebfee0650339c65cf672d1f313d9ea1a2c019535b12800",
+          "current_sha256": "23468cd34904ab51cbebfee0650339c65cf672d1f313d9ea1a2c019535b12800"
+        }
+      ],
+      "controllers": [
+        "conformance/value_units_controller.py",
+        "conformance/value_units_provenance.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/value_units_cases.py",
+        "conformance/value_units_contracts.py",
+        "conformance/value_units_report.py"
+      ],
+      "original_image_recipes": [
+        "conformance/obs.Dockerfile",
+        "conformance/obs_combined.Dockerfile",
+        "conformance/cmd.Dockerfile",
+        "conformance/value_units.Dockerfile"
+      ]
+    },
+    {
+      "report": "conformance/evidence/wait_control.json",
+      "report_sha256": "2079b2bb55170bb75f829b38953fafa8c929ec9e0fb6c26f8c67783294915d26",
+      "direct_inherited_ids": 8,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_wait_control.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_control.py",
+            "--help"
+          ],
+          "pinned_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3",
+          "current_sha256": "e57ee365138b5e1fb8dd2d23e529d9a07448b0b5c8e1d0bdfd8950398140b5e3"
+        },
+        {
+          "entrypoint": "distribution/run_language_regressions.py",
+          "usage": [
+            "python",
+            "distribution/run_language_regressions.py",
+            "--help"
+          ],
+          "pinned_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f",
+          "current_sha256": "5fd37a26d730b4a0cd9e7498d0bf5053db888fe6fe0c7b4d6a21a8618a15c39f"
+        }
+      ],
+      "controllers": [
+        "conformance/wait_control_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/wait_control_cases.py",
+        "conformance/wait_control_report.py",
+        "tests/test_wait_control_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/wait_interval.json",
+      "report_sha256": "72e59069489a21cf8cb7824fa87d1ca64ee5cd393beb24ba010fb2ffcf5e4ce0",
+      "direct_inherited_ids": 4,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_wait_interval.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_interval.py",
+            "--help"
+          ],
+          "pinned_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823",
+          "current_sha256": "119b8583fefac68f7eaee6186ba641b1a8ecca29525b47fc2dc29953dfa48823"
+        }
+      ],
+      "controllers": [
+        "conformance/wait_interval_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/wait_interval_cases.py",
+        "conformance/wait_interval_report.py",
+        "tests/test_wait_interval_report.py"
+      ],
+      "original_image_recipes": []
+    },
+    {
+      "report": "conformance/evidence/wait_time.json",
+      "report_sha256": "439e9772ed4706579d4b6e103a7ab10c214fa9d0a43ba93c17c596629e4007b3",
+      "direct_inherited_ids": 4,
+      "original_runtime_image": "sha256:ef97426030ab9db06f573710ebbec56ff2486ed558697c058ce9d724c9036100",
+      "historical_commands": [
+        {
+          "entrypoint": "conformance/run_wait_time.py",
+          "usage": [
+            "python",
+            "conformance/run_wait_time.py",
+            "--help"
+          ],
+          "pinned_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca",
+          "current_sha256": "1d3c73f5c5336dd8af455f6a57866324167f084fbc36cceba4e5f9c46a23c1ca"
+        }
+      ],
+      "controllers": [
+        "conformance/wait_time_controller.py",
+        "conformance/installed_provenance.py",
+        "driver_plugin/src/openbexi_dss_proxy/provenance.py"
+      ],
+      "oracle_and_aggregate_sources": [
+        "conformance/wait_time_cases.py",
+        "conformance/wait_time_report.py",
+        "tests/test_wait_time_report.py"
+      ],
+      "original_image_recipes": []
+    }
+  ],
+  "scope": "Map of the 47 historical reports cited by the fixed 763 requirements. A composed report can reference multiple lower-level native runs. --help shows the original tool input contract; its successful exit does not execute a procedure."
+}

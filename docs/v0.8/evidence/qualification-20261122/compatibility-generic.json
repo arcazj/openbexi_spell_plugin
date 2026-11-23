@@ -1,0 +1,357 @@
+{
+  "schema": "openbexi.v08.generic-native-compatibility/1",
+  "spell_original": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+  "runtime_fix_commit": "5d7b99549dbf8dadbf4f7a2a3bb4bb36b3013716",
+  "changed_runtime_file": "host_runtime/python/native.py",
+  "fixed_source_sha256": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+  "old_source_sha256": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
+  "original_worker": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+  "single_file_worker": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+  "deployment": "Each isolated case uses a real mutually authenticated gateway, listener, private Context, single-use worker, separate manual-clock GENERIC simulator and read-only stored binary verifier. The simulator listens exclusively on its own loopback interface. No simulator ports were published. The Context and its isolated test observer share this network namespace.",
+  "simulator": {
+    "commit": "7afd6f95040871ebc6e33dc36926aee9c822fcee",
+    "files": {
+      "src/dss/__init__.py": "1a0a564e79e7834f92e18174c6e1c774316b0bdc42c67bf46ab64cc6eb2eb8a5",
+      "src/dss/catalog.py": "0332c0e9e96ecbcde7dc8372a99af95403d0617840546d99b8023a85192422f2",
+      "src/dss/control.py": "cac85609190ffc07bd95d2536a77527b2522e12da41963f4809e49434be42c1c",
+      "src/dss/data/satellite_database.json": "710d7463095f4a51f7075974c8ee6435fe25199ef5b0c2ea02b4cd9391ddde8e",
+      "src/dss/engine.py": "604663fb2a921922fc5318a31923b95523aec5193e31495ef310cacf1714a8ce",
+      "src/dss/evidence_validation.py": "017d2a4f5b6b2df14129599a1e973cf22a3da98f45e5eb77265ccaeedfb317cd",
+      "src/dss/healthcheck.py": "565c4948b60e9f3b32a18dbb40633aff2437a9d7ed21f5a4c4b148b437939a8b",
+      "src/dss/local.py": "67296ae3d64c5df9bb2c620cd3b0cfeacf1a7e07ba76224d5053dbe0a94536ce",
+      "src/dss/packets.py": "63bd4810501b85119d12ba273b5cc2b63d06c24c2c93dfddcab4388563d846f1",
+      "src/dss/server.py": "0b649b3bd9880843524dbdac650725ef5f6df668373e02cb448f333f1139bba5",
+      "src/dss/uplink.py": "04bf381b2c4273e3aa107312586811c32cd4b2289a14151e7773960f6f08683a"
+    },
+    "wheel": "openbexi_spell_dss-0.8.0-py3-none-any.whl",
+    "wheel_sha256": "c885a7913031fe66a6d471e6b1f31090b948db34faecf95e71acf93ac4755f16",
+    "server_base": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+    "recipe_sha256": "4fe262ab7d7dde64cd1afeeb84cdec98e2dd4fe08161cc4003329b0ab2bc1c28",
+    "image": "sha256:da2607edf9eccfa915805c7b84054017b63616fc7222992b44ef2dd9d526b8e9",
+    "package_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469"
+  },
+  "historic_wire_modifiers": [
+    {
+      "suite": "obs",
+      "check": "acquire:positive",
+      "path": "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+      "request_sha256": "e666af819721458c71652afde8fb7429247727ff2e462c6954700e62a42818a6",
+      "modifiers": {
+        "ValueFormat": "Eng format",
+        "Timeout": 30,
+        "Wait": false
+      }
+    },
+    {
+      "suite": "obs",
+      "check": "extended:positive",
+      "path": "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+      "request_sha256": "e666af819721458c71652afde8fb7429247727ff2e462c6954700e62a42818a6",
+      "modifiers": {
+        "ValueFormat": "Eng format",
+        "Timeout": 30,
+        "Wait": false
+      }
+    },
+    {
+      "suite": "obs",
+      "check": "operator-eq:positive",
+      "path": "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+      "request_sha256": "e666af819721458c71652afde8fb7429247727ff2e462c6954700e62a42818a6",
+      "modifiers": {
+        "ValueFormat": "Eng format",
+        "Timeout": 30,
+        "Wait": false
+      }
+    },
+    {
+      "suite": "cmd",
+      "check": "build-basic:recovery",
+      "path": "/spell.driver.SPELLDriverInterface_TC/SendCommand",
+      "request_sha256": "a9d09177b3adc0e80daaa5a6396742743389b3244ef7f2bafcde7d539eb8377b",
+      "modifiers": {
+        "Timeout": 30,
+        "ConfirmCritical": false
+      }
+    },
+    {
+      "suite": "cmd",
+      "check": "send-name:positive",
+      "path": "/spell.driver.SPELLDriverInterface_TC/SendCommand",
+      "request_sha256": "a9d09177b3adc0e80daaa5a6396742743389b3244ef7f2bafcde7d539eb8377b",
+      "modifiers": {
+        "Timeout": 30,
+        "ConfirmCritical": false
+      }
+    }
+  ],
+  "site_defaults": {
+    "upstream_example_seconds": {
+      "TM": 30,
+      "TC": 30
+    },
+    "admitted_site_seconds": {
+      "TM": 3,
+      "TC": 3
+    },
+    "explicit_above_3": "Rejected by the existing Context validator",
+    "explicit_two_second": "Passed real Send plus GetTM in both bounded runs",
+    "scope": "The assigned language defaults apply only to an admitted checked native home using the Context driver. Long waits, operational targets and additional driver methods require their own evidence."
+  },
+  "runs": {
+    "obs/obsd": {
+      "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "c4bb9b62-5a06-4775-99aa-b7ee8e4e3d11",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 80,
+      "passed": 19,
+      "failed": {
+        "acquire:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "acquire:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "acquire:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "described:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "described:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "described:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "raw:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "raw:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "raw:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "extended:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "extended:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "extended:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "operator-eq:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-eq:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-eq:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-neq:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-neq:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-neq:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-ge:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-ge:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-ge:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-gt:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-gt:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-gt:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-le:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-le:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-le:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-lt:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-lt:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-lt:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-bw:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-bw:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-bw:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-nbw:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-nbw:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "operator-nbw:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "single:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "single:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "single:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "verify-raw:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "verify-raw:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "verify-raw:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "tolerance:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "tolerance:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "tolerance:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "ignore-case:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "ignore-case:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "ignore-case:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "result:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "result:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "result:failure": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "result:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "alternatives:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "alternatives:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "alternatives:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.POWER.BUS_VOLTAGE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "item-comparison:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "item-comparison:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "item-comparison:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "literal-name:positive": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TMparam1 : DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "literal-name:boundary": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TM.THERMAL.MODE: DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )",
+        "literal-name:recovery": "DriverException: Verification failed ( Could not evaluate all TM conditions\n   TMparam1 : DSS driver RPC failed. StatusCode.FAILED_PRECONDITION (failed)\n )"
+      },
+      "snapshot_sha256": "11cefe6b530117db2b1f3ce2f4cc911e8c1ae64f0ee60e2d963ef923cec6a91e",
+      "attempt_sha256": "3efb62a88eba98c2592ec6b06c60aeda6706dbd1ee6405676e9575294f1b8852",
+      "results_sha256": "ba78520ab459c9d5f832b1001857bb656aa825e1125ca1c377b1445995f9b1f2",
+      "context_driver_calls": {
+        "CreateTmItem": 4
+      },
+      "binary_packets": 174,
+      "ordered_stage_receipts": 0,
+      "commands": [],
+      "binary_capture_sha256": "03e9cc929365fc066451363fe06e45e98ef14d894aea4cdf4a13e970782eeb82"
+    },
+    "cmd/cmda": {
+      "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "c43a19e6-8d71-4dbb-9add-6816dc29ca1a",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 8,
+      "passed": 4,
+      "failed": {
+        "build-basic:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "send-name:positive": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "send-name:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+        "send-name:recovery": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )"
+      },
+      "snapshot_sha256": "3a0738a1573322a6c92bb6c4c3e22180a48058b4e9c2ebcd4a19d876cb16839b",
+      "attempt_sha256": "7ca43c51626f5daa7ba9c7f43ce3558d305d2e992566c77d211c8c20cfda6155",
+      "results_sha256": "41f44a4232491d729e5a3be4d030d34026e060babd4f8762c4ece4eba81d4de2",
+      "context_driver_calls": {
+        "CreateTcItem": 7
+      },
+      "binary_packets": 41,
+      "ordered_stage_receipts": 0,
+      "commands": [],
+      "binary_capture_sha256": "dd2d3a6279916fe4fcd47d43707843e7acfaec6011a3e556571a9a916fb41b4c"
+    },
+    "probe/probea": {
+      "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "8a1a155f-b271-4686-a65a-e70c8e1b85bf",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 2,
+      "passed": 2,
+      "failed": {},
+      "snapshot_sha256": "021d4bd7c4b3a61e1c69fa186194da7a59927e086332109e270a95570d5e9bd6",
+      "attempt_sha256": "51c87d444371a78c5dfd4fc477ce217e8dfd8ceec3a282eccab02dc65dab61b8",
+      "results_sha256": "cc29cbf94b0ce33519e25bed41e4569828d37196dfbbd2025138f09a74b79467",
+      "context_driver_calls": {
+        "CreateTcItem": 1,
+        "SendCommand": 1,
+        "CreateTmItem": 1,
+        "RefreshItem": 2
+      },
+      "binary_packets": 24,
+      "ordered_stage_receipts": 5,
+      "commands": [
+        "CMD1"
+      ],
+      "binary_capture_sha256": "5cfe991362a794c10e90df5d42790c22cd5de40e24f7ebc72aa9170efd0b84ed"
+    },
+    "obs/obse": {
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "d0d6588e-7af7-4466-93eb-1e858257d332",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 80,
+      "passed": 79,
+      "failed": {
+        "item-comparison:boundary": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )"
+      },
+      "snapshot_sha256": "11cefe6b530117db2b1f3ce2f4cc911e8c1ae64f0ee60e2d963ef923cec6a91e",
+      "attempt_sha256": "141b78c8f9d0a2355b78156bd9abb40813209de736a860c9e063b12dcef20abf",
+      "results_sha256": "855982f95777a423be0b56a66729552dd80ffecd8fe8a46859c3e91b8a60e7a1",
+      "context_driver_calls": {
+        "CreateTmItem": 5,
+        "RefreshItem": 108
+      },
+      "binary_packets": 206,
+      "ordered_stage_receipts": 0,
+      "commands": [],
+      "binary_capture_sha256": "429e9a33e161a85b4baeefe77cb89e165d3827b81febec16a312bd982f5b0a9f"
+    },
+    "cmd/cmdb": {
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "281ccb50-de5a-49c6-8030-2e43d554628e",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 8,
+      "passed": 8,
+      "failed": {},
+      "snapshot_sha256": "3a0738a1573322a6c92bb6c4c3e22180a48058b4e9c2ebcd4a19d876cb16839b",
+      "attempt_sha256": "99bcc1fb5514d2f8f7df67edacfc3cd8e5de016ca37de62ece654c1834c9b6fa",
+      "results_sha256": "62cd5ea40517a9d676853243a7384316af9490e410a0f6623b54af7e4e926818",
+      "context_driver_calls": {
+        "CreateTcItem": 7,
+        "SendCommand": 4
+      },
+      "binary_packets": 97,
+      "ordered_stage_receipts": 20,
+      "commands": [
+        "CMD1",
+        "CMD1",
+        "CMD2",
+        "CMD1"
+      ],
+      "binary_capture_sha256": "4782623ad0fa336c386b731375d0983a8ae942eb7820f37b696866e716dbb63d"
+    },
+    "limits/limitsa": {
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "5ea4a8d8-8bba-4a82-9dd1-d982c4af568b",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 4,
+      "passed": 4,
+      "failed": {},
+      "snapshot_sha256": "c8329dcf98f0b1bcda6aac2223a60ade3284f53dc336ee6ba0a0466b82a77883",
+      "attempt_sha256": "48d2dad72ecdeb18a97e0fe23955d5700c43276e528e7c218746760fa3ce18c7",
+      "results_sha256": "3b1c8a205edc97ef74c8b84a36fe390b6ed9ac46bce8fba7396f58af6b1b7b93",
+      "context_driver_calls": {
+        "CreateTcItem": 2,
+        "SendCommand": 1,
+        "CreateTmItem": 1,
+        "RefreshItem": 2
+      },
+      "binary_packets": 30,
+      "ordered_stage_receipts": 5,
+      "commands": [
+        "CMD1"
+      ],
+      "binary_capture_sha256": "7b7d33740d4a6a1f40db7ed7160b0d77205dabe0973edec0cb3c13e8169cfbcf"
+    },
+    "obs/obsf": {
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "execution_id": "96d051a6-987e-4037-a55a-29bcb2578ae3",
+      "native_status": "FINISHED",
+      "native_writer_sha": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "observed": 80,
+      "passed": 80,
+      "failed": {},
+      "snapshot_sha256": "11cefe6b530117db2b1f3ce2f4cc911e8c1ae64f0ee60e2d963ef923cec6a91e",
+      "attempt_sha256": "7873a6a38a291ba787c9944719233c224a609986529866a34c9160cba18b6f86",
+      "results_sha256": "158821025973a629071fc774df99589336ebebb9e718d06ae0aecfc8ff64ff90",
+      "context_driver_calls": {
+        "CreateTmItem": 6,
+        "RefreshItem": 112
+      },
+      "binary_packets": 224,
+      "ordered_stage_receipts": 0,
+      "commands": [],
+      "binary_capture_sha256": "cbb1f4bd803f6d2d24410504f952788f78c8ea32e30fe460f9d2748a346a844f"
+    }
+  },
+  "staged_fixture_correction": "obs/obse retained one denied item-comparison boundary. obs/obsf adds only the immutable case source?s TMparam3 resource to the synthetic allowlist and passes all 80 checks.",
+  "tests": {
+    "junit_sha256": "58f92b5131c54d5f1f6d51f1ed78aa7ab0b061c10e490bf690895ad9041c7def",
+    "total": 200,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "seconds": "80.788",
+    "modules": [
+      "server/tests/test_v08_memory_experiment.py",
+      "server/tests/test_native_bridge_lifecycle.py",
+      "server/tests/test_native_driver.py"
+    ]
+  },
+  "capture_index": "compatibility-native-captures.json",
+  "archive_sha256": "acb8eb414539dd63b62c62e8cb42a9c72676031ac977cb94cea4a15e40f531e0",
+  "fresh_inventory_rows": 253,
+  "candidates": 272,
+  "inherited": 763,
+  "portable_replay": [
+    "python",
+    "scripts/v08_deployed_compatibility_map.py",
+    "--raw-root",
+    "<extracted compatibility-native-runs.zip>",
+    "--output",
+    "<report.json>"
+  ]
+}

@@ -1,6 +1,7 @@
 name: v0.8 development Python supply chain inventory and known-vulnerability scan
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'server/**'
@@ -24,7 +25,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: '3.13'
+          python-version: '3.13.17'
       - name: Build a separate isolated runtime wheel (not stable distribution)
         run: |
           set -euo pipefail
@@ -35,6 +36,9 @@ jobs:
           test "${#wheels[@]}" -eq 1
           .qualification/v08-supply-chain/runtime/bin/python -m pip install \
             --no-deps "${wheels[0]}"
+          .qualification/v08-supply-chain/runtime/bin/python -m pip install \
+            --require-hashes --only-binary=:all: -r server/requirements-browser.lock
+          .qualification/v08-supply-chain/runtime/bin/python -m pip check
           .qualification/v08-supply-chain/runtime/bin/python -I -m openbexi_spell_server --help
       - name: Install pinned audit tools separately from the runtime
         run: |
@@ -49,6 +53,15 @@ jobs:
             .qualification/v08-supply-chain/runtime/bin/python \
             --output-reproducible --validate --output-format JSON \
             --output-file .qualification/v08-supply-chain/runtime-sbom.json
+          python - <<'PY'
+          import json, pathlib, tomllib
+          optional = tomllib.loads(pathlib.Path('server/pyproject.toml').read_text())['project']['optional-dependencies']['browser']
+          components = json.loads(pathlib.Path('.qualification/v08-supply-chain/runtime-sbom.json').read_text())['components']
+          versions = {entry['name'].lower(): entry.get('version') for entry in components}
+          for pin in optional:
+              name, expected = pin.split('==')
+              assert versions[name] == expected, (name, versions.get(name), expected)
+          PY
       - name: Fail on known vulnerabilities in the isolated installed environment
         run: |
           set -euo pipefail

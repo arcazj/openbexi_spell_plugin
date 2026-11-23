@@ -1,0 +1,133 @@
+{
+  "schema": "openbexi.v08.public-browser/1",
+  "record_date": "2026-11-22",
+  "status": "PASS",
+  "scope": "Opt-in certificate-authenticated browser workspace, HTTPS ownership and commands, read-only WSS replay, autonomous observer refresh, native launch and terminal result.",
+  "subject": {
+    "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+    "ide_version": "1.2.2",
+    "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+    "spell_version": "0.8.0",
+    "server_wheel_sha256": "4b534dc7354bb51715a49e810c49030d3b833f00bac82c0321c5b103b09d35e7",
+    "dss_wheel_sha256": "c885a7913031fe66a6d471e6b1f31090b948db34faecf95e71acf93ac4755f16",
+    "gateway_context_listener_image": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+    "assigned_worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+    "native_base": "sha256:b971df8f0ea0fc1fa40ba04adbd735534d797463310d574b987c02c2070681a0",
+    "gateway_optional_wheels": {
+      "h11-0.16.0-py3-none-any.whl": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+      "wsproto-1.3.2-py3-none-any.whl": "61eea322cdf56e8cc904bd3ad7573359a242ba65688716b0710a5eb12beab584"
+    }
+  },
+  "browser": {
+    "product": "Chrome for Testing, Windows",
+    "version": "158.0.8127.18",
+    "revision": 1254,
+    "sha256": "dafaf388c1194eb610fc5706ba986eb38e5ebedb1fae44f39569e20940a3bae2",
+    "playwright_core": "1.65.0",
+    "tls": "Role-specific client certificates and test CA; no ignored HTTPS errors.",
+    "subjects": 23,
+    "observer_initiated_denied_session_opens": 20,
+    "distinct_readers_retaining_wss": 23,
+    "wss_replay_pages": 279,
+    "javascript_errors": 0,
+    "reconnected_observer_streams": 2
+  },
+  "command": "node scripts/qualify_v08_browser_workspace.cjs <private certificate profiles> <new evidence directory>",
+  "harness_sha256": "377b519f86e4805a24341c9373a4ad46b299cf572ac14023854257c0f4a4c51e",
+  "actions": [
+    {
+      "name": "23 authenticated browser identities and real WSS connections",
+      "time": "2026-11-23T01:19:21.120Z",
+      "count": 23
+    },
+    {
+      "name": "20 observer attempts denied by authority",
+      "time": "2026-11-23T01:19:21.465Z"
+    },
+    {
+      "name": "A to B ownership, prior A proof denied",
+      "time": "2026-11-23T01:19:24.544Z"
+    },
+    {
+      "name": "B to A ownership with explicit rebind",
+      "time": "2026-11-23T01:19:26.343Z"
+    },
+    {
+      "name": "Observer reconnected with a nonzero replay cursor",
+      "time": "2026-11-23T01:19:27.259Z"
+    },
+    {
+      "name": "Browser explicitly started a paused native root",
+      "time": "2026-11-23T01:19:30.215Z"
+    },
+    {
+      "name": "Native FINISHED visible for owner and 20 observers",
+      "time": "2026-11-23T01:19:33.452Z"
+    },
+    {
+      "name": "Controller reconnect remained read-only",
+      "time": "2026-11-23T01:19:33.891Z"
+    }
+  ],
+  "execution_id": "90a4a01d-20b3-4488-bf26-accadba97587",
+  "native_root": {
+    "processes": [
+      {
+        "pid": 135,
+        "ppid": 7,
+        "executable": "SPELL-Listener"
+      },
+      {
+        "pid": 152,
+        "ppid": 135,
+        "executable": "SPELL-Context"
+      },
+      {
+        "pid": 217,
+        "ppid": 152,
+        "executable": "SPELL-Executor"
+      },
+      {
+        "pid": 7,
+        "ppid": 1,
+        "executable": "python3.13"
+      }
+    ],
+    "source_revision": "8708496044323f1377cb233ce4011624cc427ef3",
+    "source_sha256": "5b985adabe12248f467f9fffa83847987c4f5cf3949cdeae39adb5d2ab3194c0",
+    "observed_status": "FINISHED",
+    "spent_workers": 1,
+    "durable_asrun": [
+      {
+        "name": "2026-11-23_011929_Executor_main#1.ASRUN",
+        "bytes": 483,
+        "sha256": "b1fe568f8f64add44fd2ab032c1e6392f1a5701b86fd845c32f40fd9fcd8cc6a"
+      }
+    ],
+    "worker_exit": 0,
+    "driver_event_count": 2
+  },
+  "source_regressions": {
+    "linux_desktop_tests": 89,
+    "seconds": 17.63,
+    "junit_sha256": "e60ca459863dd390dd70fe268927561334465e646f6ca97e1093681c522447c0",
+    "mypy": "25 modules passed",
+    "ruff": "0.14.1 check/format passed"
+  },
+  "archive": {
+    "root": "F:/openbexi-builds/qualification-20261122/public-launch/browserfinal",
+    "files_sha256": {
+      "client-evidence/browser-result.json": "57e2e9b93774e2a45b1c21ddbac787902c322c7a847ea004820654c756f08da3",
+      "client-evidence/browser-finished.png": "e49de0f0df4be229595ce8133ee35675fcd205cb18dd95de9c8037a3401b3576",
+      "client-evidence/browser-observer.png": "487fe63da27846588fdee9bc422a10673992f4649888408ae33988705b2e4cba",
+      "client-evidence/browser-ready.png": "7ca1db70e16101d8ddca2ce0f03906803de58852bbbe9d5c184eec61074945b3",
+      "public-result.json": "e19a492f46d2251795b48dc740e74312eef9ce89aa134ed78847600a1d978d75",
+      "worker.log": "72999c8f245c2e4453ac254dd9532ff396e52d8b8263a0fed0dc315e83afbfe5",
+      "native-build.json": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74"
+    }
+  },
+  "limits": [
+    "A–B–A was demonstrated on a reserved execution before native startup. Live native-family transfer requires independently attested host freeze and separate evidence.",
+    "This procedure used the Context audit-event binding. Production deployment, independent DSS faults, untrusted procedures and all 763 inherited requirements are separate gates."
+  ]
+}

@@ -390,6 +390,20 @@ class NativeSession:
             # The server's explicit driver-file inventory points to this file;
             # changing only its filename would leave the new driver unregistered.
             driver.write(root / 'session/config/spell/driver_example.xml',encoding='utf-8')
+            if self.native_home is not None:
+                # The example defaults to 30s for TC and TM. The admitted
+                # Context driver budgets at most 3s for each operation.
+                # Set the operator defaults before SPELL merges explicit
+                # procedure modifiers, which still reach the Context unchanged.
+                language_path = root / 'session/config/spell/language.xml'
+                language = ET.parse(language_path)
+                for interface in ('TC', 'TM'):
+                    matches = language.findall(
+                        f"./defaults[@interface='{interface}']/modifier[@name='Timeout']")
+                    if len(matches) != 1:
+                        raise ValueError('Ambiguous native driver timeout default: ' + interface)
+                    matches[0].text = '3'
+                language.write(language_path, encoding='utf-8')
         # Keep the upstream UserLib directory separate. The original executor
         # auto-imports everything in libpath before procedure execution; using
         # the project there would run ordinary script bodies during startup.

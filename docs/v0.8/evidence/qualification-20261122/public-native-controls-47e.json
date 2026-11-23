@@ -1,0 +1,312 @@
+{
+  "schema": "openbexi.v08.public-native-controls/1",
+  "status": "PASS",
+  "scope": "Current controller used the real Chromium workspace to step, run, pause, continue and abort the original trusted native procedure. Both owner and observer rendered ABORTED, and terminal command controls were disabled.",
+  "subject": {
+    "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "gateway": "sha256:f500c700cb5714a2040064a1a9bc93e3e86ae086cdc28dc65d363161af3ba94e",
+    "core": "sha256:b1b46dcda1f8db45889f6a145d2125362bbc04c41ded6e956ea99ca1ea61f968",
+    "worker": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+    "native_commands": "owner-terminal-candidate"
+  },
+  "source_manifest_sha256": "b8d58b30ceb1112694bfe914f09aaba858df129d8a291f4cdfdf8e6bed295676",
+  "execution": "0aa504b8-1eee-4e7a-b416-5ebe0cc77974",
+  "browser": "158.0.8127.18",
+  "observations": [
+    {
+      "action": "Three authenticated users connected, native original root PAUSED",
+      "at": "2026-11-23T02:43:20.432Z",
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ]
+      ]
+    },
+    {
+      "action": "Owner pressed Step at the original paused root",
+      "at": "2026-11-23T02:43:21.474Z",
+      "commands": [
+        [
+          "CMD_STEP",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ]
+      ],
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-running",
+          null
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ]
+      ]
+    },
+    {
+      "action": "Owner pressed Pause on the running original Executor",
+      "at": "2026-11-23T02:43:22.637Z",
+      "commands": [
+        [
+          "CMD_STEP",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_RUN",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_PAUSE",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ]
+      ],
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-running",
+          null
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ]
+      ]
+    },
+    {
+      "action": "Owner aborted the original native root; owner and observer displayed ABORTED",
+      "at": "2026-11-23T02:43:25.162Z",
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-running",
+          null
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-child-parent-status",
+          "ABORTED"
+        ],
+        [
+          "native-terminal-failure",
+          "ABORTED"
+        ]
+      ],
+      "commands": [
+        [
+          "CMD_STEP",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_RUN",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_PAUSE",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_RUN",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_ABORT",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ]
+      ]
+    }
+  ],
+  "native_positions": [
+    {
+      "csp": "main:1/0",
+      "code_name": "<module>"
+    },
+    {
+      "csp": "main:3/0",
+      "code_name": "<module>"
+    },
+    {
+      "csp": "main:4/3",
+      "code_name": "<module>"
+    },
+    {
+      "csp": "main:4/4",
+      "code_name": "<module>"
+    }
+  ],
+  "durable": {
+    "commands": [
+      {
+        "command_id": "323407ed-d739-4ba2-934d-79c887cec04a",
+        "command": "CMD_STEP",
+        "state": "EXECUTION_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED",
+        "disposition": "HANDLER_RETURNED"
+      },
+      {
+        "command_id": "bd8a1c8f-45e2-4ffa-b6ca-63fbb5e8f77c",
+        "command": "CMD_RUN",
+        "state": "EXECUTION_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED",
+        "disposition": "HANDLER_RETURNED"
+      },
+      {
+        "command_id": "f8f669cc-d868-4df6-9b20-c0df9f373a67",
+        "command": "CMD_PAUSE",
+        "state": "EXECUTION_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED",
+        "disposition": "HANDLER_RETURNED"
+      },
+      {
+        "command_id": "72ea4aec-57df-4014-822f-c8cda6a66334",
+        "command": "CMD_RUN",
+        "state": "EXECUTION_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED",
+        "disposition": "HANDLER_RETURNED"
+      },
+      {
+        "command_id": "c28f4988-7a9c-4164-b62d-efc715c1e3e0",
+        "command": "CMD_ABORT",
+        "state": "EXECUTION_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED",
+        "disposition": "HANDLER_RETURNED"
+      }
+    ],
+    "result": [
+      {
+        "native_status": "ABORTED",
+        "execution_id": "0aa504b8-1eee-4e7a-b416-5ebe0cc77974"
+      }
+    ],
+    "hold": [
+      {
+        "retained": 1
+      }
+    ],
+    "worker": [
+      {
+        "spent": 1
+      }
+    ],
+    "members": [
+      {
+        "instance_id": "main#1",
+        "pid": 667,
+        "parent_pid": 600,
+        "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f"
+      }
+    ]
+  },
+  "worker_exit": {
+    "Status": "exited",
+    "ExitCode": 1,
+    "OOMKilled": false
+  },
+  "artifacts": [
+    {
+      "archive": "public-launch/controls47/case.json",
+      "sha256": "63a749e59ee67d5045f9790380baf402b82f49c6943c275abbe56bd4622aaff4"
+    },
+    {
+      "archive": "public-launch/controls47/browser-boundary/result.json",
+      "sha256": "e9a7f5d04a691494ea5de59fbf94d39f57c83954b8c3e80829bba73078255c7a"
+    },
+    {
+      "archive": "public-launch/controls47/browser-boundary/observable-aborted.png",
+      "sha256": "4cf9bc660c44b281575ce020285bdf711b5a6508efe03726d64640d041623342"
+    },
+    {
+      "archive": "public-launch/controls47/worker.log",
+      "sha256": "c8955d2c9972f219b28c3ff1df6fac357c41bc7dd505365c7e9334c430060077"
+    },
+    {
+      "archive": "public-launch/controls47tools/controls.cjs",
+      "sha256": "7377a6cbc1bb251a2dd94ade5152d9071bbe5f9f2b2507cd14d389fced2378ca"
+    },
+    {
+      "archive": "public-launch/controls47tools/setup_case.py",
+      "sha256": "a13185e1ccf293d5b894749833e7c812d8151fd1f1b93ffdf49caf3a1d7d1346"
+    }
+  ],
+  "evidence_limit": "The native procedure ended ABORTED and retained its admission hold. Independent family settlement and safe resource release have their own qualification.",
+  "archive_root": "F:/openbexi-builds/qualification-20261122"
+}

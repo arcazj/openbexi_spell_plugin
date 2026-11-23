@@ -14,7 +14,7 @@ FROM python:3.13-slim@sha256:eb43ff125d8d58d7449dcba7d336c23bcac412f526d861db493
 COPY --from=zlib-build /tmp/zlib-fixed.deb /tmp/zlib-fixed.deb
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       libc6=2.41-12+deb13u4 libssl3t64=3.5.7-1~deb13u3 \
+       libc6=2.41-12+deb13u5 libssl3t64=3.5.9-1~deb13u1 \
        libpcre2-8-0=10.46-1~deb13u3 libsqlite3-0=3.46.1-7+deb13u2 \
     && dpkg -i /tmp/zlib-fixed.deb && ldconfig \
     && rm -f /tmp/zlib-fixed.deb && rm -rf /var/lib/apt/lists/* \

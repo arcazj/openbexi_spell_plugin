@@ -1,8 +1,27 @@
 <!-- CURRENT QUALIFICATION -->
+
+The private service image includes Git so an enabled Context can verify its configured catalog revision. To build from the exact staged package set, provide a JSON manifest with `base_image`, `debian` and `wheels`. The latter two map each filename to its SHA-256. Include the SPELL server wheel, the Debian Git packages and their dependencies. The browser profile also needs both wheels from `server/requirements-browser.lock`.
+
+```sh
+python scripts/build_v08_service_image.py --manifest service-inputs.json --debs ./debs --wheels ./wheels --tag openbexi-spell-service:qualification --receipt ./evidence/service-build.json
+```
+
+For an assigned worker, `scripts/build_v08_worker_runtime.py` consumes the optimized native image digest plus the signed package and wheel hashes in a worker manifest. It verifies the native build record and all five runtime binaries before and after the dependency update. Pass the resulting image digest to `scripts/build_v08_assigned_worker.py` as `--native-image`. [Joint build and test receipts](../../docs/v0.8/evidence/qualification-20261122/README.md)
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](../../docs/v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 
 # v0.8 prelaunch multi-service Compose qualification
+
+## Context checkpoints
+
+Run the operator helper on Linux with the Context state volume readable and an independent backup volume writable. Capture accepts an active Context and records SQLite integrity, the Context identity, the audit sequence and the audit digest. Keep the returned manifest SHA-256 in a separate trusted location.
+
+```sh
+python context_checkpoint.py capture --context A --state /state --archive /backup/checkpoint-A
+python context_checkpoint.py restore --context A --archive /backup/checkpoint-A --target /replacement/state --manifest-sha256 "$CAPTURE_MANIFEST_SHA256"
+```
+
+Restore verifies the copied database and audit before atomically creating the named destination on a Linux filesystem that supports no-replace rename. A checkpoint covers the Context database at capture time. Preserve any subsequent Context events and separately archive the worker's native audit files. Before starting the restored authority, stop the old authority and Executor, fence their driver access, and rotate their private service and worker credentials. Startup retains the logical reservation and marks interrupted executions `RECOVERY_REQUIRED`. Reconcile outstanding driver effects before authorizing any further execution.
 
 **This is an executable, security-isolated prelaunch staging profile, not a
 native SPELL v0.8 runtime, Kubernetes release, user-facing web service or

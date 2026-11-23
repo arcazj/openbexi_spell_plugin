@@ -96,11 +96,22 @@ def assess(root, candidate, ide_commit, *, dirty=False):
     authorization = manifest.get("publication_authorization", {})
     if authorization.get("request") != "Qualify and release full v0.8":
         failures.append("Explicit full-release publication authorization is missing")
-    version = tomllib.loads((root / "server/pyproject.toml").read_text())["project"][
-        "version"
-    ]
-    if version != "0.8.0":
-        failures.append("Server package is development version " + version)
+    for project, expected in (
+        ("server", "0.8.0"),
+        ("host_plugin", "0.8.0"),
+        ("shared_plugin", "0.8.0"),
+        ("driver_plugin", "0.8.0"),
+        (".", "0.1.0"),
+    ):
+        metadata = root / project / "pyproject.toml"
+        if not metadata.is_file():
+            failures.append(f"{project}/pyproject.toml is missing")
+            continue
+        version = tomllib.loads(metadata.read_text())["project"]["version"]
+        if version != expected:
+            failures.append(
+                f"{project}/pyproject.toml has version {version}, expected {expected}"
+            )
     if dirty:
         failures.append("Candidate has tracked or untracked runtime source changes")
     results = {}

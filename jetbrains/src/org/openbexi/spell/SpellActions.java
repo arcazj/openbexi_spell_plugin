@@ -12,7 +12,9 @@ abstract class SpellActions extends DumbAwareAction {
     @Override public ActionUpdateThread getActionUpdateThread() { return ActionUpdateThread.BGT; }
     @Override public void update(AnActionEvent event) {
         VirtualFile file = procedure(event);
-        event.getPresentation().setEnabled(event.getProject() != null && file != null && !file.isDirectory() && "py".equalsIgnoreCase(file.getExtension()));
+        var project = event.getProject();
+        event.getPresentation().setEnabled(project != null && !SpellGatewayWindow.blocksLocal(project)
+            && file != null && !file.isDirectory() && "py".equalsIgnoreCase(file.getExtension()));
     }
     static VirtualFile procedure(AnActionEvent event) {
         VirtualFile file = event.getData(CommonDataKeys.VIRTUAL_FILE);

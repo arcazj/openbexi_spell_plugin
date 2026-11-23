@@ -51,14 +51,14 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: 08c314fb6b802b407cbabe01777072884d2b7504
+          ref: fadac70d574760cbe21c5e5512a384dddfa36e80
           path: .qualification/companion-ide
           persist-credentials: false
       - run: |
           sudo apt-get update
           sudo apt-get install -y libegl1 nlohmann-json3-dev
           python -m pip install -r server/requirements-test.lock
-          python -m pip install --no-deps ./.qualification/companion-ide
+          python scripts/install_paired_ide.py
           python -m pip install PySide6-Essentials==6.10.3
       - run: python scripts/record_qualification_environment.py --profile linux-hosted-foundation --output .qualification/environment/foundation.json
       - name: Original complete suite with validated compiler flags and 600 second limit

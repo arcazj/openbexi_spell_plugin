@@ -90,6 +90,22 @@ def rows(family):
     )
 
 
+def test_busy_execution_keeps_authenticated_prompt_answer_queued(prompts, family, pki):
+    prompt = opened(family, pki)
+    assert enqueue(family, pki, prompt)[0] == 200
+    runtime = family["grant"]
+    with family["app"].authority._execution_lock(runtime.execution_id):
+        code, reply = worker(family, pki)
+        assert code == 200 and reply["result"] == dict(
+            action="hold", execution_id=runtime.execution_id
+        )
+        assert rows(family)[0]["state"] == "QUEUED"
+    code, reply = worker(family, pki)
+    assert code == 200 and reply["result"]["action"] == "reply"
+    assert reply["result"]["grant"]["prompt_id"] == prompt["prompt_id"]
+    assert worker(family, pki)[1]["result"]["action"] == "none"
+
+
 def assert_no_release(family, result):
     assert result["runtime_enabled"] is False
     assert result["quiescence_proven"] is False

@@ -1,0 +1,131 @@
+{
+  "schema": "openbexi.v08.public-live-failure/1",
+  "status": "FAIL",
+  "scope": "Original native family with an untimed operator question and 23 pinned Windows Chromium identities.",
+  "subject": {
+    "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell": "4a28557a4fe4dd21d09d85284f7aa014427086aa",
+    "gateway": "sha256:320006168a8e8c25058a568d27adecd55a4c807314f9d3332198a246d5336867",
+    "core": "sha256:548c0b74a97bb6ded6585704b9de339a6052829f281f1465cbd5f32fa7ee163a",
+    "worker": "sha256:9a2305f85a1f323f77989a8a2ee2ea2573403ca78fd186cf9ca565e71d154b63"
+  },
+  "execution": "434801f6-ab74-4f21-97a0-594f4d9826de",
+  "source_manifest_sha256": "3d52676104f4954d4789af27f90c3d7b76fd434482941dd29195cac5cce96c0d",
+  "observations": [
+    {
+      "name": "Twenty separately authenticated observers established actual WSS and received 403 for a controller mutation",
+      "time": "2026-11-23T02:23:14.495Z"
+    },
+    {
+      "name": "Original root, native child and background are running",
+      "time": "2026-11-23T02:23:25.504Z"
+    },
+    {
+      "name": "Independently proven live A to B transfer",
+      "time": "2026-11-23T02:23:40.786Z",
+      "owner": "bob",
+      "epoch": 2,
+      "generation": 2,
+      "denied_stale_command_status": 403,
+      "barrier": "dea84483-f734-4fe3-9c28-069565bf5e21"
+    },
+    {
+      "name": "B answered A's original native question through the visible widget",
+      "time": "2026-11-23T02:23:45.859Z",
+      "prompt_id": "9d900578-672e-4e3e-8c88-b183ba1b148e",
+      "definition_sha256": "151fce1650ecef8cb60b80691b6d8f0daa13006ad8dd291e5003a98d5a631128"
+    }
+  ],
+  "completed_native_freezes": 1,
+  "failure": {
+    "native_worker_exit": 1,
+    "oom_killed": false,
+    "retained_hold": true,
+    "route": "/v1/worker/command-poll",
+    "phase": "response_validation",
+    "http_status": 503,
+    "upstream": "execution_busy",
+    "elapsed_ms": 485.7804
+  },
+  "authority": {
+    "control": [
+      {
+        "id": "434801f6-ab74-4f21-97a0-594f4d9826de",
+        "owner": "bob",
+        "epoch": 2,
+        "connection_generation": 2,
+        "control_state": "PAUSING"
+      }
+    ],
+    "members": [
+      {
+        "instance_id": "main#1",
+        "pid": 120,
+        "parent_pid": 44,
+        "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f"
+      },
+      {
+        "instance_id": "handoff_child#0",
+        "pid": 170,
+        "parent_pid": 44,
+        "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f"
+      }
+    ],
+    "command": [
+      {
+        "command": "CMD_RUN",
+        "state": "EXECUTION_UNPROVEN"
+      }
+    ],
+    "prompt": [
+      {
+        "prompt_id": "9d900578-672e-4e3e-8c88-b183ba1b148e",
+        "state": "CLOSED",
+        "outcome": "ANSWER_SELECTED"
+      }
+    ],
+    "reply": [
+      {
+        "owner": "bob",
+        "epoch": 2,
+        "action": "ANSWER",
+        "state": "CONSUMED_UNPROVEN",
+        "diagnostic": "IPC_SEND_ACKNOWLEDGED"
+      }
+    ],
+    "root_result": []
+  },
+  "diagnosis": "Context could not acquire the per-execution mutex in 250 ms. It rejected the authenticated command poll before reading or changing its queue. The worker treated the response as fatal and exited before the second family drain.",
+  "deterministic_check": "The original Context returned HTTP 503 for both held-mutex cases. In the corrected Context, a valid poll receives hold without a grant, an invalid original capability receives HTTP 403 and the previously queued action can be delivered once after the mutex is released.",
+  "artifacts": [
+    {
+      "archive": "public-launch/livefinal01/live-browser/result.json",
+      "sha256": "2fd4fb1670e48f3ff8981e4b1578bcd54664df5418c225404ef32e31442dd6ef"
+    },
+    {
+      "archive": "public-launch/livefinal01/kernel.json",
+      "sha256": "bf44ed58bffaccd2f4e1167da4b0f010e0225da33b89f1fbc7abd79258c41a9e"
+    },
+    {
+      "archive": "public-launch/livefinal01/authority-at-failure.json",
+      "sha256": "65cbdc302e28d7cb7b170c109da49570543d3421aabe718de6641026079168c7"
+    },
+    {
+      "archive": "public-launch/livefinal01/worker.log",
+      "sha256": "92e8cdb15d07d70c3e47f9afc55af6a98c6967d120502f0764edad0ef83cf55a"
+    },
+    {
+      "archive": "public-launch/livefinal01/host-policy.json",
+      "sha256": "7ac4e2bb6945654d499f897cc6c3fb317553dadd7f9d6071ac77fde25d221ffe"
+    },
+    {
+      "archive": "public-launch/contention-old01.xml",
+      "sha256": "8795f906ff8f839b60e04a2094df4fb7f421f9c5db68ab01bc4bb9fde77f01ea"
+    },
+    {
+      "archive": "public-launch/contention-new01.xml",
+      "sha256": "52a2512a8c4df96f6a0450bf38cef248c05fa1409973a4c8fe20965c82ed74d2"
+    }
+  ],
+  "archive_root": "F:/openbexi-builds/qualification-20261122"
+}

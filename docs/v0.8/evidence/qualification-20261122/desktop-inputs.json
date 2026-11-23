@@ -1,0 +1,124 @@
+{
+  "schema": 2,
+  "scope": "Installed IDE 1.2.2, four SPELL 0.8.0 wheels, SDK 0.1.0 and the optimized native family on the Debian desktop",
+  "full_v08_qualified": false,
+  "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+  "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "base_image": "sha256:711eeb330a8291bbdca6fa31705f2b922610ad724d2f6654732b2b7fe40ab6cf",
+  "native": {
+    "source_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "profile": "optimized",
+    "image": "sha256:35631c613df80d0e1c3a51316a6da7597086f8a678697210d471a6db4bb84b8d",
+    "build_sha256": "339433147e9814f12e94291b1cb4b24aacd18553aadeaaa553c761b6debde05e"
+  },
+  "wheels": {
+    "openbexi_ide-1.2.2-py3-none-any.whl": "1d68d0a13f85a9e64a084757c6be280cdc2feb77d97027df0d98bfc2ebffb58f",
+    "openbexi_spell_dss-0.8.0-py3-none-any.whl": "93e1b280ef192b4da0994b0fe66d8168dd702e582bcb5e0aa5e6d84c09361caa",
+    "openbexi_spell_host-0.8.0-py3-none-any.whl": "8ecfee7b6484ed86246b91a22d8c0c1d544682af51662feae88da98af5beaa6f",
+    "openbexi_spell_plugin-0.1.0-py3-none-any.whl": "c167dd91b6d3f18ae1de522cedfc20a9b70e504c36c541663687a2c1adda5a8e",
+    "openbexi_spell_server-0.8.0-py3-none-any.whl": "d39f4c6cc0735fea0c1331724a520658d866faf4548ded7f01802fcab2f6f3e8",
+    "openbexi_spell_shared-0.8.0-py3-none-any.whl": "80a3affab5a552363a62f7e5fe86ce45dbe3284aaf5eedd9f17bea23e1dd2374"
+  },
+  "dependencies": {
+    "grpcio-1.84.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": {
+      "sha256": "986e9751d416d7a6eaa2fecdac38da63153d63a4b340ba7d624889c490451500",
+      "url": "https://files.pythonhosted.org/packages/da/56/548a643decb059ca244499c675ae2c13a15f523ba94592c2774bd80a13c1/grpcio-1.84.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "version": "1.84.0"
+    },
+    "protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl": {
+      "sha256": "89f23aa53c24553a2416fd4fd1ec06f74fa42b14b546d8883128813f775bbfd2",
+      "url": "https://files.pythonhosted.org/packages/db/f3/3996583dd2906297a637af12114deddf7658af6e683fedb83be061983fb5/protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl",
+      "version": "7.36.2"
+    },
+    "typing_extensions-4.15.0-py3-none-any.whl": {
+      "sha256": "f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548",
+      "url": "https://files.pythonhosted.org/packages/18/67/36e9267722cc04a6b9f15c7f3441c2363321a3ea07da7ae0c0707beb2a9c/typing_extensions-4.15.0-py3-none-any.whl",
+      "version": "4.15.0"
+    },
+    "h11-0.16.0-py3-none-any.whl": {
+      "package": "h11",
+      "version": "0.16.0",
+      "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"
+    },
+    "wsproto-1.3.2-py3-none-any.whl": {
+      "package": "wsproto",
+      "version": "1.3.2",
+      "sha256": "61eea322cdf56e8cc904bd3ad7573359a242ba65688716b0710a5eb12beab584"
+    }
+  },
+  "desktop_updates": {
+    "base_image": "sha256:711eeb330a8291bbdca6fa31705f2b922610ad724d2f6654732b2b7fe40ab6cf",
+    "debian_packages_requested": [
+      "apt",
+      "ca-certificates",
+      "libapt-pkg7.0",
+      "libbrotli1",
+      "libc-bin",
+      "libc6",
+      "libcares2",
+      "libcurl3t64-gnutls",
+      "libexpat1",
+      "libfreetype6",
+      "libheif-plugin-dav1d",
+      "libheif-plugin-libde265",
+      "libheif1",
+      "libjxl0.11",
+      "liblzma5",
+      "libnghttp2-14",
+      "libpcre2-8-0",
+      "librsvg2-2",
+      "zlib1g"
+    ],
+    "debian": {
+      "apt_3.0.4_amd64.deb": "15c2030e0fb46580af4f1b4cc303f4bd26da781b004e99763bc9eff7cf8e19b8",
+      "ca-certificates_20250419+deb13u1_all.deb": "c10585ac22c7f617a73d394eea29ba71d0356f350ae973b19043d1b017f80f54",
+      "libapt-pkg7.0_3.0.4_amd64.deb": "577eb8f489de419290102364892dbd13ca256297b61f96d61b114fd4ac18be41",
+      "libbrotli1_1.1.0-2+deb13u1_amd64.deb": "db46824c60fee46aff3cc0be3e5f736bc606cae669b1fb17516a41e8073251a9",
+      "libc-bin_2.41-12+deb13u5_amd64.deb": "f30ee7381a9c6a3936165259bcd58e65f4b288e351606d200c8435724c5876dd",
+      "libc6_2.41-12+deb13u5_amd64.deb": "b59b0625cd1a791375d40dab23a4d5d3d0641e3d0a773501becdc3725b7f99cf",
+      "libcares2_1.34.9-1~deb13u1_amd64.deb": "acbe0ab2f6e5b41aabf9e03b6a65ca3fb0d48aeccc4550c418e3349b3008360a",
+      "libcurl3t64-gnutls_8.14.1-2+deb13u7_amd64.deb": "9475c591b338b81859ee6d06bf2a9fbb01b52f184c235afa7f6e7f1652136e55",
+      "libexpat1_2.9.0-1~deb13u1_amd64.deb": "feff874772cae904ae4d24e917b35664952bec4b4ae9100a4edda5a7fa746832",
+      "libfreetype6_2.13.3+dfsg-1+deb13u2_amd64.deb": "b57a449c874f2cc126a48149daa27b8d1a8935fbf1609ccfe28ca1610d00ee29",
+      "libheif-plugin-dav1d_1.23.6-2~deb13u1_amd64.deb": "952194072fd0fb66bf8923fab262f38bb008dfaee53f351828c27b907e0fa4cd",
+      "libheif-plugin-libde265_1.23.6-2~deb13u1_amd64.deb": "87ceca51500055813fb4f435423df0290461e5e1104b8581ed71afb8620581c5",
+      "libheif1_1.23.6-2~deb13u1_amd64.deb": "66e992705f29ebc4499b7b9c142f2ed92cfca1e17df81b7a646c82d42cd28864",
+      "libjxl0.11_0.11.2-0.1~deb13u3_amd64.deb": "ddcb149f875b2ed6ab9160c59c1f46eef48b821005033e574dc829e6deacc26e",
+      "liblzma5_5.8.1-1+deb13u2_amd64.deb": "b38acab30f295bf1066a6632e31cbd0a1980f2924b38040cda131d5dea5384ec",
+      "libnghttp2-14_1.64.0-1.1+deb13u2_amd64.deb": "a5c10b427f9dc625754a9f323b07f2a76932a10161888e6e040c8f9448c13f05",
+      "libpcre2-8-0_10.46-1~deb13u3_amd64.deb": "e226f661d918f04daf38cdbc4806b7ed7d6ef95c7eb0ade692fc350e31970040",
+      "librsvg2-2_2.60.0+dfsg-1+deb13u1_amd64.deb": "5f68f720eccefebda3855a30007cab9d7662042ccbc01c126aa5f697ae6e5791",
+      "zlib1g_1%3a1.3.dfsg+really1.3.1-1+deb13u1_amd64.deb": "8c27c342230503b73dfde629642c3b352e87b554e06d60cf58772f236a305ceb"
+    },
+    "python": {
+      "pip-26.3-py3-none-any.whl": {
+        "package": "pip",
+        "version": "26.3",
+        "url": "https://files.pythonhosted.org/packages/07/25/ee8c38ae72d66b844ce8eb9711ba905dba21ca1a8a0c960057c41cd23337/pip-26.3-py3-none-any.whl",
+        "sha256": "f3b60b20ffaadd4415ed7957212a38ac63fa4c5fa375bd0f4a797777940fad13",
+        "vendored_certifi": [
+          "certifi==2026.10.23"
+        ]
+      },
+      "setuptools-84.2.1-py3-none-any.whl": {
+        "package": "setuptools",
+        "version": "84.2.1",
+        "url": "https://files.pythonhosted.org/packages/ef/55/6dc6d6bb953bdfc52519a0059592c52b6e3b8ad51cf8256dffceb55b0610/setuptools-84.2.1-py3-none-any.whl",
+        "sha256": "ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"
+      },
+      "pytest-9.2.0-py3-none-any.whl": {
+        "package": "pytest",
+        "version": "9.2.0",
+        "url": "https://files.pythonhosted.org/packages/51/39/1f5d8c8877a0fa327db959c19341d4be61660de1ab6b7391f9eb805bcd67/pytest-9.2.0-py3-none-any.whl",
+        "sha256": "07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588"
+      },
+      "wheel-0.48.0-py3-none-any.whl": {
+        "package": "wheel",
+        "version": "0.48.0",
+        "url": "https://files.pythonhosted.org/packages/2e/29/69cfbb602cd91690c55d38ba9fe53e6a7e76a6fa647bf38f19c138d25449/wheel-0.48.0-py3-none-any.whl",
+        "sha256": "3217dcc807155e45db462d7ef2431f5ddda0d7273b700d05a67b271ceb1287ab"
+      }
+    },
+    "digest_source": "Debian APT signature and Packages index for installed suite; release-specific PyPI wheels and index SHA-256"
+  }
+}

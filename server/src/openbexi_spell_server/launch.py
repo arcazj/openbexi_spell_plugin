@@ -61,6 +61,10 @@ class WorkerLaunch:
         if children is not None:
             allowed.update({"/v1/worker/child-admit", "/v1/worker/child-consume"})
         controls = self.authority.native_controls
+        assigned = self.authority.assigned_launch
+        if assigned is not None:
+            allowed.add("/v1/worker/root-result")
+            safety_only = safety_only or path == "/v1/worker/root-result"
         if controls is not None:
             allowed.update(
                 {
@@ -114,8 +118,12 @@ class WorkerLaunch:
             if type(body) is not dict or "runtime_capability" not in body:
                 raise Fault(403, "worker_consumption_proof_required")
         extra = set()
-        if path.endswith("prompt-open"):
+        if path.endswith("root-result"):
+            extra = {"instance_id", "native_status"}
+        elif path.endswith("prompt-open"):
             extra = {"prompt_id", "target_admission_id", "instance_id", "definition_sha256"}
+            if assigned is not None and "display" in body:
+                extra.add("display")
             if "native_timeout_microseconds" in body:
                 extra.add("native_timeout_microseconds")
         elif path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
@@ -181,10 +189,20 @@ class WorkerLaunch:
             raise Fault(403, "worker_assignment_mismatch")
         if not root_consume:
             self._runtime(grant, body["runtime_capability"], safety_only=safety_only)
+        if path.endswith("root-result") and assigned is not None:
+            return assigned.record_result(grant, body["instance_id"], body["native_status"])
         if path.endswith("prompt-open"):
             return prompts.register(grant, body)
-        if path.endswith("prompt-poll"):
-            return prompts.poll(grant)
+        if path.endswith(("prompt-poll", "command-poll")):
+            queue = prompts if path.endswith("prompt-poll") else commands
+            try:
+                return queue.poll(grant)
+            except Fault as error:
+                # The execution mutex rejected this poll before the queue transaction.
+                # No delivery occurred. A later poll must authenticate the runtime again.
+                if error.status == 503 and error.code == "execution_busy":
+                    return dict(action="hold", execution_id=grant.execution_id)
+                raise
         if path.endswith("prompt-close"):
             return prompts.close_prompt(grant, body)
         if path.endswith(("prompt-forward", "prompt-consume", "prompt-report")):
@@ -206,8 +224,6 @@ class WorkerLaunch:
             return children.consume(grant, body["child_grant"])
         if path.endswith("member-bind"):
             return controls.bind_member(grant, body)
-        if path.endswith("command-poll"):
-            return commands.poll(grant)
         if path.endswith(
             ("command-forward", "command-consume", "command-report", "command-disposition")
         ):

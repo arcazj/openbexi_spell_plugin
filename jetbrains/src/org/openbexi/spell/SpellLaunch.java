@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 public final class SpellLaunch {
     private SpellLaunch() {}
     static GeneralCommandLine command(Project project, VirtualFile file, boolean debug) throws ExecutionException {
+        if (SpellGatewayWindow.blocksLocal(project))
+            throw new ExecutionException("Disconnect the v0.8 server workspace before using local SPELL Run or Debug.");
         var settings = SpellSettings.get(project).getState();
         try {
             Path root = Path.of(project.getBasePath()).toRealPath();

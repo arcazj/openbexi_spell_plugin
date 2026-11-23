@@ -1,0 +1,209 @@
+{
+  "schema": "openbexi.v08.deployed-negative-dependencies/1",
+  "spell": "655f5b5a2de31bd4f8cba44794a1798342986512",
+  "run": "limitprobe/histscopeb",
+  "results_sha256": "990ad909eebbc75b2422506cf1445a65f7b684ed91d4617ffd19c8c1a1be1433",
+  "source_index_sha256": "f60d3463cdf8b730574ef377164f44bdbdc84e26002be93f2ce32cc7240a5c6e",
+  "portable_artifact": "compatibility-additional-runs.zip",
+  "affected_unique_ids": 27,
+  "scope": "Each listed ID has a positive-dimensional dependency on an observed failing source. Other dimensions and other IDs retain their preceding status. Domain-level totals are not failed-ID counts.",
+  "rows": {
+    "named-limit": {
+      "original_report": "v05_limit_complete.json",
+      "original_check": "named:positive",
+      "rendered_original_sha256": "65d1d517fa6bf8be55940c966aef557ad7481528bc658fe1e478e0298029ca85",
+      "expected": "The original SetLimits call creates two named limits and GetLimits returns the ordered active and complete selections with the expected thresholds.",
+      "observed": "The installed legacy telemetry proxy rejects the Limits modifier before a named definition can be stored.",
+      "native_error": "DriverException: Unqualified telemetry modifier: Limits ( unknown )",
+      "scope": "One original case on the isolated synthetic fixture and software adapter.",
+      "release_owner_dependency": "The owner of the deployed telemetry interface must supply admitted named-limit storage and matching readback semantics.",
+      "aggregate_report": "v05_limit_complete.json",
+      "exact_dependency_key": "named:positive",
+      "affected_inherited_ids": [
+        {
+          "id": "CMP-LRM244-CONSTANT-LIMIT-SELECTION-ACTIVE",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-CONSTANT-LIMIT-SELECTION-ACTIVE:positive"
+        },
+        {
+          "id": "CMP-LRM244-MODIFIER-ACTIVE",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-MODIFIER-ACTIVE:positive"
+        },
+        {
+          "id": "CMP-LRM244-MODIFIER-SELECT",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-MODIFIER-SELECT:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-088",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-088:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-089",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-089:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-8-1-072",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-8-1-072:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-085",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-085:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-086",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-086:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-092",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-092:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-094",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-094:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-095",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-095:positive"
+        },
+        {
+          "id": "CMP-LRM244-FUNCTION-GETLIMITS",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-FUNCTION-GETLIMITS:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-8-4-075",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-8-4-075:positive"
+        },
+        {
+          "id": "CMP-LRM244-FUNCTION-SETLIMITS",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-FUNCTION-SETLIMITS:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-8-5-076",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-8-5-076:positive"
+        },
+        {
+          "id": "CMP-LRM244-MODIFIER-LIMITS",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-MODIFIER-LIMITS:positive"
+        },
+        {
+          "id": "CMP-LRM244-TYPE-LIMITDEFINITION",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-TYPE-LIMITDEFINITION:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-8-071",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-8-071:positive"
+        }
+      ],
+      "affected_count": 18
+    },
+    "ranging": {
+      "original_report": "ranging_complete_review.json",
+      "original_check": "dual:positive",
+      "rendered_original_sha256": "6007b85af6bdddb3b8ede2a6aac4c4051ad40af915e55adb162e73b203d89ab0",
+      "expected": "The original case returns True and independently reads the two synthetic paths and the new simulator state.",
+      "observed": "The original native proxy raises TypeError while constructing its protobuf input. No corresponding remote effect was recorded.",
+      "native_error": "TypeError: bad argument type for built-in operation",
+      "scope": "One original case on the isolated synthetic fixture and software adapter.",
+      "release_owner_dependency": "The owner of the compatibility profile must determine disposition for the documented simulator-only legacy data shape.",
+      "aggregate_report": "v05_special_complete.json",
+      "exact_dependency_key": "component:ranging:dual:positive:positive",
+      "affected_inherited_ids": [
+        {
+          "id": "CMP-LRM244-FUNCTION-STARTRANGING",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-FUNCTION-STARTRANGING:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-170",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-170:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-171",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-171:positive"
+        },
+        {
+          "id": "CMP-LRM244-FUNCTION-ABORTRANGING",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-FUNCTION-ABORTRANGING:positive"
+        },
+        {
+          "id": "CMP-LRM244-EXAMPLE-172",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-172:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-18-2-126",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-18-2-126:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-18-124",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-18-124:positive"
+        }
+      ],
+      "affected_count": 7,
+      "aggregate_raw_sha256": "d280917406b72977b1d83324ddaefa5f91464fddecffa0783e5d9ee8d86883a7"
+    },
+    "memory": {
+      "original_report": "memory_complete_review.json",
+      "original_check": "json-golden",
+      "rendered_original_sha256": "c56b7ddd864ab3320a3b0e67c78a89fd21ce3a910e090adc4127486bdc9ddefd",
+      "expected": "The original CreateGoldenImage call returns True and the native bootstrap writes its completion marker.",
+      "observed": "The Context refuses the original MEM/CreateGoldenImage method with HTTP 403 and the native procedure receives DriverException.",
+      "native_error": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+      "scope": "One original case on the isolated synthetic fixture and software adapter.",
+      "release_owner_dependency": "The owner of the private simulation provider must decide whether to implement this historical method or document the remaining qualification gap.",
+      "aggregate_report": "v05_special_complete.json",
+      "exact_dependency_key": null,
+      "affected_inherited_ids": [],
+      "affected_count": 0,
+      "aggregate_raw_sha256": "685585d574ff5062b637b28aa23700b77721821581fb11256c6e9068976b55f2",
+      "dependency_note": "The exact raw release contains this passed historical source. The aggregate requirement map has no individual dependency key for its json-golden diagnostic, so this run attributes zero individual failed IDs to that case."
+    },
+    "scheduled-command": {
+      "original_report": "command_display_composed.json",
+      "original_check": "Time:positive",
+      "rendered_original_sha256": "ae2e88a6becaca7ebe235fd6e2c9aa0d653a60f2c54f0d7d3b3a0aee3abd4d1b",
+      "expected": "The original synthetic case returns True and the archive checks one simulated operation with five ordered stage receipts.",
+      "observed": "The deployed Context refuses TIME/GetUTC with HTTP 403 while the original case evaluates NOW. Stored operation count is zero.",
+      "native_error": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+      "scope": "One original case on the isolated synthetic fixture and software adapter.",
+      "release_owner_dependency": "The owner of the simulated time adapter must supply the documented clock semantics before this original case can be evaluated through completion.",
+      "aggregate_report": "command_display_composed.json",
+      "exact_dependency_key": "Time:positive",
+      "affected_inherited_ids": [
+        {
+          "id": "CMP-LRM244-EXAMPLE-061",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-EXAMPLE-061:positive"
+        },
+        {
+          "id": "CMP-LRM244-SECTION-4-5-2-048",
+          "dimension": "positive",
+          "historical_check": "CMP-LRM244-SECTION-4-5-2-048:positive"
+        }
+      ],
+      "affected_count": 2
+    }
+  }
+}

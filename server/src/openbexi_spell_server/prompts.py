@@ -31,6 +31,23 @@ FLAGS = dict(
 )
 
 
+def prompt_display(text, choices):
+    """Bound visible text using the native option order; keep every other field private."""
+    if type(text) is not str or type(choices) is not list or len(choices) > 64:
+        return None
+    values = [text, *choices]
+    if any(type(value) is not str or not value for value in values):
+        return None
+    if any(any(ord(char) < 32 and char not in "\t\n\r" for char in value) for value in values):
+        return None
+    try:
+        if len(canonical(values)) > 8192 or any(len(choice) > 256 for choice in choices):
+            return None
+    except (UnicodeError, ValueError):
+        return None
+    return {"text": text, "choices": list(choices)}
+
+
 def answer_digest(action, answer):
     if type(action) is not str or action not in ("ANSWER", "CANCEL"):
         raise Fault(403, "prompt_action_unqualified")
@@ -129,6 +146,7 @@ class NativePromptReplies:
         # Values are retained only until one authorized worker delivery. They are
         # never reconstructed from storage or from a repeated owner request.
         self.answers: dict[str, str | None] = {}
+        self.displays: dict[str, dict] = {}
         with self.store.transaction():
             self.store.db.execute(
                 "CREATE TABLE IF NOT EXISTS native_prompts("
@@ -204,6 +222,12 @@ class NativePromptReplies:
         if target is not None:
             canonical_uuid(target)
         fingerprint(body["definition_sha256"])
+        view = None
+        if "display" in body:
+            supplied = exact(body["display"], {"text", "choices"})
+            view = prompt_display(supplied["text"], supplied["choices"])
+            if view is None:
+                raise Fault(400, "prompt_display_invalid")
         timeout = body.get("native_timeout_microseconds")
         if timeout is not None and (type(timeout) is not str or len(timeout) > 64):
             raise Fault(400, "prompt_timeout_invalid")
@@ -213,6 +237,10 @@ class NativePromptReplies:
         with self.authority._execution_lock(original.execution_id):
             with self.store.transaction():
                 execution = self.authority._grant(original)
+                if self.authority.assigned_launch is not None:
+                    self.authority.assigned_launch.require_active_target(
+                        original.execution_id, target
+                    )
                 if (
                     self.authority.native_commands is not None
                     and self.authority.native_commands.terminal_pending(original.execution_id)
@@ -259,12 +287,56 @@ class NativePromptReplies:
                         prompt_id=prompt_id,
                     ),
                 )
+                if view is not None:
+                    self.displays[prompt_id] = view
                 return dict(
                     registered=True,
                     prompt_id=prompt_id,
                     execution_id=original.execution_id,
                     **FLAGS,
                 )
+
+    def pending_display(self, execution_id):
+        """Caller holds the store transaction. A queued or uncertain reply stays fenced."""
+        if not self.displays:
+            return None
+        rows = self.store.db.execute(
+            "SELECT p.prompt_id,p.target_id,p.definition_hash FROM native_prompts p "
+            'WHERE p.execution_id=? AND p.state="OPEN" AND NOT EXISTS '
+            "(SELECT 1 FROM native_prompt_replies r WHERE r.prompt_id=p.prompt_id) "
+            "ORDER BY p.rowid",
+            (execution_id,),
+        )
+        for row in rows:
+            display = self.displays.get(row["prompt_id"])
+            if display is not None:
+                if self.authority.assigned_launch is not None:
+                    try:
+                        self.authority.assigned_launch.require_active_target(
+                            execution_id, row["target_id"]
+                        )
+                    except Fault:
+                        continue
+                return dict(
+                    display,
+                    prompt_id=row["prompt_id"],
+                    target_admission_id=row["target_id"] or None,
+                    definition_sha256=row["definition_hash"],
+                )
+        return None
+
+    def view(self, subject, payload):
+        validate_authority_payload("execution.start", payload)
+        self.authority._require(subject, "execution:start", "execution:control")
+        with (
+            self.authority._execution_lock(payload["execution_id"]),
+            self.store.transaction(write=False),
+        ):
+            self.authority._require(subject, "execution:start", "execution:control")
+            row = self.authority._owner(subject, payload)
+            if row["lifecycle"] != "STARTING":
+                raise Fault(403, "prompt_runtime_unavailable")
+            return {"prompt": self.pending_display(row["id"])}
 
     def enqueue(self, subject, key, payload):
         self.authority._require(subject, "execution:control", "execution:start")
@@ -274,6 +346,10 @@ class NativePromptReplies:
             with self.store.transaction():
                 self.authority._require(subject, "execution:control", "execution:start")
                 execution = self.authority._owner(subject, payload)
+                if self.authority.assigned_launch is not None:
+                    self.authority.assigned_launch.require_active_target(
+                        execution["id"], payload["target_admission_id"]
+                    )
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "prompt_runtime_unavailable")
                 replay = self.authority._replay(subject, "execution.prompt.reply", key, payload)
@@ -339,6 +415,10 @@ class NativePromptReplies:
             return result
 
     def _live(self, execution, prompt, reply):
+        if self.authority.assigned_launch is not None:
+            self.authority.assigned_launch.require_active_target(
+                execution["id"], prompt["target_id"]
+            )
         if (
             self.authority.native_commands is not None
             and self.authority.native_commands.terminal_pending(execution["id"])
@@ -584,6 +664,7 @@ class NativePromptReplies:
                     )
             if reply is not None:
                 self.answers.pop(reply["reply_id"], None)
+            self.displays.pop(prompt["prompt_id"], None)
             return dict(
                 recorded=True,
                 prompt_id=prompt["prompt_id"],

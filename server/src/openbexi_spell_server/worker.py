@@ -4,10 +4,12 @@ import argparse
 import ctypes
 import json
 from pathlib import Path
+import time
 import uuid
 import sys
 
-from .contracts import Fault, decode, exact
+from .contracts import Fault, decode, exact, fingerprint
+from .preflight import canonical_uuid
 from .snapshots import verify_directory
 from .transport import Route, tls_context
 
@@ -93,6 +95,69 @@ def preflight(config, *, details=False):
     ):
         raise Fault(403, "worker_receipt_mismatch")
     return (receipt, challenge) if details else receipt
+
+
+def wait_for_assignment(config, readonly_tree):
+    """Poll a fixed Context as one static worker, then accept one private delivery."""
+    fields = {
+        "ca",
+        "certificate",
+        "key",
+        "context_url",
+        "context_fingerprint",
+        "context_id",
+        "worker_slot",
+        "worker_incarnation",
+    }
+    exact(config, fields | {"runtime_image", "snapshots"})
+    image = config["runtime_image"]
+    if not isinstance(image, str) or not image.startswith("sha256:"):
+        raise ValueError("An exact native worker image is required")
+    fingerprint(image[7:])
+    snapshots = config["snapshots"]
+    if type(snapshots) is not dict or not 1 <= len(snapshots) <= 64:
+        raise ValueError("One to 64 immutable source mounts are required")
+    for checksum, directory in snapshots.items():
+        fingerprint(checksum)
+        if not isinstance(directory, str) or not Path(directory).is_absolute():
+            raise ValueError("A configured absolute source mount is required")
+    route = Route(
+        config["context_url"],
+        config["context_fingerprint"],
+        tls_context(config["ca"], config["certificate"], config["key"]),
+    )
+    schema = "openbexi.worker-assignment/1"
+    scope = {"schema": schema, "context_id": config["context_id"]}
+    previous = None
+    while True:
+        reply = route.call(scope, path="/v1/worker/assignment", schema=schema)
+        assignment = exact(reply, {"assignment"})["assignment"]
+        if assignment is None or assignment == previous:
+            time.sleep(0.25)
+            continue
+        exact(assignment, {"execution_id", "preparation_id", "source_sha256", "runtime_image"})
+        execution_id = canonical_uuid(assignment["execution_id"])
+        preparation_id = canonical_uuid(assignment["preparation_id"])
+        checksum = fingerprint(assignment["source_sha256"])
+        if assignment["runtime_image"] != image or checksum not in snapshots:
+            raise Fault(403, "worker_image_or_snapshot_unavailable")
+        worker = {name: config[name] for name in fields}
+        worker.update(execution_id=execution_id, snapshot_directory=snapshots[checksum])
+        readonly_tree(worker["snapshot_directory"])
+        verified = preflight(worker, details=True)
+        if verified[0]["source_sha256"] != checksum:
+            raise Fault(403, "worker_assignment_source_mismatch")
+        previous = assignment
+        # Only an explicit empty delivery permits another poll. Lost transport
+        # or acceptance receipts terminate this worker without a fresh attempt.
+        until = time.monotonic() + 25
+        delivery = {**scope, "execution_id": execution_id, "preparation_id": preparation_id}
+        while time.monotonic() < until:
+            reply = route.call(delivery, path="/v1/worker/start-delivery", schema=schema)
+            grant = exact(reply, {"grant"})["grant"]
+            if grant is not None:
+                return worker, grant, verified
+            time.sleep(0.2)
 
 
 def main():

@@ -11,7 +11,7 @@ from pathlib import Path
 NAMESPACE = "openbexi-v08"
 ROLES = {"context-a": 9441, "context-b": 9442, "listener": 9444, "gateway": 9443, "dss": 8085}
 CONTEXTS = ("context-a", "context-b")
-AUTHORITY_IMAGE = "openbexi-spell-server:0.8.0rc1-prelaunch"
+AUTHORITY_IMAGE = "openbexi-spell-server:0.8.0-prelaunch"
 DSS_IMAGE = "openbexi-spell-plugin-dss:0.1.0"
 
 
@@ -45,7 +45,7 @@ def deployment(role, port):
         "image": image,
         "imagePullPolicy": "IfNotPresent",
         "args": (
-            ["--port", "8085", "--database", "/var/lib/dss/dss.sqlite"]
+            ["--http-listen", "0.0.0.0", "--port", "8085", "--database", "/var/lib/dss/dss.sqlite"]
             if is_dss else [("context" if is_context else role), "--config", "/run/private/config.json"]
         ),
         "ports": [{"name": "https" if not is_dss else "http", "containerPort": port}],

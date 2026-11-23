@@ -1,0 +1,238 @@
+{
+  "schema": "openbexi.v08.staged-live-family/1",
+  "status": "PASS",
+  "scope": "Staged assigned host-epoch profile, two native Executors and one background thread; three independent Chromium identities, two live transfers and a same-owner rebind.",
+  "execution": "18a75cf3-06b9-4932-85f0-599aefbf3e02",
+  "immutable_worker": "sha256:f58b6dc340510c617cbdcd90ea69d665a553608ff2eab4e537ca37dedf32a986",
+  "service_image": "sha256:d2d1d977f7d26ea11c2d9bf4eff2bad2af6cb2ce723f2ebc0cd7adb3ec9dc450",
+  "source_snapshot": "96b46681ef98f21365b638e5934515d6ebcdee33302e45ac0511c6a064befa1a",
+  "browser": "158.0.8127.18",
+  "observations": [
+    {
+      "name": "Original root, native child and background are running",
+      "time": "2026-11-23T01:53:41.094Z"
+    },
+    {
+      "name": "Independently proven live A to B transfer",
+      "time": "2026-11-23T01:53:48.473Z",
+      "owner": "bob",
+      "epoch": 2,
+      "generation": 2,
+      "denied_stale_command_status": 403,
+      "barrier": "ac1ea699-9fb9-4257-8f7b-0dfded61f0ca"
+    },
+    {
+      "name": "Independently proven live B to A transfer",
+      "time": "2026-11-23T01:53:54.671Z",
+      "owner": "alice",
+      "epoch": 3,
+      "generation": 3,
+      "denied_stale_command_status": 403,
+      "barrier": "310c2d7d-ed72-4b6f-958a-b50f558c3605"
+    },
+    {
+      "name": "Disconnected owner reconnected with read-only observation",
+      "time": "2026-11-23T01:53:54.955Z"
+    },
+    {
+      "name": "Independently proven live same-owner reconnect",
+      "time": "2026-11-23T01:54:01.294Z",
+      "owner": "alice",
+      "epoch": 3,
+      "generation": 4,
+      "denied_stale_command_status": 403,
+      "barrier": "f3fe2b49-d747-4b47-a3b1-d226fed93420"
+    },
+    {
+      "name": "Observer saw original native procedure finish after two transfers and a reconnect",
+      "time": "2026-11-23T01:54:03.105Z"
+    }
+  ],
+  "kernel_observer": {
+    "isolated_pid_namespace": "Single previously bound worker",
+    "uid": 10003,
+    "capabilities": [],
+    "network": "none",
+    "readonly": true,
+    "original_pids": [
+      1,
+      7,
+      27,
+      44,
+      50,
+      90,
+      108,
+      159
+    ]
+  },
+  "rounds": [
+    {
+      "rotation": 1,
+      "barrier": "ac1ea699-9fb9-4257-8f7b-0dfded61f0ca",
+      "controller_operation": "transfer",
+      "proof": {
+        "provider": "docker-cgroup-freezer-pidfd/1",
+        "container_id": "b4456c1ead1769ee7ff4cee5acde99695d6212447a2bb93e7ccdf41452ae53b6",
+        "image": "sha256:f58b6dc340510c617cbdcd90ea69d665a553608ff2eab4e537ca37dedf32a986",
+        "paused": true,
+        "running": true,
+        "frozen": true,
+        "oom_killed": false,
+        "restart_count": 0,
+        "original_handles": 8,
+        "alive_handles": 8,
+        "member_bindings": [
+          "58b07951f2d602ebeabc3140b0ec544b03b309266251c744cdeed753dc0a7122",
+          "768e8c1bd6e2f46d9282ffbbc05d477ed7b9bff9ddf8a45c90efb09e7050452f"
+        ],
+        "roster_hash": "88594eaae2957120754737a03b3c1ddc1c658da808b3588545fadc917daea33b"
+      },
+      "stopped": {
+        "root": 47,
+        "child": 44,
+        "background": 69
+      },
+      "still_stopped": {
+        "root": 47,
+        "child": 44,
+        "background": 69
+      },
+      "continued": {
+        "root": 48,
+        "child": 45,
+        "background": 71
+      },
+      "true_handles": [
+        1,
+        7,
+        27,
+        44,
+        50,
+        90,
+        108,
+        159
+      ]
+    },
+    {
+      "rotation": 2,
+      "barrier": "310c2d7d-ed72-4b6f-958a-b50f558c3605",
+      "controller_operation": "transfer",
+      "proof": {
+        "provider": "docker-cgroup-freezer-pidfd/1",
+        "container_id": "b4456c1ead1769ee7ff4cee5acde99695d6212447a2bb93e7ccdf41452ae53b6",
+        "image": "sha256:f58b6dc340510c617cbdcd90ea69d665a553608ff2eab4e537ca37dedf32a986",
+        "paused": true,
+        "running": true,
+        "frozen": true,
+        "oom_killed": false,
+        "restart_count": 0,
+        "original_handles": 8,
+        "alive_handles": 8,
+        "member_bindings": [
+          "58b07951f2d602ebeabc3140b0ec544b03b309266251c744cdeed753dc0a7122",
+          "768e8c1bd6e2f46d9282ffbbc05d477ed7b9bff9ddf8a45c90efb09e7050452f"
+        ],
+        "roster_hash": "88594eaae2957120754737a03b3c1ddc1c658da808b3588545fadc917daea33b"
+      },
+      "stopped": {
+        "root": 62,
+        "child": 60,
+        "background": 90
+      },
+      "still_stopped": {
+        "root": 62,
+        "child": 60,
+        "background": 90
+      },
+      "continued": {
+        "root": 63,
+        "child": 61,
+        "background": 92
+      },
+      "true_handles": [
+        1,
+        7,
+        27,
+        44,
+        50,
+        90,
+        108,
+        159
+      ]
+    },
+    {
+      "rotation": 3,
+      "barrier": "f3fe2b49-d747-4b47-a3b1-d226fed93420",
+      "controller_operation": "rebind",
+      "proof": {
+        "provider": "docker-cgroup-freezer-pidfd/1",
+        "container_id": "b4456c1ead1769ee7ff4cee5acde99695d6212447a2bb93e7ccdf41452ae53b6",
+        "image": "sha256:f58b6dc340510c617cbdcd90ea69d665a553608ff2eab4e537ca37dedf32a986",
+        "paused": true,
+        "running": true,
+        "frozen": true,
+        "oom_killed": false,
+        "restart_count": 0,
+        "original_handles": 8,
+        "alive_handles": 8,
+        "member_bindings": [
+          "58b07951f2d602ebeabc3140b0ec544b03b309266251c744cdeed753dc0a7122",
+          "768e8c1bd6e2f46d9282ffbbc05d477ed7b9bff9ddf8a45c90efb09e7050452f"
+        ],
+        "roster_hash": "88594eaae2957120754737a03b3c1ddc1c658da808b3588545fadc917daea33b"
+      },
+      "stopped": {
+        "root": 81,
+        "child": 80,
+        "background": 115
+      },
+      "still_stopped": {
+        "root": 81,
+        "child": 80,
+        "background": 115
+      },
+      "continued": {
+        "root": 82,
+        "child": 81,
+        "background": 117
+      },
+      "true_handles": [
+        1,
+        7,
+        27,
+        44,
+        50,
+        90,
+        108,
+        159
+      ]
+    }
+  ],
+  "native_result": {
+    "event": "native-finished",
+    "execution_id": "18a75cf3-06b9-4932-85f0-599aefbf3e02",
+    "native_status": "FINISHED",
+    "hold_retained": true,
+    "external_driver_effects_enabled": false,
+    "native_driver_methods": [],
+    "context_audit_events_enabled": true,
+    "runtime_enabled": false,
+    "native_children_admitted": 1,
+    "native_lifecycle_receipts_settled": true,
+    "notifications_seen": 1375,
+    "full_family_qualified": false
+  },
+  "receipts": [
+    {
+      "archive": "public-launch/livefamily02/kernel.json",
+      "sha256": "048fc3e079f7e6a919aa3657312b6222bc055c3c86ac9c2e02229f77b45e4136"
+    },
+    {
+      "archive": "public-launch/livefamily02/live-browser/result.json",
+      "sha256": "4abacd6bd8e8956eed5db2fcf6ee4dd343d9e15f56e0a111da68ebee197d13d2"
+    }
+  ],
+  "baseline": "public-advanced-996.json",
+  "publication_status": "Development-built service and worker, pending immutable final pair recheck.",
+  "archive_root": "F:/openbexi-builds/qualification-20261122"
+}

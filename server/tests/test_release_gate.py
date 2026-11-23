@@ -19,8 +19,10 @@ CANDIDATE, IDE = "a" * 40, "b" * 40
 @pytest.fixture
 def complete(tmp_path):
     (tmp_path / "docs/v0.8").mkdir(parents=True)
-    (tmp_path / "server").mkdir()
-    (tmp_path / "server/pyproject.toml").write_text('[project]\nversion="0.8.0"\n')
+    for folder in ("server", "host_plugin", "shared_plugin", "driver_plugin"):
+        (tmp_path / folder).mkdir()
+        (tmp_path / folder / "pyproject.toml").write_text('[project]\nversion="0.8.0"\n')
+    (tmp_path / "pyproject.toml").write_text('[project]\nversion="0.1.0"\n')
     manifest = dict(
         schema="openbexi.release-gates/1",
         version="0.8.0",
@@ -135,3 +137,10 @@ def test_later_evidence_commit_cannot_hide_runtime_or_companion_changes():
         ".github/workflows/release.yml",
     ):
         assert not gate.evidence_only(path)
+
+
+@pytest.mark.parametrize("folder", ["host_plugin", "shared_plugin", "driver_plugin", "."])
+def test_package_versions_must_match_the_delivered_pair(complete, folder):
+    root, _ = complete
+    (root / folder / "pyproject.toml").write_text('[project]\nversion="0.8.0rc1"\n')
+    assert not gate.assess(root, CANDIDATE, IDE)["eligible_for_publication"]

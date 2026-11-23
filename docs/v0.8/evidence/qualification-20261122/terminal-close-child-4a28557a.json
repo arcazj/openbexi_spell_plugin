@@ -1,0 +1,78 @@
+{
+  "status": "FAIL",
+  "spell_commit": "4a28557a4fe4dd21d09d85284f7aa014427086aa",
+  "workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45099071545",
+  "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45099071545/job/137445463766",
+  "artifact_sha256": "0df42c995f122a23ea908fdcd6cfb5905a8eee2faa7762cc0c9a2bc03e886353",
+  "artifact_name": "v08-native-launch-native-terminal-4a28557a4fe4dd21d09d85284f7aa014427086aa",
+  "failed_case": "close-child",
+  "container_image": "sha256:a4203b0a8997831f3d95cbe15eb3ba4d37be7a734116e284a6d2efde2e3fc6a9",
+  "docker_oom_killed": true,
+  "memory_limit_bytes": 805306368,
+  "exit_code": 1,
+  "original_earlier_cases": [
+    {
+      "case": "forced-loss",
+      "passed": true,
+      "native_status": "UNKNOWN"
+    },
+    {
+      "case": "close-wait",
+      "passed": true,
+      "native_status": "CLOSED"
+    }
+  ],
+  "native_worker_error": [
+    {
+      "type": "RuntimeError",
+      "message": "REQ_EXEC_INFO: Native reply timed out",
+      "stack": [
+        {
+          "file": "agent.py",
+          "line": 1283,
+          "function": "main"
+        },
+        {
+          "file": "agent.py",
+          "line": 1022,
+          "function": "run"
+        },
+        {
+          "file": "terminal_probe.py",
+          "line": 86,
+          "function": "run_terminal_probe"
+        },
+        {
+          "file": "control_journal.py",
+          "line": 101,
+          "function": "dispatch"
+        },
+        {
+          "file": "native_candidate.py",
+          "line": 481,
+          "function": "request"
+        },
+        {
+          "file": "native_candidate.py",
+          "line": 198,
+          "function": "exchange"
+        }
+      ]
+    }
+  ],
+  "hold_retained": true,
+  "qualifier_error": "RuntimeError: Native worker failed before native-terminal-active",
+  "prior_ten_family_peak_bytes": [
+    1140948992,
+    912080896,
+    912187392,
+    912125952,
+    912101376,
+    911011840,
+    911687680,
+    910901248,
+    910118912,
+    910221312
+  ],
+  "qualification": "The dedicated terminal fixture provisions its own 768 MiB cgroup. The kernel recorded an OOM kill during child startup, before the active-state oracle. The 2 GiB sustained-memory runs have a separate subject and budget. Neither can supply the other verdict."
+}

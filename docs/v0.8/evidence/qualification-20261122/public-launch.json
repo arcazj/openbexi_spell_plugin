@@ -1,0 +1,170 @@
+{
+  "schema": "openbexi.v08.public-native-launch/1",
+  "record_date": "2026-11-22",
+  "status": "PASS",
+  "scope": "One isolated admitted root per clean installed user-facing exercise; explicit Run, durable result and retained holding semantics.",
+  "artifacts": {
+    "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+    "ide_wheel_sha256": "397d46ae29e17814cceb27033f9f433367ac785c204cc890ec49af05017bace9",
+    "spell_commit": "c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+    "server_sha256": "b08492730bde6a79d267621335ef6346c9f2a732c7922c114c799ee6e4d10fb5",
+    "dss_sha256": "5aa950d5e9992db399129911459ba3c7542b33bfe001427a8744550c10ee7b61",
+    "native_base": "sha256:b971df8f0ea0fc1fa40ba04adbd735534d797463310d574b987c02c2070681a0",
+    "native_worker": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+    "worker_build_inputs_sha256": {
+      "openbexi_spell_server-0.8.0-py3-none-any.whl": "b08492730bde6a79d267621335ef6346c9f2a732c7922c114c799ee6e4d10fb5",
+      "openbexi_spell_dss-0.8.0-py3-none-any.whl": "5aa950d5e9992db399129911459ba3c7542b33bfe001427a8744550c10ee7b61",
+      "modules/agent.py": "356abc8adaead09a49eb35e44311998180ad5784712f606f8206beaa05fd9889",
+      "modules/native_candidate.py": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
+      "modules/children.py": "a2d3d04b6e00fab337af54806539ceee00964d69f3107dcd5f994e44a0469a4f",
+      "modules/child_gate.py": "ea2c836f9c2f58399736c09345e0efb6802b1035da0a66f5ef39351fc617ccbe",
+      "modules/control_journal.py": "ae7a2e9cf0ec49c2cf20735834dacc85583646fcf544bc4ca86d452cab790619",
+      "modules/prompt_replies.py": "3c3af5a035e8614905694aaeff640dcc07e6f12fbcd49d85ebf9a4965f82e518",
+      "modules/startup_diagnostics.py": "a854e782fdc8c81543815d521c3bde3c2f1138ce1257e76335e4a254ba9f1dfe"
+    }
+  },
+  "baseline": {
+    "ide_version": "1.2.1",
+    "spell_version": "0.8.0rc1",
+    "status": "FAIL",
+    "result": "The published panel reserved the immutable source; the execution stayed RESERVED and offered no operation to start the assigned native worker.",
+    "receipt_sha256": "ac1020c3b5f0daea907b46390b66f1e3579cf5d11eee76bc664519f83be6d9ef"
+  },
+  "regressions": {
+    "linux_public_and_existing_launch_preflight": 77,
+    "windows_client_qt": 66,
+    "linux_junit_sha256": "d6cc594eef01c8ada987a111a533920cada880e1f6bb72bc5d0a0b40d3962f5c",
+    "windows_junit_sha256": "e1f376f2f212541f0efaa606c6521d933e85909129cc0b1d7ab2203b125009ec",
+    "mypy": "Success: no issues found in 24 source files (mypy 1.18.2)"
+  },
+  "receipts": [
+    {
+      "surface": "installed native Windows Qt",
+      "execution_id": "96fece73-18b9-4248-8e5c-4e2dafc094ca",
+      "image": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+      "server_image": "sha256:6189fc60d20bcfd14ae40f10010fcd2cc0c79a9ac70da3118c05c8e2c5dd6583",
+      "source_revision": "8708496044323f1377cb233ce4011624cc427ef3",
+      "source_sha256": "5b985adabe12248f467f9fffa83847987c4f5cf3949cdeae39adb5d2ab3194c0",
+      "native_process_chain": [
+        {
+          "pid": 123,
+          "ppid": 7,
+          "executable": "SPELL-Listener"
+        },
+        {
+          "pid": 140,
+          "ppid": 123,
+          "executable": "SPELL-Context"
+        },
+        {
+          "pid": 203,
+          "ppid": 140,
+          "executable": "SPELL-Executor"
+        },
+        {
+          "pid": 7,
+          "ppid": 1,
+          "executable": "python3.13"
+        }
+      ],
+      "observed": [
+        "PAUSED",
+        "native-running",
+        "FINISHED"
+      ],
+      "native_status_for_observer": "FINISHED",
+      "hold_retained": true,
+      "spent_workers": 1,
+      "driver_event_count": 2,
+      "asrun": [
+        {
+          "name": "2026-11-23_010318_Executor_main#1.ASRUN",
+          "bytes": 483,
+          "sha256": "7bb86442fe782fb54b9b6d8e2b43f60ae07e7b75e287ab20c5601a2ae32040d8"
+        }
+      ],
+      "worker_exit": 0,
+      "role_containment": {
+        "readonly_root": true,
+        "dropped_capabilities": [
+          "ALL"
+        ],
+        "user": "10003:10003",
+        "no_new_privileges": true
+      },
+      "gui_sha256": "d27fb1f9f3ac1bbdee07fbba62c688eed4c30fe63b7558115be2ca2815a65d13",
+      "archive_relative": "public-launch/qtmatched/public-result.json",
+      "archive_sha256": "77c788eaab82151ead9eb4511dff6bd807e11f6ae27134af4d101796518315ce"
+    },
+    {
+      "surface": "packaged JetBrains Swing component with SDK and test project settings",
+      "execution_id": "9f73c5a0-e7d0-4c37-95ab-5f701c392d77",
+      "image": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+      "server_image": "sha256:6189fc60d20bcfd14ae40f10010fcd2cc0c79a9ac70da3118c05c8e2c5dd6583",
+      "source_revision": "8708496044323f1377cb233ce4011624cc427ef3",
+      "source_sha256": "5b985adabe12248f467f9fffa83847987c4f5cf3949cdeae39adb5d2ab3194c0",
+      "native_process_chain": [
+        {
+          "pid": 131,
+          "ppid": 8,
+          "executable": "SPELL-Listener"
+        },
+        {
+          "pid": 148,
+          "ppid": 131,
+          "executable": "SPELL-Context"
+        },
+        {
+          "pid": 212,
+          "ppid": 148,
+          "executable": "SPELL-Executor"
+        },
+        {
+          "pid": 8,
+          "ppid": 1,
+          "executable": "python3.13"
+        }
+      ],
+      "observed": [
+        "PAUSED",
+        "native-running",
+        "FINISHED"
+      ],
+      "native_status_for_observer": "FINISHED",
+      "hold_retained": true,
+      "spent_workers": 1,
+      "driver_event_count": 2,
+      "asrun": [
+        {
+          "name": "2026-11-23_010143_Executor_main#1.ASRUN",
+          "bytes": 483,
+          "sha256": "6bd82b6c88c6e8bf95821b80b98ee245b292ee53d8d7fdae1cc2ee485e0dd0a1"
+        }
+      ],
+      "worker_exit": 0,
+      "role_containment": {
+        "readonly_root": true,
+        "dropped_capabilities": [
+          "ALL"
+        ],
+        "user": "10003:10003",
+        "no_new_privileges": true
+      },
+      "gui_sha256": "4fa6f48a994b7401e8a73aa4c74bbfcb791cc13879fc462e03fa962afcdedf56",
+      "archive_relative": "public-launch/jbcandidate/public-result.json",
+      "archive_sha256": "a08781956e0f9d8960c27a4d4d30d6dc1a5cedf9bdceea9d87950dc9799c4a01"
+    }
+  ],
+  "method": "Installed owner and independent observer used the public TLS Gateway, Listener and Context. Worker privately consumed one grant, admitted its registered root, then forwarded the separately clicked owner RUN and waited for lifecycle receipts. The native root result was visible to both authenticated roles.",
+  "intermediate": {
+    "initial_windows_hostname_failure": "Docker published IPv4 loopback only. Explicit IPv4 preserved original transport deadlines.",
+    "old_worker_base_trial": "The first Windows trial completed the worker but did not display FINISHED. Added a private exact-root result report and retained the original failure records.",
+    "interim_archive_sha256": "95da4bb7929a1c56f9c00aec45a1dd78dc5b9cdd8ff7c452b2af77bd9578f0ac"
+  },
+  "archive_root": "F:/openbexi-builds/qualification-20261122",
+  "coverage_limits": [
+    "Context audit-event driver. The independent GENERIC DSS TC and telemetry gate is separate.",
+    "JetBrains qualified here is the installed SDK component; full product startup is recorded separately.",
+    "No release-wide, family quiescence or host settlement verdict follows from the root observation."
+  ]
+}

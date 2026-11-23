@@ -13,12 +13,18 @@ from openbexi_spell_server.contracts import canonical, digest, exact, fingerprin
 from openbexi_spell_server.family import FamilyAdmission
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.preflight import canonical_uuid
-from openbexi_spell_server.prompts import FLAGS, answer_digest, prompt_grant
+from openbexi_spell_server.prompts import (
+    FLAGS,
+    answer_digest,
+    prompt_display,
+    prompt_grant,
+)
 
 
 class NativePromptAgent:
-    def __init__(self, journal):
+    def __init__(self, journal, *, display=False):
         self.journal = journal
+        self.display = display
         self.original = journal.grant
         self.lock = threading.Lock()
         self.registrations = {}  # Retained tombstones; never reuse a prompt ID.
@@ -50,9 +56,9 @@ class NativePromptAgent:
     def declare(self, body):
         """Digest the actual native definition, received from its pinned process.
 
-        It is transient only: register() sends the digest and exact zero-timeout
-        classification to Context, never prompt text or answer values.
-        No caller-supplied digest can substitute for these native fields.
+        Retained workers register only a digest and timeout classification.
+        Assigned workers may also project bounded text and ordered choices to
+        the authenticated current controller. Both services keep these in memory.
         """
         exact(body, {"schema", "instance_id", "prompt_id", "definition"})
         if body["schema"] != "openbexi.native-prompt-declare/1":
@@ -85,9 +91,19 @@ class NativePromptAgent:
             native_timeout_microseconds=(
                 "0" if fields.get("TimeoutMicroseconds") == "0" else None
             ),
+            display=(
+                prompt_display(
+                    fields.get("Text"),
+                    fields["ExpectedValues"].split("\x04")
+                    if fields.get("ExpectedValues")
+                    else [],
+                )
+                if self.display
+                else None
+            ),
         )
 
-    def register(self, body, *, native_timeout_microseconds=None):
+    def register(self, body, *, native_timeout_microseconds=None, display=None):
         exact(body, {"schema", "instance_id", "prompt_id", "definition_sha256"})
         if body["schema"] != "openbexi.native-prompt-open/1":
             raise ValueError("Native prompt schema differs")
@@ -114,6 +130,9 @@ class NativePromptAgent:
                 instance_id=instance,
                 target_admission_id=target,
                 definition_sha256=body["definition_sha256"],
+                **(
+                    {"display": display} if display is not None and self.display else {}
+                ),
                 **(
                     {"native_timeout_microseconds": native_timeout_microseconds}
                     if native_timeout_microseconds is not None

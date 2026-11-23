@@ -116,6 +116,10 @@ class NativeOwnerCommands:
         self.authority._require(owner, *permissions)
 
     def _live(self, command, execution):
+        if self.authority.assigned_launch is not None:
+            self.authority.assigned_launch.require_active_target(
+                execution["id"], command["target_id"]
+            )
         self._permissions(command["owner"], command["command"])
         self.authority._session(command["owner"], command["connection_id"])
         if (
@@ -179,6 +183,10 @@ class NativeOwnerCommands:
             with self.store.transaction():
                 self._permissions(subject, payload["command"])
                 execution = self.authority._owner(subject, payload)
+                if self.authority.assigned_launch is not None:
+                    self.authority.assigned_launch.require_active_target(
+                        execution["id"], payload["target_admission_id"]
+                    )
                 if execution["lifecycle"] != "STARTING":
                     raise Fault(403, "owner_command_runtime_unavailable")
                 if payload["command"] not in {"CMD_ABORT", "CMD_CLOSE"} and self.terminal_pending(

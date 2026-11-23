@@ -2,6 +2,105 @@
 
 # Retained one-shot native launch profile
 
+## Starting an assigned worker from the desktop
+
+The v1.2.2 server panel can start a new approved native procedure in a Context
+configured with the v0.8.0 assigned-worker profile. Select the procedure, click
+**Reserve**, select its execution row, then click **Start native**. The panel
+checks for registration of the root Executor. **Run / Continue** sends a
+separate command using the controller proof held by that panel.
+
+The **Native result** column displays `FINISHED`, `ABORTED` or `ERROR` after
+the consumed worker reports the terminal state it observed for the registered root
+Executor. Context persists that observation and fences further commands to that
+root. The execution reservation and worker incarnation stay held until independent
+host settlement. A missing result remains unconfirmed.
+
+Configure the Context with `worker_launch: "assigned-single-use"`,
+`native_children: "admission-only"`, `native_controls: "run-journal"` and
+`native_commands: "owner-queue"`. Set its existing `approved_sources`,
+`worker_slots` and `worker_credentials` to the approved immutable commit, exact
+worker image, slot incarnation and that worker's private certificate pin. Add
+the Context ID to the Listener's `native_command_contexts` and
+`native_launch_contexts`. The gateway uses its existing authenticated client
+and Listener routes. Each controller needs both start and control permissions.
+
+Build the private worker offline with
+`python scripts/build_v08_assigned_worker.py --native-image <image-digest> --wheel-directory <directory> --server-sha256 <digest> --dss-sha256 <digest> --receipt <output.json>`.
+The native input comes from the full-family native profile builder. Use the
+recorded worker image ID in the catalog and worker configuration. Provision one
+worker per static slot with its own private network route to Context, immutable
+source mounts, read-only root, unprivileged UID 10003, private temporary workspace
+and durable ASRUN volume as described in [the audit storage profile](DURABLE_AUDIT_STORAGE.md).
+Mount its role-specific private configuration at `/credentials/config.json`.
+
+```json
+{
+  "assigned": {
+    "ca": "/credentials/ca.pem",
+    "certificate": "/credentials/tls.pem",
+    "key": "/credentials/tls.key",
+    "context_url": "https://context:9443",
+    "context_fingerprint": "<64 lowercase hexadecimal characters>",
+    "context_id": "A",
+    "worker_slot": "one",
+    "worker_incarnation": "instance-1",
+    "runtime_image": "sha256:<worker image digest>",
+    "snapshots": {"<approved source manifest digest>": "/source"}
+  },
+  "native_prompts": true
+}
+```
+
+An assigned prompt-enabled worker sends the original question and its ordered
+options privately to Context. Context retains them in memory while that prompt
+is open. The current controller can choose **View prompt** in the browser
+workspace or the installed Qt panel, then send an answer or explicitly cancel
+the native prompt. **Dismiss** closes the dialog without responding. Context
+rechecks the controller, original member, definition digest, current generation
+and delivery state. A queued reply removes that answer opportunity. Restart or
+an uncertain delivery requires operator reconciliation. Audit and replay contain
+identifiers and outcomes. The question, choices and answer remain private.
+
+### Live controller transfer on one Linux host
+
+Set the assigned worker's `native_handoff` to `host-freeze-epoch` alongside
+`native_prompts: true` to enable live transfer. Configure Context with
+`native_pause: "host-freeze-candidate"`, the independently pinned
+`single-host-terminal-candidate` settlement host, and the native child, command
+and prompt journals. Mount a separate operator-controlled directory read-only at
+`/control` in the worker. The Gateway and worker have no Docker management
+socket or operator credentials.
+
+The operator binds the immutable, originally created container ID and image to
+the exact Context incarnation and reservation before the assigned start. It
+writes the admitted start request UUID to `/control/handoff-epoch`. When the
+controller accepts a claim, the operator atomically writes the same current UUID
+to `handoff-prepare` and verifies that the worker drained its outstanding RPCs.
+The operator then independently freezes the original cgroup. Its private
+handoff completion requires the kernel's completed freeze, the matching sealed
+member roster and original living process handles. The new controller explicitly
+rebinds and requests **Run / Continue**. Only after a matching private resume
+receipt does the operator atomically install the new runtime epoch and unfreeze
+that original worker. A lost one-shot activation keeps authority fenced.
+
+The operator can witness a single Docker Desktop worker in a separate
+capability-free, read-only container using the bound worker's PID namespace and
+read-only cgroup-v2 observations. It holds original pidfds across every transfer
+and verifies Executor executable hashes and kernel birth ticks. The authority
+retains ownership and capacity for recovery if any required proof is absent.
+
+When native prompts are enabled, provision the prompt-enabled native build and
+configure Context with `native_prompts: "owner-reply-candidate"`. Each worker
+accepts a configured source digest and independently checks the read-only tree.
+Only the original controller can then admit the start. Context gives the
+assigned worker one private delivery and persists its consumption. A lost
+admission, delivery or consumption reply leaves the reservation held for
+operator reconciliation. Refresh displays the current public state. Start and
+Run are separate operator actions, including after any reconnect.
+
+## Operator-provisioned retained profile
+
 The retained profile, introduced in `0.8.0.dev8`, is an explicitly enabled `worker_launch: "retained-single-use"`
 Context profile. Default services and the desktop gateway/Listener do not expose
 native execution. This profile is not a qualified v0.8 release or a general

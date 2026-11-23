@@ -44,9 +44,9 @@ def main(*, driver_factory=None):
             "host_settlement",
         }
         if args.role == "context"
-        else {"native_command_contexts"}
+        else {"native_command_contexts", "native_launch_contexts"}
         if args.role == "listener"
-        else set()
+        else {"browser_origin"}
     )
     if args.role == "context" and driver_factory is not None:
         optional.add("native_driver")
@@ -110,6 +110,7 @@ def main(*, driver_factory=None):
                 config["scopes"],
                 routes,
                 native_command_contexts=config.get("native_command_contexts"),
+                native_launch_contexts=config.get("native_launch_contexts"),
             )
         server = Server(
             (config["bind"], config["port"]),
@@ -117,6 +118,7 @@ def main(*, driver_factory=None):
             server_tls,
             allowed_hosts=config["allowed_hosts"],
             max_handlers=config["max_handlers"],
+            browser_origin=config.get("browser_origin"),
         )
         for sig in (signal.SIGTERM, signal.SIGINT):
             signal.signal(

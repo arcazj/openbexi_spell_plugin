@@ -46,6 +46,8 @@ class Route:
             ("/v1/rpc", "openbexi.context/1"),
             ("/v1/worker/challenge", "openbexi.worker/1"),
             ("/v1/worker/verify", "openbexi.worker/1"),
+            ("/v1/worker/assignment", "openbexi.worker-assignment/1"),
+            ("/v1/worker/start-delivery", "openbexi.worker-assignment/1"),
             ("/v1/worker/consume", "openbexi.worker/2"),
             ("/v1/worker/check", "openbexi.worker/2"),
             ("/v1/worker/event", "openbexi.worker/2"),
@@ -60,6 +62,7 @@ class Route:
             ("/v1/worker/control-forward", "openbexi.worker/2"),
             ("/v1/worker/control-consume", "openbexi.worker/2"),
             ("/v1/worker/member-bind", "openbexi.worker/2"),
+            ("/v1/worker/root-result", "openbexi.worker/2"),
             ("/v1/worker/prompt-open", "openbexi.worker/2"),
             ("/v1/worker/prompt-poll", "openbexi.worker/2"),
             ("/v1/worker/prompt-forward", "openbexi.worker/2"),
@@ -156,7 +159,9 @@ class Server(ThreadingMixIn, HTTPServer):
     block_on_close = False
     request_queue_size = 64
 
-    def __init__(self, address, application, tls, *, allowed_hosts=None, max_handlers=16):
+    def __init__(
+        self, address, application, tls, *, allowed_hosts=None, max_handlers=16, browser_origin=None
+    ):
         if type(max_handlers) is not int or not 1 <= max_handlers <= 64:
             raise ValueError("Invalid handler bound")
         self.application, self.tls = application, tls
@@ -166,6 +171,17 @@ class Server(ThreadingMixIn, HTTPServer):
         self.allowed_hosts = set(allowed_hosts or [f"{address[0]}:{port}"])
         if address[0] in ("127.0.0.1", "localhost") and not allowed_hosts:
             self.allowed_hosts.add(f"localhost:{port}")
+        self.browser = None
+        if browser_origin is not None:
+            from .browser import BrowserWorkspace
+
+            try:
+                self.browser = BrowserWorkspace(
+                    application, browser_origin, self.allowed_hosts, max_handlers
+                )
+            except BaseException:
+                self.server_close()
+                raise
 
     def process_request(self, request, client_address):
         if not self.admission.acquire(blocking=False):
@@ -249,7 +265,12 @@ class Handler(BaseHTTPRequestHandler):
                 raise Fault(400, "host_denied")
             if sum(len(k) + len(v) for k, v in self.headers.items()) > 8192:
                 raise Fault(413, "headers_too_large")
-            if any(self.headers.get_all(k) for k in ("Origin", "Cookie", "Authorization")):
+            workspace = self.server.browser if self.path.startswith("/workspace/") else None
+            if workspace is not None:
+                workspace.validate_request(self)
+            if any(self.headers.get_all(k) for k in ("Cookie", "Authorization")) or (
+                workspace is None and self.headers.get_all("Origin")
+            ):
                 raise Fault(403, "browser_session_not_available")
             if any(k.lower().startswith("x-forwarded-") for k in self.headers):
                 raise Fault(403, "forwarded_identity_denied")
@@ -281,6 +302,9 @@ class Handler(BaseHTTPRequestHandler):
                 if len(raw) != int(lengths[0]):
                     raise Fault(400, "truncated_body")
                 body = decode(raw)
+            if workspace is not None:
+                workspace.handle(self, identity, body)
+                return
             result = self.server.application.handle(
                 self.command, self.path, self.headers, body, identity=identity
             )

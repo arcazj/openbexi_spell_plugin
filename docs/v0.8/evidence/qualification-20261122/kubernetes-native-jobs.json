@@ -1,0 +1,859 @@
+{
+  "status": "PASS",
+  "scope": "Local three-node Linux KinD with real native Jobs, installed Windows public mTLS clients, node-local persistent volumes, and verified service-loss and worker fencing.",
+  "products": {
+    "ide": {
+      "commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "manifest_sha256": "4a725971bad76a8ba0df89a98eb8ac49f5fc1414ec0c14edc27a2a78e6151b58"
+    },
+    "spell": {
+      "commit": "655f5b5a2de31bd4f8cba44794a1798342986512",
+      "manifest_sha256": "65a86e47751dade56b71c7a14c66004c2155ae215032904d25186888aa965fbf"
+    }
+  },
+  "windows_installed_server_wheel_sha256": "9b063f0371354245c953b21df2d50d3359f431b2b276956627958f32ea5e3f3c",
+  "cluster": {
+    "started": "2026-11-23T01:55:44.495345+00:00",
+    "name": "obxqual2211",
+    "nodes_image": "kindest/node:v1.32.2@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f",
+    "passed": true,
+    "phase": "ready",
+    "kind_version": "kind v0.27.0 go1.23.6 windows/amd64",
+    "nodes": [
+      {
+        "name": "obxqual2211-control-plane",
+        "uid": "e219e6f7-33d0-4b33-8e03-e4aee1681230",
+        "version": "v1.32.2"
+      },
+      {
+        "name": "obxqual2211-worker",
+        "uid": "328e3dc5-2cea-469b-ab5a-d8da0180dcf6",
+        "version": "v1.32.2"
+      },
+      {
+        "name": "obxqual2211-worker2",
+        "uid": "c8197e4f-6150-4e08-b636-d01123767c29",
+        "version": "v1.32.2"
+      }
+    ],
+    "calico_sha256": {
+      "operator-crds": "fde094dbdfab65687542c8fbde1fd4168bb52657166ea84af75b22544dff1d2e",
+      "tigera-operator": "06d2fec21cb7946c71e910086449e5a1e431e3898cf21e8c874c83ee864956b8",
+      "custom-resources": "f7cd142773609fc7f830b96d8f29bd1b5f05cdc5293324992d8524b54c09c717"
+    }
+  },
+  "frozen_linux_image_config_sha256": {
+    "gateway": "sha256:fdd6bf0f754c414d846b7199b1bddeaf4cea5d70a899ba7878a3de4bc6e80ac8",
+    "core": "sha256:1426fbd0b032ebe86f128474f27ac20e2b12200a3c544a7467c5b8f05e98100d",
+    "worker": "sha256:a545c9617133bfc8034f385ef0ffb71c5eb2cfc9a74fd078838ee33bdf6753d4"
+  },
+  "kubelet_oci_manifest_refs": {
+    "gateway": "docker.io/library/openbexi-qualification-gateway@sha256:9c640b614287757e6f6146a2e724f17580da59c7aecb5ccbdcf58c0aa218eb3e",
+    "core": "docker.io/library/openbexi-qualification-core@sha256:422bed909f46fcc1ce7132b52d64a782bee4e59ec3f6f57da962d84c67fc78eb",
+    "worker": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb"
+  },
+  "full_native_run": {
+    "jobs": 10,
+    "observed_simultaneous_running_seconds": 11.715489,
+    "observers": 20,
+    "distinct_observer_certificates": 20,
+    "observer_denied_control": {
+      "status": 403,
+      "code": "request_denied"
+    },
+    "reservation_race": {
+      "public_reservations": 1,
+      "owner_response_count": 1,
+      "response_counts": {
+        "409/request_denied": 99,
+        "200/": 1
+      },
+      "public_execution_ids": [
+        "a27f84e8-910a-4f74-a072-5ba8904a529d"
+      ],
+      "start_spread_seconds": 0.01695
+    },
+    "ten_active_views": 20,
+    "ten_terminal_views": 20,
+    "jobs_by_node": {
+      "obxqual2211-worker": 5,
+      "obxqual2211-worker2": 5
+    },
+    "jobs_by_uid": [
+      {
+        "worker": "worker-01",
+        "pod": "worker-01-jc8p2",
+        "pod_uid": "fe0df1ad-7e69-4621-a2d6-8ec00b114bcb",
+        "job_uid": "50a59785-2ebb-4776-82c6-5aad3f81cc56",
+        "node": "obxqual2211-worker",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "3bdf5428aac3b49a6b241ca4589408b3f3df0e5f4062ca258aa9c64448236895",
+        "native_id": "a27f84e8-910a-4f74-a072-5ba8904a529d",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 285,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 302,
+            "ppid": 285
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 368,
+            "ppid": 302
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021947_Executor_procedure-01#1.ASRUN",
+            "bytes": 454,
+            "sha256": "7cb9cc7dd255973428491c5a3081146f22f13a2d6a7f749b2eaf2e501050c4ab"
+          }
+        ]
+      },
+      {
+        "worker": "worker-02",
+        "pod": "worker-02-xnsjv",
+        "pod_uid": "93d1f9a2-6029-40cd-8be7-db070ef03969",
+        "job_uid": "2c462b95-f654-47bd-86fd-d1ba9d7ce61a",
+        "node": "obxqual2211-worker2",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "3c4cfd0c73698b55408048c5852e5ae10913fee2316b68f9055eb2cddb31cd47",
+        "native_id": "7522cdf8-a96e-414b-ba80-95501355cbd0",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 271,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 288,
+            "ppid": 271
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 354,
+            "ppid": 288
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021947_Executor_procedure-02#1.ASRUN",
+            "bytes": 493,
+            "sha256": "b387481885656e19c4d110b314042a58603bd05e53bcbf1ff3bb485f25fd1b9a"
+          }
+        ]
+      },
+      {
+        "worker": "worker-03",
+        "pod": "worker-03-j7scs",
+        "pod_uid": "11c4de42-4428-47e8-99cf-9052fdc892f4",
+        "job_uid": "3a2d133c-e35a-4447-b590-067cfab309cc",
+        "node": "obxqual2211-worker",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "b5969e1ced28ca58ca81ca143b00385da0f2ea10f5a8b6b69b778f2cc53deb18",
+        "native_id": "64e7b4a0-e47a-4829-98c0-84a992a39a03",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 278,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 297,
+            "ppid": 278
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 361,
+            "ppid": 297
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021947_Executor_procedure-03#1.ASRUN",
+            "bytes": 493,
+            "sha256": "a26a796cfbf3d2a6c1b24bdaaef18e052b4447646be6897964b55ca062973e86"
+          }
+        ]
+      },
+      {
+        "worker": "worker-04",
+        "pod": "worker-04-hnsxn",
+        "pod_uid": "c0918307-410f-4593-abfe-8c57c9a0429b",
+        "job_uid": "6eb1d1ee-d518-4c16-a102-bd862662eb64",
+        "node": "obxqual2211-worker2",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "d110276252f54a63ac4e08609705a83d027d97bd3d58cee91c13f85d650e89f8",
+        "native_id": "9ac956b6-c3a1-4b35-93ed-c81c6d315bc1",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 273,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 297,
+            "ppid": 273
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 363,
+            "ppid": 297
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-04#1.ASRUN",
+            "bytes": 493,
+            "sha256": "3b026423b28ec28d8fcd000228e24bf9d7f68590f5cab680e9c438521dfcfd9c"
+          }
+        ]
+      },
+      {
+        "worker": "worker-05",
+        "pod": "worker-05-2mxv4",
+        "pod_uid": "a6544288-fd7b-4d31-b20e-a508ab7eb53f",
+        "job_uid": "8b459f82-9c59-4904-96e3-3f4c9511e530",
+        "node": "obxqual2211-worker",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "77a8abffd1be44a866a7c55793f8974631884cd2517a0bee198cc44f0d4cb380",
+        "native_id": "bad28092-7360-4d64-a68f-30565bb769b2",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 260,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 284,
+            "ppid": 260
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 350,
+            "ppid": 284
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-05#1.ASRUN",
+            "bytes": 493,
+            "sha256": "b92587e7d71f6325b5300b0c52fa652dbff0ca04afb2771c7b3053eb33e50e20"
+          }
+        ]
+      },
+      {
+        "worker": "worker-06",
+        "pod": "worker-06-2lnfd",
+        "pod_uid": "a8ed4c5e-6785-4b18-9f1a-0864057add21",
+        "job_uid": "64e1316d-0694-4ea6-91ab-1d5b2dd21152",
+        "node": "obxqual2211-worker2",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "39d3732ebac444978f502b16cd609d5295b3fdf845f7aefe48c33bf44ecda8ed",
+        "native_id": "e472faa2-43b3-4706-b796-bb4cec78bf10",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 254,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 278,
+            "ppid": 254
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 344,
+            "ppid": 278
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-06#1.ASRUN",
+            "bytes": 493,
+            "sha256": "ffa48f959e0f5a95bcc0b28a01cbd5967f852a3211667f24ed43ac54d50c7e35"
+          }
+        ]
+      },
+      {
+        "worker": "worker-07",
+        "pod": "worker-07-pm7wc",
+        "pod_uid": "96813ea2-f917-4821-8059-d66ab09b1bca",
+        "job_uid": "a2fe3eb9-29ca-42d1-a4a6-268b147b2dc5",
+        "node": "obxqual2211-worker",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "c6c230b17d5cde55ccc3490096da7a656793cf9192fc6ca9ef08636a5b8d2da2",
+        "native_id": "143925c9-0bb4-48fb-8bcf-e7a4c02cb9fa",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 250,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 274,
+            "ppid": 250
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 336,
+            "ppid": 274
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-07#1.ASRUN",
+            "bytes": 493,
+            "sha256": "534454ea3724a9651e518ddd15c42ce1e5e124cf4a3f41c54d11f4e14c7b4d6e"
+          }
+        ]
+      },
+      {
+        "worker": "worker-08",
+        "pod": "worker-08-wzw8x",
+        "pod_uid": "8e6a0e46-de74-4061-86cb-2e07da4e084a",
+        "job_uid": "58bc7e1f-da39-49c4-a154-b7674239753f",
+        "node": "obxqual2211-worker2",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "b26a939e8ac27557397cf7d8f2e06c816606c472cf72ba4f88d554841cd7bde4",
+        "native_id": "3ea565a8-dd1f-42d3-9c34-cb0cad7572c8",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 252,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 271,
+            "ppid": 252
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 334,
+            "ppid": 271
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-08#1.ASRUN",
+            "bytes": 493,
+            "sha256": "047062fcf237fb93340ea794c2915b1d3ab9fd0403f69080e5f937f4eac48b3c"
+          }
+        ]
+      },
+      {
+        "worker": "worker-09",
+        "pod": "worker-09-nr8tl",
+        "pod_uid": "f6c66a80-5fdc-43d4-bfa8-66486aaaf0a2",
+        "job_uid": "29535476-172f-4d0c-9ece-9ce48b732d30",
+        "node": "obxqual2211-worker",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "d628ba4ffc54804b1a41e0b5a1cbef0f3edd42d66e4b98b2854cc157c2c9fa49",
+        "native_id": "7fb7f6e9-38c1-48fa-b558-72c2da524ca2",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 242,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 259,
+            "ppid": 242
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 326,
+            "ppid": 259
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-09#1.ASRUN",
+            "bytes": 493,
+            "sha256": "ee364c4d897414207aefcbed60842cccb326dcf0becd4ff7c9b0303f62eed36a"
+          }
+        ]
+      },
+      {
+        "worker": "worker-10",
+        "pod": "worker-10-gprv2",
+        "pod_uid": "c50fe4be-69ed-494a-aeef-b7338ce35420",
+        "job_uid": "fb8f60c5-cb32-40d8-b5f3-790cdb2f2c29",
+        "node": "obxqual2211-worker2",
+        "kubelet_image_id": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb",
+        "exit": 0,
+        "restarts": 0,
+        "log_sha256": "e7a39e8eaefaeaa3529620cdcfc7b2c5367a632cbb07bfb266ced50e71b43e9c",
+        "native_id": "53b30b2b-2274-40f3-8ed2-4311f6566ca0",
+        "native_processes": [
+          {
+            "executable": "python3.13",
+            "pid": 1,
+            "ppid": 0
+          },
+          {
+            "executable": "SPELL-Listener",
+            "pid": 241,
+            "ppid": 1
+          },
+          {
+            "executable": "SPELL-Context",
+            "pid": 265,
+            "ppid": 241
+          },
+          {
+            "executable": "SPELL-Executor",
+            "pid": 329,
+            "ppid": 265
+          }
+        ],
+        "asrun": [
+          {
+            "name": "2026-11-23_021948_Executor_procedure-10#1.ASRUN",
+            "bytes": 493,
+            "sha256": "6c1674957c8323b0799c42c07b12b946b1680e1bc65204aaf43a15801b2e91e5"
+          }
+        ]
+      }
+    ],
+    "original_contiguous_audit_events": 174,
+    "original_ordered_audit_sha256": "f689bcfdff7b5df22c953177327df81b4138b55ab7ec1e2df3781e65b096e0a4",
+    "database_integrity": "ok",
+    "retained_holds": 10,
+    "spent_incarnations": 10,
+    "native_results": [
+      {
+        "execution_id": "143925c9-0bb4-48fb-8bcf-e7a4c02cb9fa",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "3ea565a8-dd1f-42d3-9c34-cb0cad7572c8",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "53b30b2b-2274-40f3-8ed2-4311f6566ca0",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "64e7b4a0-e47a-4829-98c0-84a992a39a03",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "7522cdf8-a96e-414b-ba80-95501355cbd0",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "7fb7f6e9-38c1-48fa-b558-72c2da524ca2",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "9ac956b6-c3a1-4b35-93ed-c81c6d315bc1",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "a27f84e8-910a-4f74-a072-5ba8904a529d",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "bad28092-7360-4d64-a68f-30565bb769b2",
+        "native_status": "FINISHED"
+      },
+      {
+        "execution_id": "e472faa2-43b3-4706-b796-bb4cec78bf10",
+        "native_status": "FINISHED"
+      }
+    ],
+    "durable_bound_claims": {
+      "audit-worker-01": {
+        "uid": "8d222cd6-b750-4b23-990c-cfba420d3d79",
+        "pv": "pvc-8d222cd6-b750-4b23-990c-cfba420d3d79",
+        "phase": "Bound"
+      },
+      "audit-worker-02": {
+        "uid": "59a19b5b-01a7-44bb-839e-750c304ed4de",
+        "pv": "pvc-59a19b5b-01a7-44bb-839e-750c304ed4de",
+        "phase": "Bound"
+      },
+      "audit-worker-03": {
+        "uid": "624e0c7a-0608-4096-b487-17622a5b1efb",
+        "pv": "pvc-624e0c7a-0608-4096-b487-17622a5b1efb",
+        "phase": "Bound"
+      },
+      "audit-worker-04": {
+        "uid": "85889fc5-a60b-4b58-a2dd-ba248f10c418",
+        "pv": "pvc-85889fc5-a60b-4b58-a2dd-ba248f10c418",
+        "phase": "Bound"
+      },
+      "audit-worker-05": {
+        "uid": "260aa464-7b40-4849-ae8c-ab13d6aed6f8",
+        "pv": "pvc-260aa464-7b40-4849-ae8c-ab13d6aed6f8",
+        "phase": "Bound"
+      },
+      "audit-worker-06": {
+        "uid": "32a08f16-7777-4c51-8a47-e724b976324b",
+        "pv": "pvc-32a08f16-7777-4c51-8a47-e724b976324b",
+        "phase": "Bound"
+      },
+      "audit-worker-07": {
+        "uid": "0cbf64ec-0562-4e16-a092-38fbab50df86",
+        "pv": "pvc-0cbf64ec-0562-4e16-a092-38fbab50df86",
+        "phase": "Bound"
+      },
+      "audit-worker-08": {
+        "uid": "99abb84f-22e9-460a-b912-8025f5d2a1e5",
+        "pv": "pvc-99abb84f-22e9-460a-b912-8025f5d2a1e5",
+        "phase": "Bound"
+      },
+      "audit-worker-09": {
+        "uid": "15137f50-fed9-4379-918a-d70be13c42ec",
+        "pv": "pvc-15137f50-fed9-4379-918a-d70be13c42ec",
+        "phase": "Bound"
+      },
+      "audit-worker-10": {
+        "uid": "d1102e4d-0434-4def-a287-1cde1c0d9a15",
+        "pv": "pvc-d1102e4d-0434-4def-a287-1cde1c0d9a15",
+        "phase": "Bound"
+      },
+      "context-state": {
+        "uid": "455be652-2bec-44e4-be17-b8a683e28074",
+        "pv": "pvc-455be652-2bec-44e4-be17-b8a683e28074",
+        "phase": "Bound"
+      }
+    },
+    "audit_readback": "Two network-isolated nonroot operator Pods mounted the ten independent completed worker PVCs read-only and hashed their stored ASRUN files."
+  },
+  "one_public_native_start_from_100": {
+    "execution": {
+      "execution_id": "4ad855ee-cfc7-4bec-8f14-903385f0f83f",
+      "source_sha256": "eaba425cd3142f2a7d5b792020cb5dfccf0bd7e20cc9ca100ede298ec015d624"
+    },
+    "http": {
+      "409/request_denied": 99,
+      "200/ADMITTED": 1
+    },
+    "arrival_spread_ms": 18.963,
+    "native_ready": {
+      "execution_id": "4ad855ee-cfc7-4bec-8f14-903385f0f83f",
+      "native_status": "PAUSED",
+      "namespace_pid": 1
+    },
+    "actual_result": {
+      "id": "4ad855ee-cfc7-4bec-8f14-903385f0f83f",
+      "native_root_result": "FINISHED"
+    },
+    "job_uid": "25c2e2fa-2e7d-45c2-9152-99730cf0ab55",
+    "pod_uid": "be0c25f8-395e-4cb1-9070-aec44a178140",
+    "spent_incarnations": 1,
+    "native_members": 1,
+    "original_ordered_audit_sha256": "487ebc71c7a8aaa99dda2c58ffd0cecdd17fc85b7a82b243addeae11b9ccbbea",
+    "durable_asrun": [
+      {
+        "name": "2026-11-23_021729_Executor_procedure-01#1.ASRUN",
+        "bytes": 493,
+        "sha256": "cbc5340b0b697bb77eb2318d68af8c55857c7e8be082266322d6a196aac3cb05"
+      }
+    ]
+  },
+  "service_loss_and_fencing": {
+    "active_native": "2e79ad96-9ad6-4468-990e-cf22c581c98b",
+    "native_status_at_loss": "PAUSED",
+    "native_namespace_pid": 1,
+    "old_context": {
+      "name": "context-69c4c696db-nctr7",
+      "uid": "b8646bcd-8e06-4fad-a02d-641b79179046",
+      "node": "obxqual2211-worker",
+      "container_id": "db7db65a2d01a9b9a94ebe195428f8f7748e74ba53751e19e1cf131e1e63d721",
+      "image": "docker.io/library/openbexi-qualification-core@sha256:422bed909f46fcc1ce7132b52d64a782bee4e59ec3f6f57da962d84c67fc78eb"
+    },
+    "old_worker": {
+      "name": "worker-01-xpvk9",
+      "uid": "638fb6b4-1ebf-4656-9577-6e1d7cb2cd69",
+      "node": "obxqual2211-worker",
+      "container_id": "6cc3b68d1eca00de6ffe4b91a6036b62e87a9ba04a067bb1e7fe4370eab94e92",
+      "image": "docker.io/library/obx-compat-deps@sha256:781deafb0f3b8112fb3ff0428bb74f64e362c1bf168975777e5e954dcfc8a0eb"
+    },
+    "public_unavailability": {
+      "http": 503,
+      "code": "gateway_unavailable"
+    },
+    "old_context_runtime": {
+      "state": "removed",
+      "container_id": "db7db65a2d01a9b9a94ebe195428f8f7748e74ba53751e19e1cf131e1e63d721"
+    },
+    "old_worker_runtime": {
+      "state": "removed",
+      "container_id": "6cc3b68d1eca00de6ffe4b91a6036b62e87a9ba04a067bb1e7fe4370eab94e92"
+    },
+    "replacement_pod": {
+      "name": "context-69c4c696db-fl5bl",
+      "uid": "c8c3823d-0607-4b09-93c2-c622aa035e98",
+      "node": "obxqual2211-worker",
+      "container_id": "b4a26cb58e9c1c932fe97103050ce747d089e28893fa4f31b5b34399c5be54b1",
+      "image": "docker.io/library/openbexi-qualification-core@sha256:422bed909f46fcc1ce7132b52d64a782bee4e59ec3f6f57da962d84c67fc78eb"
+    },
+    "same_pvc_uid": "52e0fdf9-beb4-4995-a7a3-f7633cdd38df",
+    "same_pv": "pvc-52e0fdf9-beb4-4995-a7a3-f7633cdd38df",
+    "original_audit_count": 11,
+    "replacement_audit_count": 13,
+    "identical_original_prefix_sha256": "1bae3b9f1b1a51a0a5a0f1a6604e587027ebf2900d495094b3fe94cefa336c2d",
+    "incarnations": [
+      "35863cdc-5ac6-4ee5-8071-f47fa663a478",
+      "223849a5-a3f5-4374-8188-73639ad57364"
+    ],
+    "retained_holds": [
+      {
+        "procedure_id": "procedure-01",
+        "execution_id": "2e79ad96-9ad6-4468-990e-cf22c581c98b"
+      }
+    ],
+    "unchanged_pre_restart_proof": {
+      "http": 403,
+      "code": "request_denied"
+    },
+    "public_observer": {
+      "id": "2e79ad96-9ad6-4468-990e-cf22c581c98b",
+      "lifecycle": "RECOVERY_REQUIRED",
+      "control_state": "RECOVERY_REQUIRED",
+      "native_root_result": null
+    },
+    "running_worker_pods": 0
+  },
+  "permissions_and_storage": {
+    "protected_issuer": "Networkless separate issuer. Per-role immutable Secrets, separate immutable nonsecret Git/snapshot archives and 21 pinned public identities. Cases use separate PKI.",
+    "enforced_namespace": "Pod Security restricted v1.32; default deny before every workload; public NodePort via loopback-only TLS pass-through restricted by relay source IP.",
+    "tenant_runtime": "Nonroot UID 10003, read-only root and inputs, all capabilities dropped, no service-account token, no host path, network or PID namespace, no automatic Job retries.",
+    "worker_probe": {
+      "nodes": {
+        "context": "reachable",
+        "listener": "TimeoutError",
+        "gateway": "TimeoutError"
+      },
+      "uid": 10003,
+      "audit_owner": 10003,
+      "audit_mode": "0o700",
+      "identity_path": false
+    },
+    "tested_policy_names": [
+      "context-from-listener",
+      "context-from-worker",
+      "default-deny",
+      "dns-gateway",
+      "dns-listener",
+      "dns-worker",
+      "gateway-to-listener",
+      "listener-from-gateway",
+      "listener-to-context",
+      "relay-to-gateway",
+      "worker-to-context"
+    ],
+    "renderer_sha256": "164de0e90a40e59242eb4ee8b6477de05b4a6cf8d2a1aeefbc71ad2587a55e72",
+    "ten_shipped_jobs_matched_live_immutable_specs": 10,
+    "deployment_regression_tests": 6
+  },
+  "earlier_failures": [
+    {
+      "path": "Kubernetes API server port-forward",
+      "observed_public_reservation": {
+        "public_reservations": 1,
+        "owner_response_count": 1,
+        "response_counts": {
+          "409/request_denied": 71,
+          "503/gateway_unavailable": 28,
+          "200/": 1
+        },
+        "public_execution_ids": [
+          "f86afa85-b823-4523-9493-7f56c6ced621"
+        ],
+        "start_spread_seconds": 0.03104
+      },
+      "native_intents": {
+        "409/request_denied": 80,
+        "503/gateway_unavailable": 20
+      },
+      "durable_worker_admissions": 0,
+      "spent_incarnations": 0,
+      "observation": "One preflight verified. The session closed without a native admission. Nine unspent Jobs were suspended and the failed Job, UIDs and audit retained. Direct-NodePort repeats use an isolated namespace, strict TLS and original application deadlines."
+    },
+    {
+      "path": "Direct NodePort with PVC root mounted as /audit",
+      "public_native_admissions": 10,
+      "failed_before_native_ready": 10,
+      "observed_causes": [
+        "Durable native audit write failed stage=directory_policy errno=1; records retained",
+        "REQ_OPEN_EXEC: Native reply timed out"
+      ],
+      "correction": "A nonroot init process creates its own 0700 records subdirectory on each worker's PVC, then the tenant mounts that private subpath at /audit.",
+      "worker_logs_sha256": {
+        "worker-01": "83a35318e287e242454a69862d74ffd1bd8acde338a893b239ac1daa87aa7495",
+        "worker-02": "8c1b18759f246ec9394077f29db586cc60fd5f07fc4adcf89fb758f9b78c1317",
+        "worker-03": "a635979033f8e37a8cb92fdcc8c399bf7ecbf311a0728f7bd8f988af2a51b888",
+        "worker-04": "4f491affb4cb6bc48bfd9e28693467b7ed13b186015d22732d87506d5c81bf2d",
+        "worker-05": "d2b36fe536cb9a1ba5090b6e4eba2bd85924d2b10c49838d7576994cd9d35b3a",
+        "worker-06": "a21be3e27bbfb53837d2c98ba20a6e600b87e3fdc7bfdd93f264aad5a74da70f",
+        "worker-07": "1afaf7c7ebd765bb47e246feddcf0b109aede687d5ff06bd3b9dc7150d381f92",
+        "worker-08": "9fc21bec1850d83e0e2b453c7cfb36eabf4495aff2ea43b3d44115256af45e86",
+        "worker-09": "926e82b5b1dd3fd102641ed70cda4d2a5fcf4e090bd7fd199d49332b64036081",
+        "worker-10": "8db69b3a1df1ea6f098899c5f4516758f3d0671803150ccb3027226c877d26c8"
+      }
+    }
+  ],
+  "qualification_inputs": {
+    "kind/cluster.py": "cd46272b7b554a66f809c87f282a6f851d19147766d117e177e14ed1e83d1cdc",
+    "kind/collect.py": "426f7341cc986b31cc5e1e5698f927cdd3decc2e534613f29487eb88cf7e5dc8",
+    "kind/deploy.py": "91fd59a128bbe160fab9317cbbde5fde9a8ecd26ca0f452416b787d27bbd2cfd",
+    "kind/fence.py": "aa2ed5fcc3ff8afe8053499a2658afb5ee6ad9c6d8ff691ece3fa7ef69dee1e5",
+    "kind/ingress.py": "7a2ba52b2afe79e6854cbf7d8e604897f66bd87edbb59f341c10a8c96f1ee1ab",
+    "kind/prepare.py": "04a6ae17d512d3817b07e92b779dba69fcb23ebf120caea3e2c7b97ba13dcdb1",
+    "kind/run.py": "bc825be499b42bf4f92d1cca0d982d7db2687e802ab79ea47b04d849e449bade",
+    "kind/single.py": "0c3c5836869bdb342374d4f160358ea790ea45de1908e940ce1dcd36b3fcdd95",
+    "kind/verify_template.py": "0263538dd8d95fa9afe84e9d8e3d8f2bbda4783bf7652ebe425648e47e9fc782",
+    "api/provision.py": "0201f749dd186af23f4d8cde5a064a52876d52bc79fc64437cee3a07e0c2dc13",
+    "api/qualify_load.py": "2eecedd7a55286ac1bf6e243ff1b1a53a68532d09b3173c98e6e5d03350657d0"
+  },
+  "receipts": {
+    "cluster_bootstrap": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cluster-result.json",
+      "sha256": "feed05b04dca92329023bc6507aa49b9712bdea1a068db8e2b4345b7d855b444"
+    },
+    "local_image_import": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\image-import.json",
+      "sha256": "275ac50021e08b52c0c837d09930e95b56284150c8a4d9ea237ba40459ccdaec"
+    },
+    "cli_api_through_port_forward": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\ten\\probe\\result.json",
+      "sha256": "7965e26d3a70ee42aecf2fffa3d097049e3b945f00bf59c744cfcb5ef5f52d2b"
+    },
+    "port_forward_authority_readback": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\ten\\probe\\after-first-race.json",
+      "sha256": "e4050f9441673ae8a86aac5e5a816ecbe491121add9c1001e82c4dcd319b13f5"
+    },
+    "port_forward_job_uids": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\ten\\probe\\first-k8s-worker-snapshot.json",
+      "sha256": "8c3bb93c4ee9d3a6a76370d1bbc2bce1a5cf7e5fad25f8cf0875c83b375ed967"
+    },
+    "root_owned_pvc_case": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\concurrent\\probe\\result.json",
+      "sha256": "565b48f57d445e7cacecde8abe77def32485c734ae46de34486cbc3ac1ad8bc5"
+    },
+    "direct_kubernetes_workloads": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cohort2\\workloads.json",
+      "sha256": "605abad20d850b3ad572f73d970c585fef3fea631662b9a2d28681f7372775d9"
+    },
+    "direct_nodeport": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cohort2\\ingress.json",
+      "sha256": "e50977b58b2fbbcab086828772f651c6128835c71732c8cf2d47c48070a15ef9"
+    },
+    "concurrent_native_run": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cohort2\\probe\\result.json",
+      "sha256": "38e78458dc2642da5b496bb73c2d5b4e9bd4462c5513b224e81e83aa5bb198fe"
+    },
+    "concurrent_native_storage": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cohort2\\probe\\durable.json",
+      "sha256": "8139219fad4a0d30fbc77576b65c6c4af437b7448e3ff404a7ce75ffa3754ff2"
+    },
+    "one_of_100_public_native_starts": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\admission\\single\\result.json",
+      "sha256": "99e2d38cc97a99eea2cd83bc28ff6101605c1d8e1c18cf5f7826a9fbd3c03c41"
+    },
+    "one_of_100_storage": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\admission\\single\\durable.json",
+      "sha256": "98d2e8fe975e4e900df30b5229dc2629841cbf5d178924f97bc0a0c11bbbb02a"
+    },
+    "isolation": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\admission\\network-check.json",
+      "sha256": "42b2d843220e92e3d95774c2ae35b5cd443e22798dee8378cb39ece033df398e"
+    },
+    "loss_and_fence": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\fence\\probe\\result.json",
+      "sha256": "d42f34b5740b1359d7cd44cadaad46114a3d2315ad4770242e2a6b0e2bd9b187"
+    },
+    "shipped_template_live_comparison": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\cohort2\\template.json",
+      "sha256": "f42974a1e35dcb77a09c601d36955f22394392261ea1a0c9a849b3653253356f"
+    },
+    "static_deployment_tests": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\native-kind\\deployment-readiness.xml",
+      "sha256": "0c353c4eecdd23ebf89f8779ce0e9156bf7885cfd2c4e5a4664a50e0c6a433a1"
+    }
+  },
+  "boundaries": [
+    "The cluster used three Linux containers on one workstation and node-local storage. Independent hosts, power loss, network partitions, cross-site restore and operator rollout/rollback require their own evidence.",
+    "Worker Credentials were certificate-bound to preassigned unique slot/incarnation values. Pod and Job UIDs and OCI digests were observed externally. Automatic binding of certificate issuance to a Kubernetes admission controller was not exercised.",
+    "The approved load sources used the Context audit driver binding. Independent external DSS effects, hosted production-like CI and broader release gates are separate."
+  ]
+}

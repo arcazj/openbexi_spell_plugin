@@ -17,14 +17,33 @@ def validate_image(image):
     return image
 
 
+def local_base(image):
+    """Give BuildKit a resolvable local name for the verified image config."""
+    validate_image(image)
+    identity = subprocess.check_output(
+        ["docker", "image", "inspect", "--format", "{{.Id}}", image], text=True
+    ).strip()
+    if not re.fullmatch(r"sha256:[0-9a-f]{64}", identity):
+        raise ValueError("invalid_local_image_identity")
+    if image.startswith("sha256:") and image != identity:
+        raise ValueError("local_image_identity_differs")
+    alias = "openbexi-native-input:" + identity.removeprefix("sha256:")
+    subprocess.run(["docker", "tag", identity, alias], check=True)
+    return alias, identity
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--toolchain-image", required=True)
+    parser.add_argument(
+        "--runtime-image", help="Frozen runtime digest, if supplied separately"
+    )
     parser.add_argument(
         "--profile", choices=("optimized", "asan-o1", "asan-o2"), default="optimized"
     )
     args = parser.parse_args()
     validate_image(args.toolchain_image)
+    validate_image(args.runtime_image or args.toolchain_image)
     folder = ROOT / ".qualification/native-build-profile" / ("run-" + uuid.uuid4().hex)
     folder.mkdir(parents=True)
     report = dict(
@@ -46,7 +65,10 @@ def main():
         report["source_commit"] = git("rev-parse", "HEAD")
         report["source_tree"] = git("rev-parse", "HEAD^{tree}")
         epoch = git("show", "-s", "--format=%ct", "HEAD")
-        report["toolchain_image"] = args.toolchain_image
+        toolchain, report["toolchain_image"] = local_base(args.toolchain_image)
+        runtime, report["runtime_image"] = local_base(
+            args.runtime_image or args.toolchain_image
+        )
         # No mutable tags, network installs or Docker cache are accepted here.
         with (folder / "build.log").open("w") as log:
             subprocess.run(
@@ -61,7 +83,9 @@ def main():
                     "-f",
                     "host_runtime/Dockerfile.profile",
                     "--build-arg",
-                    "TOOLCHAIN_IMAGE=" + args.toolchain_image,
+                    "TOOLCHAIN_IMAGE=" + toolchain,
+                    "--build-arg",
+                    "RUNTIME_IMAGE=" + runtime,
                     "--build-arg",
                     "NATIVE_PROFILE=" + args.profile,
                     "--build-arg",

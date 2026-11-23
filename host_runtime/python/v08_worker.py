@@ -34,7 +34,7 @@ from openbexi_spell_server.contracts import Fault, canonical, decode, exact, fin
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
 from openbexi_spell_server.transport import Route, tls_context
-from openbexi_spell_server.worker import preflight, protect_runtime
+from openbexi_spell_server.worker import preflight, protect_runtime, wait_for_assignment
 
 
 def readonly_tree(directory):
@@ -524,7 +524,45 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
 
 
 def run(config):
-    fields = {"preflight", "grant", "start_barrier"}
+    assigned = type(config) is dict and "assigned" in config
+    verified = None
+    assigned_handoff = False
+    if assigned:
+        allowed = {"assigned", "native_prompts"}
+        if "native_handoff" in config:
+            allowed.add("native_handoff")
+            if (
+                config["native_handoff"] != "host-freeze-epoch"
+                or config["native_prompts"] is not True
+            ):
+                raise ValueError(
+                    "Host handoff requires the assigned prompt-enabled profile"
+                )
+            if (
+                not os.path.ismount("/control")
+                or not os.statvfs("/control").f_flag & os.ST_RDONLY
+            ):
+                raise ValueError(
+                    "Host handoff requires a separate read-only operator mount"
+                )
+            assigned_handoff = True
+        exact(config, allowed)
+        if type(config["native_prompts"]) is not bool:
+            raise ValueError("Invalid native prompt option")
+        if not os.statvfs("/").f_flag & os.ST_RDONLY:
+            raise RuntimeError("Worker image root must be read-only")
+        worker, grant_data, verified = wait_for_assignment(
+            config["assigned"], readonly_tree
+        )
+        config = {
+            "preflight": worker,
+            "grant": grant_data,
+            "native_child_gate": True,
+            **({"native_prompt_gate": True} if config["native_prompts"] else {}),
+        }
+    fields = {"preflight", "grant"}
+    if not assigned:
+        fields.add("start_barrier")
     probe_enabled = type(config) is dict and "pause_probe" in config
     thread_probe = type(config) is dict and "thread_barrier_probe" in config
     child_profile = type(config) is dict and "native_child_gate" in config
@@ -610,7 +648,7 @@ def run(config):
     root = readonly_tree(worker["snapshot_directory"])
     if not os.statvfs("/").f_flag & os.ST_RDONLY:
         raise RuntimeError("Worker image root must be read-only")
-    receipt, challenge = preflight(worker, details=True)
+    receipt, challenge = verified if assigned else preflight(worker, details=True)
     if (
         grant.execution_id != worker["execution_id"]
         or grant.worker_slot != worker["worker_slot"]
@@ -631,8 +669,10 @@ def run(config):
     )
 
     def rpc(action):
+        sent_request = dict(request)
+        sent_grant = start_grant(sent_request["grant"])
         reply = route.call(
-            request, path="/v1/worker/" + action, schema="openbexi.worker/2"
+            sent_request, path="/v1/worker/" + action, schema="openbexi.worker/2"
         )
         capability = None
         if action == "consume":
@@ -640,9 +680,9 @@ def run(config):
         expected = dict(
             consumed=action == "consume",
             checked=action == "check",
-            execution_id=grant.execution_id,
-            request_id=grant.request_id,
-            authority_incarnation=grant.authority_incarnation,
+            execution_id=sent_grant.execution_id,
+            request_id=sent_grant.request_id,
+            authority_incarnation=sent_grant.authority_incarnation,
             hold_retained=True,
             runtime_enabled=False,
         )
@@ -656,13 +696,23 @@ def run(config):
     # Exactly ONE consumption attempt. A lost reply must prevent native launch.
     rpc("consume")
     runtime = None
-    if handoff_profile:
+    if handoff_profile or assigned_handoff:
         # python -I excludes the script directory. Only the read-only operator
         # modules participate; source snapshots never enter this lookup path.
         sys.path.insert(0, "/v08")
         from handoff_runtime import HandoffRuntime
 
         os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"
+        if assigned_handoff:
+            # The independent host owns the read-only epoch mount and the
+            # original container binding. Never create or repair its proof.
+            until = time.monotonic() + 15
+            while not Path("/control/handoff-epoch").is_file():
+                if time.monotonic() >= until:
+                    raise TimeoutError(
+                        "The operator has not provisioned the original native epoch"
+                    )
+                time.sleep(0.05)
         runtime = HandoffRuntime(request, route, "/control/handoff-epoch")
         route = runtime.guarded_route()
     # Force the real proxy. All event categories remain execution-bound in
@@ -744,7 +794,7 @@ def run(config):
             )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
-    if handoff_profile:
+    if handoff_profile or assigned_handoff:
         from epoch_relay import EpochRelay
 
         relay = EpochRelay(dispatch)
@@ -807,7 +857,7 @@ def run(config):
         if prompt_profile:
             from prompt_replies import NativePromptAgent
 
-            prompts = NativePromptAgent(controls)
+            prompts = NativePromptAgent(controls, display=assigned)
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()
@@ -906,7 +956,7 @@ def run(config):
         session.pump = pump
         if child_gate is not None and session.instance not in child_gate.started:
             raise RuntimeError("Native before-spawn root hook was bypassed")
-        if child_gate is not None:
+        if child_gate is not None and not assigned:
             # Deliberately bypass the Python wrapper with an unregistered ID.
             # Only an actual native Context callback/denial satisfies this probe.
             controls.original(
@@ -928,11 +978,12 @@ def run(config):
             quiescence_proven=False,
         )
         deadline = time.monotonic() + 180
-        barrier = Path(config["start_barrier"])
-        while not barrier.is_file():
-            if time.monotonic() >= deadline:
-                raise TimeoutError("Native start barrier expired")
-            time.sleep(0.05)
+        if not assigned:
+            barrier = Path(config["start_barrier"])
+            while not barrier.is_file():
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("Native start barrier expired")
+                time.sleep(0.05)
         rpc("check")
         if consumption_probe:
             # Docker must provision this probe's tmpfs for the actual worker
@@ -980,7 +1031,8 @@ def run(config):
                 emit,
             )
             return
-        session.request("CMD_RUN", send=True)
+        if not assigned:
+            session.request("CMD_RUN", send=True)
         if consumption_probe:
             until = time.monotonic() + 10
             while not Path("/workspace/consume-awaiting").is_file():
@@ -1033,12 +1085,27 @@ def run(config):
         pause_channel_failed = False
         next_poll = 0
         next_prompt_poll = 0
+        next_owner_poll = 0
         child_running = set()
         previous_state = None
         next_position = 0
         position_count = 0
-        while time.monotonic() < deadline:
+        observed_rotations = 0
+        while assigned or time.monotonic() < deadline:
+            if assigned_handoff:
+                runtime.checkpoint(emit)
+                runtime.ensure()
+                if runtime.rotations != observed_rotations:
+                    observed_rotations = runtime.rotations
+                    emit(
+                        "native-handoff-activated",
+                        runtime_identity_rotated=True,
+                        rotation=observed_rotations,
+                    )
             pump()
+            if assigned and time.monotonic() >= next_owner_poll:
+                next_owner_poll = time.monotonic() + 0.2
+                controls.poll_owner()
             if prompts is not None and time.monotonic() >= next_prompt_poll:
                 # A bounded read cadence avoids ten idle workers saturating
                 # the authority while actual native prompt callbacks commit.
@@ -1149,6 +1216,16 @@ def run(config):
             # until their real Context audit receipts arrive; never replay or
             # manufacture a missing event or treat this as a family barrier.
             lifecycle.wait(lambda: list(child_gate.started), pump)
+        if assigned:
+            # The trusted session read this state from the exact root
+            # Executor. Procedure-selected event messages cannot set it.
+            observed = route.call(
+                {**request, "instance_id": session.instance, "native_status": state},
+                path="/v1/worker/root-result",
+                schema="openbexi.worker/2",
+            )
+            if observed != {"execution_id": grant.execution_id, "native_status": state}:
+                raise RuntimeError("Native result receipt differs")
         if state != "FINISHED" or denied:
             terminal = session.request("REQ_EXEC_STATUS")
             emit(

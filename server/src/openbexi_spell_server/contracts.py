@@ -11,6 +11,9 @@ from dataclasses import dataclass
 MAX_BODY = 65536
 MAX_DEPTH = 16
 OWNER_COMMANDS = frozenset({"CMD_RUN", "CMD_STEP", "CMD_PAUSE", "CMD_ABORT", "CMD_CLOSE"})
+PUBLIC_LAUNCH_METHODS = frozenset(
+    {"execution.prepare", "execution.launch_status", "execution.launch"}
+)
 PERMISSIONS = frozenset(
     {
         "context:read",
@@ -39,6 +42,7 @@ METHODS = {
     "execution.decide": "execution:control",
     "execution.cancel": "execution:request_control",
 }
+PROMPT_METHODS = frozenset({"execution.prompt.view", "execution.prompt.reply"})
 
 
 class Fault(Exception):
@@ -155,7 +159,14 @@ def envelope(context, subject, method, payload, key=None):
 
 
 def validate_envelope(
-    value, context, *, now=None, allow_launch=False, allow_commands=False, allow_prompts=False
+    value,
+    context,
+    *,
+    now=None,
+    allow_launch=False,
+    allow_commands=False,
+    allow_prompts=False,
+    allow_assigned_launch=False,
 ):
     exact(
         value,
@@ -199,8 +210,9 @@ def validate_envelope(
     if not isinstance(method, str) or (
         method not in METHODS
         and not (allow_launch and method == "execution.start")
+        and not (allow_assigned_launch and method in PUBLIC_LAUNCH_METHODS)
         and not (allow_commands and method == "execution.command")
-        and not (allow_prompts and method == "execution.prompt.reply")
+        and not (allow_prompts and method in PROMPT_METHODS)
     ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
@@ -221,6 +233,9 @@ def validate_envelope(
             raise Fault(400, "invalid_event_cursor")
         if type(payload["limit"]) is not int or not 1 <= payload["limit"] <= 32:
             raise Fault(400, "invalid_event_page_size")
+    elif allow_prompts and method == "execution.prompt.view":
+        identifier(value["idempotency_key"])
+        validate_authority_payload("execution.start", value["payload"])
     elif allow_prompts and method == "execution.prompt.reply":
         from .prompts import validate_reply_payload
 
@@ -229,6 +244,9 @@ def validate_envelope(
     elif allow_commands and method == "execution.command":
         identifier(value["idempotency_key"])
         validate_owner_command_payload(value["payload"])
+    elif allow_assigned_launch and method in PUBLIC_LAUNCH_METHODS:
+        identifier(value["idempotency_key"])
+        validate_authority_payload("execution.start", value["payload"])
     elif method in AUTHORITY_MUTATIONS or (allow_launch and method == "execution.start"):
         identifier(value["idempotency_key"])
         validate_authority_payload(method, value["payload"])
