@@ -1,0 +1,146 @@
+:root {
+  color-scheme: light dark;
+  font:
+    15px/1.5 Inter,
+    Arial,
+    sans-serif;
+  color: #172831;
+  background: #f4f6f6;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.85rem max(1rem, calc((100vw - 69rem) / 2));
+  border-bottom: 1px solid #bdcbcc;
+  background: #fff;
+}
+header strong {
+  font-size: 1.2rem;
+  margin-right: auto;
+}
+main {
+  max-width: 71rem;
+  padding: 1.4rem 1rem 4rem;
+  margin: auto;
+}
+h1 {
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(1.9rem, 4vw, 2.65rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+section {
+  background: #fff;
+  border: 1px solid #ccd7d7;
+  border-radius: 0.45rem;
+  margin: 1rem 0;
+  padding: 1.15rem 1.35rem;
+}
+.toolbar,
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.55rem;
+}
+.controls {
+  margin-top: 0.85rem;
+}
+label {
+  display: grid;
+  gap: 0.2rem;
+  font-weight: 600;
+}
+button,
+select {
+  color: inherit;
+  border: 1px solid #a6b7b7;
+  background: transparent;
+  border-radius: 0.3rem;
+  padding: 0.45rem 0.75rem;
+  font: inherit;
+}
+button:not(:disabled) {
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.42;
+}
+button:not(:disabled):hover,
+button[aria-pressed="true"] {
+  border-color: #087f73;
+  background: #d5f1ed;
+}
+#start:not(:disabled),
+#reserve:not(:disabled) {
+  background: #086356;
+  border-color: #086356;
+  color: white;
+}
+#notice:not(:empty) {
+  border-left: 3px solid #b45d18;
+  padding: 0.5rem 0.75rem;
+}
+#stream {
+  color: #336954;
+  margin: auto 0 auto 0.4rem;
+}
+.table-wrap {
+  overflow: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+th,
+td {
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #d7dfdf;
+  white-space: nowrap;
+}
+th {
+  font-size: 0.86rem;
+  color: #435a60;
+}
+ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  max-height: 10rem;
+  overflow: auto;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    background: #11191f;
+    color: #e2eef0;
+  }
+  header,
+  section {
+    background: #19232b;
+    border-color: #39494f;
+  }
+  th,
+  #stream {
+    color: #a3cdc2;
+  }
+  td,
+  th {
+    border-color: #3b4b4f;
+  }
+  button:not(:disabled):hover,
+  button[aria-pressed="true"] {
+    background: #254d48;
+  }
+}

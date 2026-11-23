@@ -2,6 +2,49 @@
 
 # v0.8 prelaunch monitoring event replay
 
+## Browser workspace
+
+The v0.8.0 Gateway can serve a certificate-authenticated workspace at
+`/workspace/`. Install the server's `browser` extra. The pinned wheel checksums
+are in [the browser dependency lock](../../server/requirements-browser.lock).
+Set `browser_origin` to the Gateway's exact HTTPS origin and put its host and
+port in `allowed_hosts`. Provide sufficient `max_handlers` for the intended
+number of simultaneous users. Each WebSocket holds one handler. The Gateway
+reserves six slots for other requests and caps concurrent streams at 32.
+Forty-eight handlers support the three-user and twenty-observer qualification
+fixture.
+
+Each browser uses a distinct provisioned client certificate. The workspace
+maps its HTTPS actions through the existing Gateway, Listener and Context
+authorization. Same-origin JSON requests carry the current controller proof.
+Proofs and heartbeat challenges live in the page's memory. Closing a tab stops
+renewal. The **Disconnect** button closes its known logical sessions.
+**Reconnect control** requires a separate operator action.
+
+The secure WebSocket at `/workspace/contexts/{context_id}/events` negotiates
+the `openbexi.events.v1` subprotocol. The Gateway checks the browser origin,
+client certificate, Context scope and execution read permission before it
+accepts the connection. The browser sends a bounded `{"after_sequence":0}`
+cursor and receives the same redacted replay page described below. Subsequent
+reads keep the cursor in that tab. After reconnection the browser requests the
+next page and refreshes public execution state. Each replay rechecks the live
+Context policy. Mutations travel through explicit HTTPS actions. Connection
+loss leaves their outcome for the operator to reconcile.
+
+The browser qualification script requires Playwright Core 1.65.0 and its
+pinned Chromium 158.0.8127.18. Provision independent `alice`, `bob`, `observer`
+and `watch-01` through `watch-20` certificate directories. Each contains the
+role-specific `tls.pem` and `tls.key`. Alice's `connection.json` supplies
+the Gateway URL. Configure trust for the fixture CA. Run
+`node scripts/qualify_v08_browser_workspace.cjs <profiles> <new-evidence-directory>`.
+The fixture needs one unspent assigned worker and an approved procedure that
+finishes after Run. The test covers explicit A–B–A ownership transfer while a
+procedure is reserved, stale proof rejection, observer replay and the later
+native launch and result. Transfer of a running family has separate native
+barrier and host-evidence requirements.
+
+## Desktop HTTPS replay
+
 This opt-in-independent endpoint is a **read-only** replay channel. It is not
 a browser WebSocket, execution controller, native pause acknowledgment or
 evidence of full v0.8 acceptance.
