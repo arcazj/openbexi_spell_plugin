@@ -1,0 +1,997 @@
+{
+  "schema": "openbexi.v08.native-compatibility-frozen-and-47e/2",
+  "inherited": 763,
+  "frozen_318": {
+    "baseline_embedded_passes": {
+      "time": 168,
+      "python": 488,
+      "data": 24,
+      "files": 28,
+      "common": 12,
+      "dta": 4,
+      "obs": 80,
+      "cmd": 8
+    },
+    "655f_additional": {
+      "obsmore": {
+        "assertions": 72,
+        "assertions_passed": 72,
+        "requirements_eligible_checks": 72
+      },
+      "commonfull": {
+        "assertions": 40,
+        "assertions_passed": 40,
+        "requirements_eligible_checks": 40
+      },
+      "uifull": {
+        "assertions": 56,
+        "assertions_passed": 56,
+        "requirements_eligible_checks": 48
+      }
+    },
+    "655f_dictionary_originals": 12,
+    "earlier_passes_by_stage": [
+      253,
+      59,
+      6
+    ],
+    "earlier_pass": 318,
+    "known_fail": 27,
+    "earlier_incomplete": 418,
+    "observed_failed_dependencies_by_case": {
+      "named-limit": 18,
+      "ranging": 7,
+      "memory": 0,
+      "scheduled-command": 2
+    }
+  },
+  "across_tested_subjects": {
+    "pass": 332,
+    "fail": 27,
+    "incomplete": 404
+  },
+  "incomplete_after_47e_by_inventory_package": {
+    "CMD": 61,
+    "COMMON": 32,
+    "DATA": 59,
+    "FILES": 5,
+    "FLOW": 51,
+    "LIMIT": 52,
+    "OBS": 53,
+    "PY": 5,
+    "SPECIAL": 36,
+    "UI": 50
+  },
+  "47e_direct_distinct": 159,
+  "ide": {
+    "commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "wheel": "1d68d0a13f85a9e64a084757c6be280cdc2feb77d97027df0d98bfc2ebffb58f",
+    "installed_client": "7694c8c3d2094ab84ee2e47465ab2481df5bd3af595642ab66f550c19bfc44fd"
+  },
+  "compared_spell_products": {
+    "655f": {
+      "spell": "655f5b5a2de31bd4f8cba44794a1798342986512",
+      "source_tree": "ccc0615537d8fc70f8b5d1f8cbdce07ae5e87298",
+      "optimized": "sha256:c2e3a540225ffec2404a086f62d3669391e1baf6378a9a620c0ecc3b2ecf3886",
+      "runtime_parent": "sha256:c2e3a540225ffec2404a086f62d3669391e1baf6378a9a620c0ecc3b2ecf3886",
+      "worker": "sha256:a545c9617133bfc8034f385ef0ffb71c5eb2cfc9a74fd078838ee33bdf6753d4",
+      "core": "sha256:1426fbd0b032ebe86f128474f27ac20e2b12200a3c544a7467c5b8f05e98100d",
+      "gateway": "sha256:fdd6bf0f754c414d846b7199b1bddeaf4cea5d70a899ba7878a3de4bc6e80ac8",
+      "installed_wheels": {
+        "openbexi_spell_server-0.8.0-py3-none-any.whl": "9b063f0371354245c953b21df2d50d3359f431b2b276956627958f32ea5e3f3c",
+        "openbexi_spell_dss-0.8.0-py3-none-any.whl": "949d9c21aed4f0c749368cf007943b990bf1b349a6f6e36953373e6e4d8a794c"
+      }
+    },
+    "47e0": {
+      "spell": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "source_tree": "2444657abc202f7e675e8282bec651e82b3d74f9",
+      "optimized": "sha256:35631c613df80d0e1c3a51316a6da7597086f8a678697210d471a6db4bb84b8d",
+      "runtime_parent": "sha256:774fdf79860fb4576ea89b4850f0d39c0a4326fb3c5846805ff772102a21528c",
+      "worker": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+      "core": "sha256:b1b46dcda1f8db45889f6a145d2125362bbc04c41ded6e956ea99ca1ea61f968",
+      "gateway": "sha256:f500c700cb5714a2040064a1a9bc93e3e86ae086cdc28dc65d363161af3ba94e",
+      "installed_wheels": {
+        "openbexi_spell_server-0.8.0-py3-none-any.whl": "d39f4c6cc0735fea0c1331724a520658d866faf4548ded7f01802fcab2f6f3e8",
+        "openbexi_spell_dss-0.8.0-py3-none-any.whl": "93e1b280ef192b4da0994b0fe66d8168dd702e582bcb5e0aa5e6d84c09361caa"
+      }
+    }
+  },
+  "checkout_sha256": {
+    "conformance/user_database_cases.py": {
+      "655f": "7710882e5f0fd19773bafd57fe3cde7417117feef11785a0330831b042b8a318",
+      "47e0": "7710882e5f0fd19773bafd57fe3cde7417117feef11785a0330831b042b8a318",
+      "match": true
+    },
+    "conformance/user_database_controller.py": {
+      "655f": "2c49e7fd19d3b6dc0b8ebca11d3bcaee5b12005d37e5df72274c4fb0a6227b66",
+      "47e0": "2c49e7fd19d3b6dc0b8ebca11d3bcaee5b12005d37e5df72274c4fb0a6227b66",
+      "match": true
+    },
+    "conformance/evidence/user_database.json": {
+      "655f": "fd690b7a31819dfd3618df4c100cbcac052bef044ed8c753d9a8b18d2f677c12",
+      "47e0": "fd690b7a31819dfd3618df4c100cbcac052bef044ed8c753d9a8b18d2f677c12",
+      "match": true
+    },
+    "conformance/python_contracts.py": {
+      "655f": "35c2d48a973139b123cb3fc8bf4d8c05d00a291d0c6c32760cae49792b7993fb",
+      "47e0": "35c2d48a973139b123cb3fc8bf4d8c05d00a291d0c6c32760cae49792b7993fb",
+      "match": true
+    },
+    "conformance/python_fixture.py": {
+      "655f": "b251964282a2b9ee355a03ea4e5dc6bdf02aa548632c5a3b00f51b2379537fce",
+      "47e0": "b251964282a2b9ee355a03ea4e5dc6bdf02aa548632c5a3b00f51b2379537fce",
+      "match": true
+    },
+    "conformance/check.py": {
+      "655f": "1e4cbdfd7ed1cc03e2f874919e13de0bca4a3c412cacb2f93ec250daff5b30e0",
+      "47e0": "1e4cbdfd7ed1cc03e2f874919e13de0bca4a3c412cacb2f93ec250daff5b30e0",
+      "match": true
+    },
+    "conformance/evidence/python.json": {
+      "655f": "3b5c9e53e675ee598e7bde28b836f7a597a5d23ede4e5424306c6614ad3082b2",
+      "47e0": "3b5c9e53e675ee598e7bde28b836f7a597a5d23ede4e5424306c6614ad3082b2",
+      "match": true
+    },
+    "host_runtime/python/native.py": {
+      "655f": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+      "47e0": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+      "match": true
+    },
+    "host_runtime/python/v08_worker.py": {
+      "655f": "655fe28d26b0e430bc3a795e632f7c1ad60e25eadd564bee9bd3286e40b4bebf",
+      "47e0": "cef50eabd442cec819409932ab3d27f90402e21b53161449e528dfb795284585",
+      "match": false
+    },
+    "server/src/openbexi_spell_server/launch.py": {
+      "655f": "ba966f0dc4ed050644c891efa9567a8088dc380889468f9e5b4a5ce0ddfd2ea8",
+      "47e0": "afc5272084bc9c5cdd436ffe7ca1a378b5cd24a4d4b3617ccdb8005c8fd410bf",
+      "match": false
+    },
+    "server/src/openbexi_spell_server/assigned_launch.py": {
+      "655f": "a3cbe6b38b63d5a7b552379ea2503298be13caaa9a26ce9afc128874db5c01a5",
+      "47e0": "89c8b5606b7ccee65d2bc38c90fadf7fd9915ec84ac5cad62399f377e02b85c2",
+      "match": false
+    },
+    "server/src/openbexi_spell_server/services.py": {
+      "655f": "9eabc6ec95b9c7a35bc474ad0cfe39a6ed379903a3a6651565d365df6c7e9639",
+      "47e0": "7982c3617b3d124405dea4a36b5ba8b941f5d6fa0a46e5a14dc04ecf593efff0",
+      "match": false
+    },
+    "driver_plugin/src/openbexi_spell_dss/context_driver.py": {
+      "655f": "4877552cfc1e99476175f5d924b7534f64b33e340648cadf7206e1f50162a74c",
+      "47e0": "4877552cfc1e99476175f5d924b7534f64b33e340648cadf7206e1f50162a74c",
+      "match": true
+    }
+  },
+  "installed_worker_bytes": {
+    "/opt/v08-native-home/bin/SPELL-Listener": {
+      "655f": "1e23f70cacbf82287e8cdd2b0cb76b0b4bd1748dd3a6481e27a95dc77a506810",
+      "47e0": "1e23f70cacbf82287e8cdd2b0cb76b0b4bd1748dd3a6481e27a95dc77a506810",
+      "match": true
+    },
+    "/opt/v08-native-home/bin/SPELL-Context": {
+      "655f": "fcc027773a21b89ea0ca2ef43262616dfe12ecff66d72b5ae272651329b6a465",
+      "47e0": "fcc027773a21b89ea0ca2ef43262616dfe12ecff66d72b5ae272651329b6a465",
+      "match": true
+    },
+    "/opt/v08-native-home/bin/SPELL-Executor": {
+      "655f": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "47e0": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "match": true
+    },
+    "/opt/v08-native-home/bin/spell-host-ipc": {
+      "655f": "add162202460697655e85782aebc6bc4229a94adb970b9970dd15097f533baa4",
+      "47e0": "add162202460697655e85782aebc6bc4229a94adb970b9970dd15097f533baa4",
+      "match": true
+    },
+    "/opt/v08-native-home/bin/libspell_executor313.so": {
+      "655f": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "47e0": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "match": true
+    },
+    "/v08/agent.py": {
+      "655f": "655fe28d26b0e430bc3a795e632f7c1ad60e25eadd564bee9bd3286e40b4bebf",
+      "47e0": "cef50eabd442cec819409932ab3d27f90402e21b53161449e528dfb795284585",
+      "match": false
+    },
+    "/v08/native_candidate.py": {
+      "655f": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+      "47e0": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+      "match": true
+    },
+    "/v08/children.py": {
+      "655f": "a2d3d04b6e00fab337af54806539ceee00964d69f3107dcd5f994e44a0469a4f",
+      "47e0": "a2d3d04b6e00fab337af54806539ceee00964d69f3107dcd5f994e44a0469a4f",
+      "match": true
+    },
+    "/v08/child_gate.py": {
+      "655f": "ea2c836f9c2f58399736c09345e0efb6802b1035da0a66f5ef39351fc617ccbe",
+      "47e0": "ea2c836f9c2f58399736c09345e0efb6802b1035da0a66f5ef39351fc617ccbe",
+      "match": true
+    },
+    "/v08/control_journal.py": {
+      "655f": "ae7a2e9cf0ec49c2cf20735834dacc85583646fcf544bc4ca86d452cab790619",
+      "47e0": "ae7a2e9cf0ec49c2cf20735834dacc85583646fcf544bc4ca86d452cab790619",
+      "match": true
+    },
+    "/v08/prompt_replies.py": {
+      "655f": "6f3871defefd9a9413f887efab1e34db9ed704eed7c982d8f8de5b5e86db9018",
+      "47e0": "6f3871defefd9a9413f887efab1e34db9ed704eed7c982d8f8de5b5e86db9018",
+      "match": true
+    },
+    "/v08/handoff_runtime.py": {
+      "655f": null,
+      "47e0": "39f51e2e61e16e284a8616e9ce66ed0d66df2353f4be0ad6b73cbf982a2c4cac",
+      "match": false
+    },
+    "/v08/epoch_relay.py": {
+      "655f": null,
+      "47e0": "e79042dcde5ac0b764a2193a72049d96fa4f026e23946ca943d59bb45484bcd5",
+      "match": false
+    },
+    "/v08/startup_diagnostics.py": {
+      "655f": "a854e782fdc8c81543815d521c3bde3c2f1138ce1257e76335e4a254ba9f1dfe",
+      "47e0": "a854e782fdc8c81543815d521c3bde3c2f1138ce1257e76335e4a254ba9f1dfe",
+      "match": true
+    }
+  },
+  "47e_dictionary_load": {
+    "fresh_runs": 4,
+    "additional_ids": 0,
+    "repeated_ids": [
+      "CMP-LRM244-EXAMPLE-143",
+      "CMP-LRM244-SECTION-4-15-5-1-101"
+    ],
+    "cases": {
+      "positive": {
+        "snapshot_sha256": "f05a13f6431b5a8915785654ad0157fd2b7546122a4ea103e6ce582a2498249c",
+        "original_sha256": "de6ff84e5e08ac4f53d475e4ba01a78d104ed4fa6f57668a0b755f541b2c9a72",
+        "result_sha256": "5c1ff10a9ea65972dfed9d6b7d06118eb214ab6a11db7e08d003a9220091f25b",
+        "655f_execution": "3fba6649-86cf-4784-b308-2e9a8a895c58",
+        "47e0_execution": "2b547acb-ccd6-43df-8146-f779c47f25cd",
+        "resulting_file_sha256": "b4ca1e23388a0f1f7acc3ea762d1bd1e48cbfe273366d4dfca9b2ad7b90c45fe",
+        "stored_authority_sha256": "81c01c439404568fd7fdb4dcf97877f229681502cd1d4a767015937a39e63182"
+      },
+      "boundary": {
+        "snapshot_sha256": "28c80fe1cf10ed76f2c27528dee65c612ade6d0f0daed93589ad7c5c9a50a879",
+        "original_sha256": "f894ae1ae71a5bfd1b264b60ea4d890795a4743048dacb2dffd1d36e5821403c",
+        "result_sha256": "10233e799b71c2186acde87a56cc9a19ab8ed931e839a11211bdc579c8147ac9",
+        "655f_execution": "b9704025-9e75-4e41-abfd-34a32232c907",
+        "47e0_execution": "9037062e-3c30-49f5-98f8-0601018e6957",
+        "resulting_file_sha256": "0aaadaf8dc1d2ca7c704c86fab60f28191f36e3a6e3d091a2db203ddec93ed58",
+        "stored_authority_sha256": "f0878f9bee039d45f877843d02d9e97bb4ae57229ef086f5f6f13c31ddde1e87"
+      },
+      "failure": {
+        "snapshot_sha256": "5e8cfd50e4362d84775c70c2414b520e0e12516c969ff384dfaa1df340651837",
+        "original_sha256": "28b602ed57d19995e9b1bf6986e221d8a79a1d9ed5b8d3ab0574537c85495490",
+        "result_sha256": "228a73d82c78813e86bf9cf066ad6deed5317b801d480a71299a315d4e7a9822",
+        "655f_execution": "b8573272-1e5a-41e0-a482-ae5fb49cf153",
+        "47e0_execution": "392f581b-0639-4dd7-b594-1be80e133239",
+        "resulting_file_sha256": null,
+        "stored_authority_sha256": "4ce4d1e486aa8362cbceb929829000db3e4c1d5868ef9885f22d5b5f9214caae"
+      },
+      "recovery": {
+        "snapshot_sha256": "0a44b1f47f7ebcf93c440ef2e41e4d0a407bcb94488239b5802c6f5510d12b03",
+        "original_sha256": "02c25e000df4ad4640e6cb8cb02c7fde5d76924a5dd67731de568f79fce34dfa",
+        "result_sha256": "f11f791e3efaf776e2b21c923614f984a0acb156666b5b4d4a4b0bc5c95740cf",
+        "655f_execution": "114c3590-a877-4085-b4e8-2343d9c48a9f",
+        "47e0_execution": "de7682bf-f699-4c45-b962-c5809142a449",
+        "resulting_file_sha256": "fc8848a4dc7e2732f341fce4668de3742ca4c31f5bf183ca25df99b2c71cf992",
+        "stored_authority_sha256": "b8a3a498564262d09a59e6aa9aee3dbce3d5f6bc95046dfca03712f090f0daeb"
+      }
+    }
+  },
+  "47e_python": {
+    "execution": "89d34d5a-3b5c-402e-bfd4-7addc72728b2",
+    "native_status": "FINISHED",
+    "snapshot": "a7d1421fb965b16fc237edd9dd9e3bbf8000733d97ee3379d109d4cdc11dd1f4",
+    "raw_sha256": "8ecd7f3e64e4e90c8ccec4929ee2b27def6e3cdb9185493810863b5bcc9990c5",
+    "stored_authority_sha256": "5d6b703f132d9caa3e06096a308a557e281b8074dd255517ecb71c50de154783",
+    "original_sha256": "3b5c9e53e675ee598e7bde28b836f7a597a5d23ede4e5424306c6614ad3082b2",
+    "whole_check_maps_equal": true,
+    "embedded_pass": 488,
+    "existing_supported_ids": [
+      "CMP-LRM244-EXAMPLE-001",
+      "CMP-LRM244-EXAMPLE-002",
+      "CMP-LRM244-EXAMPLE-003",
+      "CMP-LRM244-EXAMPLE-004",
+      "CMP-LRM244-EXAMPLE-005",
+      "CMP-LRM244-EXAMPLE-006",
+      "CMP-LRM244-EXAMPLE-007",
+      "CMP-LRM244-EXAMPLE-008",
+      "CMP-LRM244-EXAMPLE-009",
+      "CMP-LRM244-EXAMPLE-010",
+      "CMP-LRM244-EXAMPLE-011",
+      "CMP-LRM244-EXAMPLE-012",
+      "CMP-LRM244-EXAMPLE-013",
+      "CMP-LRM244-EXAMPLE-014",
+      "CMP-LRM244-EXAMPLE-015",
+      "CMP-LRM244-EXAMPLE-016",
+      "CMP-LRM244-EXAMPLE-017",
+      "CMP-LRM244-EXAMPLE-018",
+      "CMP-LRM244-METHOD-CONVERSION-BIN",
+      "CMP-LRM244-METHOD-CONVERSION-HEX",
+      "CMP-LRM244-METHOD-CONVERSION-OCT",
+      "CMP-LRM244-METHOD-CONVERSION-RANGE",
+      "CMP-LRM244-METHOD-CONVERSION-REPR",
+      "CMP-LRM244-METHOD-CONVERSION-STR",
+      "CMP-LRM244-METHOD-DICTIONARY-KEYS",
+      "CMP-LRM244-METHOD-MATH-ABS",
+      "CMP-LRM244-METHOD-MATH-ACOS",
+      "CMP-LRM244-METHOD-MATH-ASIN",
+      "CMP-LRM244-METHOD-MATH-ATAN",
+      "CMP-LRM244-METHOD-MATH-CEIL",
+      "CMP-LRM244-METHOD-MATH-COS",
+      "CMP-LRM244-METHOD-MATH-DEGREES",
+      "CMP-LRM244-METHOD-MATH-EXP",
+      "CMP-LRM244-METHOD-MATH-FLOOR",
+      "CMP-LRM244-METHOD-MATH-LOG",
+      "CMP-LRM244-METHOD-MATH-LOG10",
+      "CMP-LRM244-METHOD-MATH-MAX",
+      "CMP-LRM244-METHOD-MATH-MIN",
+      "CMP-LRM244-METHOD-MATH-POW",
+      "CMP-LRM244-METHOD-MATH-RADIANS",
+      "CMP-LRM244-METHOD-MATH-ROUND",
+      "CMP-LRM244-METHOD-MATH-SIN",
+      "CMP-LRM244-METHOD-MATH-SQRT",
+      "CMP-LRM244-METHOD-MATH-TAN",
+      "CMP-LRM244-METHOD-STRING-CAPITALIZE",
+      "CMP-LRM244-METHOD-STRING-CENTER",
+      "CMP-LRM244-METHOD-STRING-ENDSWITH",
+      "CMP-LRM244-METHOD-STRING-FIND",
+      "CMP-LRM244-METHOD-STRING-ISALPHA",
+      "CMP-LRM244-METHOD-STRING-ISDIGIT",
+      "CMP-LRM244-METHOD-STRING-ISLOWER",
+      "CMP-LRM244-METHOD-STRING-ISSPACE",
+      "CMP-LRM244-METHOD-STRING-ISUPPER",
+      "CMP-LRM244-METHOD-STRING-LOWER",
+      "CMP-LRM244-METHOD-STRING-REPLACE",
+      "CMP-LRM244-METHOD-STRING-STARTSWITH",
+      "CMP-LRM244-METHOD-STRING-UPPER",
+      "CMP-LRM244-OPERATOR-PYTHON-ADD",
+      "CMP-LRM244-OPERATOR-PYTHON-AND",
+      "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND",
+      "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR",
+      "CMP-LRM244-OPERATOR-PYTHON-DIVIDE",
+      "CMP-LRM244-OPERATOR-PYTHON-EQUAL",
+      "CMP-LRM244-OPERATOR-PYTHON-GREATER",
+      "CMP-LRM244-OPERATOR-PYTHON-GREATER-EQUAL",
+      "CMP-LRM244-OPERATOR-PYTHON-LESS",
+      "CMP-LRM244-OPERATOR-PYTHON-LESS-EQUAL",
+      "CMP-LRM244-OPERATOR-PYTHON-MODULUS",
+      "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY",
+      "CMP-LRM244-OPERATOR-PYTHON-NOT",
+      "CMP-LRM244-OPERATOR-PYTHON-NOT-EQUAL",
+      "CMP-LRM244-OPERATOR-PYTHON-OR",
+      "CMP-LRM244-OPERATOR-PYTHON-POWER",
+      "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT",
+      "CMP-LRM244-OPERATOR-STRING-CONCAT",
+      "CMP-LRM244-SYNTAX-BREAK",
+      "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES",
+      "CMP-LRM244-SYNTAX-CONTINUE",
+      "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL",
+      "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP",
+      "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT",
+      "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT",
+      "CMP-LRM244-SYNTAX-FOR-IN",
+      "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION",
+      "CMP-LRM244-SYNTAX-IF-ELIF-ELSE",
+      "CMP-LRM244-SYNTAX-IMPORT",
+      "CMP-LRM244-SYNTAX-INDENTED-BLOCK",
+      "CMP-LRM244-SYNTAX-INDEX",
+      "CMP-LRM244-SYNTAX-INTEGER-BINARY",
+      "CMP-LRM244-SYNTAX-INTEGER-HEXADECIMAL",
+      "CMP-LRM244-SYNTAX-LINE-COMMENT",
+      "CMP-LRM244-SYNTAX-LIST-LITERAL",
+      "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH",
+      "CMP-LRM244-SYNTAX-MULTILINE-COMMA",
+      "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS",
+      "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT",
+      "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS",
+      "CMP-LRM244-SYNTAX-SLICE",
+      "CMP-LRM244-SYNTAX-WHILE",
+      "CMP-LRM244-TYPE-BOOLEAN",
+      "CMP-LRM244-TYPE-DICTIONARY",
+      "CMP-LRM244-TYPE-FLOAT",
+      "CMP-LRM244-TYPE-INTEGER",
+      "CMP-LRM244-TYPE-LIST",
+      "CMP-LRM244-TYPE-STRING"
+    ],
+    "new_parent_ids": {
+      "CMP-LRM244-SECTION-2-1-1-002": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-001:positive",
+          "CMP-LRM244-SYNTAX-INDENTED-BLOCK:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-001:boundary",
+          "CMP-LRM244-SYNTAX-INDENTED-BLOCK:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-001:failure",
+          "CMP-LRM244-SYNTAX-INDENTED-BLOCK:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-001:recovery",
+          "CMP-LRM244-SYNTAX-INDENTED-BLOCK:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-10-011": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-013:positive",
+          "CMP-LRM244-SYNTAX-IF-ELIF-ELSE:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-013:boundary",
+          "CMP-LRM244-SYNTAX-IF-ELIF-ELSE:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-013:failure",
+          "CMP-LRM244-SYNTAX-IF-ELIF-ELSE:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-013:recovery",
+          "CMP-LRM244-SYNTAX-IF-ELIF-ELSE:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-11-012": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-014:positive",
+          "CMP-LRM244-EXAMPLE-015:positive",
+          "CMP-LRM244-SYNTAX-FOR-IN:positive",
+          "CMP-LRM244-SYNTAX-WHILE:positive",
+          "CMP-LRM244-SYNTAX-BREAK:positive",
+          "CMP-LRM244-SYNTAX-CONTINUE:positive",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:positive",
+          "CMP-LRM244-METHOD-DICTIONARY-KEYS:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-014:boundary",
+          "CMP-LRM244-EXAMPLE-015:boundary",
+          "CMP-LRM244-SYNTAX-FOR-IN:boundary",
+          "CMP-LRM244-SYNTAX-WHILE:boundary",
+          "CMP-LRM244-SYNTAX-BREAK:boundary",
+          "CMP-LRM244-SYNTAX-CONTINUE:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:boundary",
+          "CMP-LRM244-METHOD-DICTIONARY-KEYS:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-014:failure",
+          "CMP-LRM244-EXAMPLE-015:failure",
+          "CMP-LRM244-SYNTAX-FOR-IN:failure",
+          "CMP-LRM244-SYNTAX-WHILE:failure",
+          "CMP-LRM244-SYNTAX-BREAK:failure",
+          "CMP-LRM244-SYNTAX-CONTINUE:failure",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:failure",
+          "CMP-LRM244-METHOD-DICTIONARY-KEYS:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-014:recovery",
+          "CMP-LRM244-EXAMPLE-015:recovery",
+          "CMP-LRM244-SYNTAX-FOR-IN:recovery",
+          "CMP-LRM244-SYNTAX-WHILE:recovery",
+          "CMP-LRM244-SYNTAX-BREAK:recovery",
+          "CMP-LRM244-SYNTAX-CONTINUE:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:recovery",
+          "CMP-LRM244-METHOD-DICTIONARY-KEYS:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-12-013": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-016:positive",
+          "CMP-LRM244-EXAMPLE-017:positive",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:positive",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-016:boundary",
+          "CMP-LRM244-EXAMPLE-017:boundary",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:boundary",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-016:failure",
+          "CMP-LRM244-EXAMPLE-017:failure",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:failure",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-016:recovery",
+          "CMP-LRM244-EXAMPLE-017:recovery",
+          "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION:recovery",
+          "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-13-014": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-018:positive",
+          "CMP-LRM244-SYNTAX-IMPORT:positive",
+          "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-018:boundary",
+          "CMP-LRM244-SYNTAX-IMPORT:boundary",
+          "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-018:failure",
+          "CMP-LRM244-SYNTAX-IMPORT:failure",
+          "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-018:recovery",
+          "CMP-LRM244-SYNTAX-IMPORT:recovery",
+          "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-2-003": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-002:positive",
+          "CMP-LRM244-EXAMPLE-003:positive",
+          "CMP-LRM244-EXAMPLE-004:positive",
+          "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH:positive",
+          "CMP-LRM244-SYNTAX-MULTILINE-COMMA:positive",
+          "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-002:boundary",
+          "CMP-LRM244-EXAMPLE-003:boundary",
+          "CMP-LRM244-EXAMPLE-004:boundary",
+          "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH:boundary",
+          "CMP-LRM244-SYNTAX-MULTILINE-COMMA:boundary",
+          "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-002:failure",
+          "CMP-LRM244-EXAMPLE-003:failure",
+          "CMP-LRM244-EXAMPLE-004:failure",
+          "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH:failure",
+          "CMP-LRM244-SYNTAX-MULTILINE-COMMA:failure",
+          "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-002:recovery",
+          "CMP-LRM244-EXAMPLE-003:recovery",
+          "CMP-LRM244-EXAMPLE-004:recovery",
+          "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH:recovery",
+          "CMP-LRM244-SYNTAX-MULTILINE-COMMA:recovery",
+          "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-3-004": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-005:positive",
+          "CMP-LRM244-EXAMPLE-006:positive",
+          "CMP-LRM244-SYNTAX-LINE-COMMENT:positive",
+          "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-005:boundary",
+          "CMP-LRM244-EXAMPLE-006:boundary",
+          "CMP-LRM244-SYNTAX-LINE-COMMENT:boundary",
+          "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-005:failure",
+          "CMP-LRM244-EXAMPLE-006:failure",
+          "CMP-LRM244-SYNTAX-LINE-COMMENT:failure",
+          "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-005:recovery",
+          "CMP-LRM244-EXAMPLE-006:recovery",
+          "CMP-LRM244-SYNTAX-LINE-COMMENT:recovery",
+          "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-4-005": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-007:positive",
+          "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-007:boundary",
+          "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-007:failure",
+          "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-007:recovery",
+          "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-5-006": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-008:positive",
+          "CMP-LRM244-TYPE-INTEGER:positive",
+          "CMP-LRM244-TYPE-FLOAT:positive",
+          "CMP-LRM244-TYPE-BOOLEAN:positive",
+          "CMP-LRM244-TYPE-STRING:positive",
+          "CMP-LRM244-TYPE-LIST:positive",
+          "CMP-LRM244-TYPE-DICTIONARY:positive",
+          "CMP-LRM244-SYNTAX-LIST-LITERAL:positive",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL:positive",
+          "CMP-LRM244-SYNTAX-INDEX:positive",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-008:boundary",
+          "CMP-LRM244-TYPE-INTEGER:boundary",
+          "CMP-LRM244-TYPE-FLOAT:boundary",
+          "CMP-LRM244-TYPE-BOOLEAN:boundary",
+          "CMP-LRM244-TYPE-STRING:boundary",
+          "CMP-LRM244-TYPE-LIST:boundary",
+          "CMP-LRM244-TYPE-DICTIONARY:boundary",
+          "CMP-LRM244-SYNTAX-LIST-LITERAL:boundary",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL:boundary",
+          "CMP-LRM244-SYNTAX-INDEX:boundary",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-008:failure",
+          "CMP-LRM244-TYPE-INTEGER:failure",
+          "CMP-LRM244-TYPE-FLOAT:failure",
+          "CMP-LRM244-TYPE-BOOLEAN:failure",
+          "CMP-LRM244-TYPE-STRING:failure",
+          "CMP-LRM244-TYPE-LIST:failure",
+          "CMP-LRM244-TYPE-DICTIONARY:failure",
+          "CMP-LRM244-SYNTAX-LIST-LITERAL:failure",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL:failure",
+          "CMP-LRM244-SYNTAX-INDEX:failure",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-008:recovery",
+          "CMP-LRM244-TYPE-INTEGER:recovery",
+          "CMP-LRM244-TYPE-FLOAT:recovery",
+          "CMP-LRM244-TYPE-BOOLEAN:recovery",
+          "CMP-LRM244-TYPE-STRING:recovery",
+          "CMP-LRM244-TYPE-LIST:recovery",
+          "CMP-LRM244-TYPE-DICTIONARY:recovery",
+          "CMP-LRM244-SYNTAX-LIST-LITERAL:recovery",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL:recovery",
+          "CMP-LRM244-SYNTAX-INDEX:recovery",
+          "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-6-007": {
+        "positive": [
+          "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-7-008": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-009:positive",
+          "CMP-LRM244-METHOD-MATH-ABS:positive",
+          "CMP-LRM244-METHOD-MATH-ACOS:positive",
+          "CMP-LRM244-METHOD-MATH-ASIN:positive",
+          "CMP-LRM244-METHOD-MATH-ATAN:positive",
+          "CMP-LRM244-METHOD-MATH-CEIL:positive",
+          "CMP-LRM244-METHOD-MATH-COS:positive",
+          "CMP-LRM244-METHOD-MATH-DEGREES:positive",
+          "CMP-LRM244-METHOD-MATH-EXP:positive",
+          "CMP-LRM244-METHOD-MATH-FLOOR:positive",
+          "CMP-LRM244-METHOD-MATH-LOG:positive",
+          "CMP-LRM244-METHOD-MATH-LOG10:positive",
+          "CMP-LRM244-METHOD-MATH-MAX:positive",
+          "CMP-LRM244-METHOD-MATH-MIN:positive",
+          "CMP-LRM244-METHOD-MATH-POW:positive",
+          "CMP-LRM244-METHOD-MATH-RADIANS:positive",
+          "CMP-LRM244-METHOD-MATH-ROUND:positive",
+          "CMP-LRM244-METHOD-MATH-SIN:positive",
+          "CMP-LRM244-METHOD-MATH-SQRT:positive",
+          "CMP-LRM244-METHOD-MATH-TAN:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-ADD:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-DIVIDE:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-MODULUS:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-POWER:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND:positive",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-009:boundary",
+          "CMP-LRM244-METHOD-MATH-ABS:boundary",
+          "CMP-LRM244-METHOD-MATH-ACOS:boundary",
+          "CMP-LRM244-METHOD-MATH-ASIN:boundary",
+          "CMP-LRM244-METHOD-MATH-ATAN:boundary",
+          "CMP-LRM244-METHOD-MATH-CEIL:boundary",
+          "CMP-LRM244-METHOD-MATH-COS:boundary",
+          "CMP-LRM244-METHOD-MATH-DEGREES:boundary",
+          "CMP-LRM244-METHOD-MATH-EXP:boundary",
+          "CMP-LRM244-METHOD-MATH-FLOOR:boundary",
+          "CMP-LRM244-METHOD-MATH-LOG:boundary",
+          "CMP-LRM244-METHOD-MATH-LOG10:boundary",
+          "CMP-LRM244-METHOD-MATH-MAX:boundary",
+          "CMP-LRM244-METHOD-MATH-MIN:boundary",
+          "CMP-LRM244-METHOD-MATH-POW:boundary",
+          "CMP-LRM244-METHOD-MATH-RADIANS:boundary",
+          "CMP-LRM244-METHOD-MATH-ROUND:boundary",
+          "CMP-LRM244-METHOD-MATH-SIN:boundary",
+          "CMP-LRM244-METHOD-MATH-SQRT:boundary",
+          "CMP-LRM244-METHOD-MATH-TAN:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-ADD:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-DIVIDE:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-MODULUS:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-POWER:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND:boundary",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-009:failure",
+          "CMP-LRM244-METHOD-MATH-ABS:failure",
+          "CMP-LRM244-METHOD-MATH-ACOS:failure",
+          "CMP-LRM244-METHOD-MATH-ASIN:failure",
+          "CMP-LRM244-METHOD-MATH-ATAN:failure",
+          "CMP-LRM244-METHOD-MATH-CEIL:failure",
+          "CMP-LRM244-METHOD-MATH-COS:failure",
+          "CMP-LRM244-METHOD-MATH-DEGREES:failure",
+          "CMP-LRM244-METHOD-MATH-EXP:failure",
+          "CMP-LRM244-METHOD-MATH-FLOOR:failure",
+          "CMP-LRM244-METHOD-MATH-LOG:failure",
+          "CMP-LRM244-METHOD-MATH-LOG10:failure",
+          "CMP-LRM244-METHOD-MATH-MAX:failure",
+          "CMP-LRM244-METHOD-MATH-MIN:failure",
+          "CMP-LRM244-METHOD-MATH-POW:failure",
+          "CMP-LRM244-METHOD-MATH-RADIANS:failure",
+          "CMP-LRM244-METHOD-MATH-ROUND:failure",
+          "CMP-LRM244-METHOD-MATH-SIN:failure",
+          "CMP-LRM244-METHOD-MATH-SQRT:failure",
+          "CMP-LRM244-METHOD-MATH-TAN:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-ADD:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-DIVIDE:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-MODULUS:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-POWER:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND:failure",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-009:recovery",
+          "CMP-LRM244-METHOD-MATH-ABS:recovery",
+          "CMP-LRM244-METHOD-MATH-ACOS:recovery",
+          "CMP-LRM244-METHOD-MATH-ASIN:recovery",
+          "CMP-LRM244-METHOD-MATH-ATAN:recovery",
+          "CMP-LRM244-METHOD-MATH-CEIL:recovery",
+          "CMP-LRM244-METHOD-MATH-COS:recovery",
+          "CMP-LRM244-METHOD-MATH-DEGREES:recovery",
+          "CMP-LRM244-METHOD-MATH-EXP:recovery",
+          "CMP-LRM244-METHOD-MATH-FLOOR:recovery",
+          "CMP-LRM244-METHOD-MATH-LOG:recovery",
+          "CMP-LRM244-METHOD-MATH-LOG10:recovery",
+          "CMP-LRM244-METHOD-MATH-MAX:recovery",
+          "CMP-LRM244-METHOD-MATH-MIN:recovery",
+          "CMP-LRM244-METHOD-MATH-POW:recovery",
+          "CMP-LRM244-METHOD-MATH-RADIANS:recovery",
+          "CMP-LRM244-METHOD-MATH-ROUND:recovery",
+          "CMP-LRM244-METHOD-MATH-SIN:recovery",
+          "CMP-LRM244-METHOD-MATH-SQRT:recovery",
+          "CMP-LRM244-METHOD-MATH-TAN:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-ADD:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-DIVIDE:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-MODULUS:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-POWER:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND:recovery",
+          "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR:recovery"
+        ]
+      },
+      "CMP-LRM244-SECTION-2-1-9-010": {
+        "positive": [
+          "CMP-LRM244-EXAMPLE-011:positive",
+          "CMP-LRM244-EXAMPLE-012:positive",
+          "CMP-LRM244-OPERATOR-STRING-CONCAT:positive",
+          "CMP-LRM244-SYNTAX-INDEX:positive",
+          "CMP-LRM244-SYNTAX-SLICE:positive",
+          "CMP-LRM244-METHOD-CONVERSION-BIN:positive",
+          "CMP-LRM244-METHOD-CONVERSION-HEX:positive",
+          "CMP-LRM244-METHOD-CONVERSION-OCT:positive",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:positive",
+          "CMP-LRM244-METHOD-CONVERSION-REPR:positive",
+          "CMP-LRM244-METHOD-CONVERSION-STR:positive",
+          "CMP-LRM244-METHOD-STRING-CAPITALIZE:positive",
+          "CMP-LRM244-METHOD-STRING-CENTER:positive",
+          "CMP-LRM244-METHOD-STRING-ENDSWITH:positive",
+          "CMP-LRM244-METHOD-STRING-FIND:positive",
+          "CMP-LRM244-METHOD-STRING-ISALPHA:positive",
+          "CMP-LRM244-METHOD-STRING-ISDIGIT:positive",
+          "CMP-LRM244-METHOD-STRING-ISLOWER:positive",
+          "CMP-LRM244-METHOD-STRING-ISSPACE:positive",
+          "CMP-LRM244-METHOD-STRING-ISUPPER:positive",
+          "CMP-LRM244-METHOD-STRING-LOWER:positive",
+          "CMP-LRM244-METHOD-STRING-REPLACE:positive",
+          "CMP-LRM244-METHOD-STRING-STARTSWITH:positive",
+          "CMP-LRM244-METHOD-STRING-UPPER:positive"
+        ],
+        "boundary": [
+          "CMP-LRM244-EXAMPLE-011:boundary",
+          "CMP-LRM244-EXAMPLE-012:boundary",
+          "CMP-LRM244-OPERATOR-STRING-CONCAT:boundary",
+          "CMP-LRM244-SYNTAX-INDEX:boundary",
+          "CMP-LRM244-SYNTAX-SLICE:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-BIN:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-HEX:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-OCT:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-REPR:boundary",
+          "CMP-LRM244-METHOD-CONVERSION-STR:boundary",
+          "CMP-LRM244-METHOD-STRING-CAPITALIZE:boundary",
+          "CMP-LRM244-METHOD-STRING-CENTER:boundary",
+          "CMP-LRM244-METHOD-STRING-ENDSWITH:boundary",
+          "CMP-LRM244-METHOD-STRING-FIND:boundary",
+          "CMP-LRM244-METHOD-STRING-ISALPHA:boundary",
+          "CMP-LRM244-METHOD-STRING-ISDIGIT:boundary",
+          "CMP-LRM244-METHOD-STRING-ISLOWER:boundary",
+          "CMP-LRM244-METHOD-STRING-ISSPACE:boundary",
+          "CMP-LRM244-METHOD-STRING-ISUPPER:boundary",
+          "CMP-LRM244-METHOD-STRING-LOWER:boundary",
+          "CMP-LRM244-METHOD-STRING-REPLACE:boundary",
+          "CMP-LRM244-METHOD-STRING-STARTSWITH:boundary",
+          "CMP-LRM244-METHOD-STRING-UPPER:boundary"
+        ],
+        "failure": [
+          "CMP-LRM244-EXAMPLE-011:failure",
+          "CMP-LRM244-EXAMPLE-012:failure",
+          "CMP-LRM244-OPERATOR-STRING-CONCAT:failure",
+          "CMP-LRM244-SYNTAX-INDEX:failure",
+          "CMP-LRM244-SYNTAX-SLICE:failure",
+          "CMP-LRM244-METHOD-CONVERSION-BIN:failure",
+          "CMP-LRM244-METHOD-CONVERSION-HEX:failure",
+          "CMP-LRM244-METHOD-CONVERSION-OCT:failure",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:failure",
+          "CMP-LRM244-METHOD-CONVERSION-REPR:failure",
+          "CMP-LRM244-METHOD-CONVERSION-STR:failure",
+          "CMP-LRM244-METHOD-STRING-CAPITALIZE:failure",
+          "CMP-LRM244-METHOD-STRING-CENTER:failure",
+          "CMP-LRM244-METHOD-STRING-ENDSWITH:failure",
+          "CMP-LRM244-METHOD-STRING-FIND:failure",
+          "CMP-LRM244-METHOD-STRING-ISALPHA:failure",
+          "CMP-LRM244-METHOD-STRING-ISDIGIT:failure",
+          "CMP-LRM244-METHOD-STRING-ISLOWER:failure",
+          "CMP-LRM244-METHOD-STRING-ISSPACE:failure",
+          "CMP-LRM244-METHOD-STRING-ISUPPER:failure",
+          "CMP-LRM244-METHOD-STRING-LOWER:failure",
+          "CMP-LRM244-METHOD-STRING-REPLACE:failure",
+          "CMP-LRM244-METHOD-STRING-STARTSWITH:failure",
+          "CMP-LRM244-METHOD-STRING-UPPER:failure"
+        ],
+        "recovery": [
+          "CMP-LRM244-EXAMPLE-011:recovery",
+          "CMP-LRM244-EXAMPLE-012:recovery",
+          "CMP-LRM244-OPERATOR-STRING-CONCAT:recovery",
+          "CMP-LRM244-SYNTAX-INDEX:recovery",
+          "CMP-LRM244-SYNTAX-SLICE:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-BIN:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-HEX:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-OCT:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-RANGE:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-REPR:recovery",
+          "CMP-LRM244-METHOD-CONVERSION-STR:recovery",
+          "CMP-LRM244-METHOD-STRING-CAPITALIZE:recovery",
+          "CMP-LRM244-METHOD-STRING-CENTER:recovery",
+          "CMP-LRM244-METHOD-STRING-ENDSWITH:recovery",
+          "CMP-LRM244-METHOD-STRING-FIND:recovery",
+          "CMP-LRM244-METHOD-STRING-ISALPHA:recovery",
+          "CMP-LRM244-METHOD-STRING-ISDIGIT:recovery",
+          "CMP-LRM244-METHOD-STRING-ISLOWER:recovery",
+          "CMP-LRM244-METHOD-STRING-ISSPACE:recovery",
+          "CMP-LRM244-METHOD-STRING-ISUPPER:recovery",
+          "CMP-LRM244-METHOD-STRING-LOWER:recovery",
+          "CMP-LRM244-METHOD-STRING-REPLACE:recovery",
+          "CMP-LRM244-METHOD-STRING-STARTSWITH:recovery",
+          "CMP-LRM244-METHOD-STRING-UPPER:recovery"
+        ]
+      }
+    },
+    "distinct_child_dimensions": 372,
+    "closure_rule": "Each parent and each declared descendant passes both versions of the original check contract in its exact dimension. Migration-only leaves and mixed-report parents remain open."
+  },
+  "capture_archives": {
+    "compatibility-native": "acb8eb414539dd63b62c62e8cb42a9c72676031ac977cb94cea4a15e40f531e0",
+    "compatibility-additional": "ce0572f4673a02129b9a3d918ec426190e5ef8d2c9e43f35d66e6931dd9c16ac",
+    "compatibility-dictionary": "f3b61de6bb82a985ae83b060cf96dacacbfcce82a23a084464c5f4c3a9a6d70f",
+    "compatibility-47e-continuity": "dea279355e357efbc57071d1990c5dd7f7b8ce467b14dabf76af49d11307fb4d",
+    "compatibility-47e-python": "6d1617bce176b9b655069cfc91df96abdc509b404ac9232b40940cdd43935d21",
+    "compatibility-47e-files": "406be6a8626c38f1fbffa1c8a3912e3633a197aba4e40fcd601c0dc1c7d2cb5a"
+  },
+  "47e_files": {
+    "evidence": "compatibility-47e-files.json",
+    "sha256": "e367472ac2a4b6f423e63a04f340004cd29424ecae694fab9d7a261baa3594c7",
+    "execution": "c30c601e-93d3-47e5-9f5c-43b74be632ac",
+    "embedded_pass": 36,
+    "new_direct_ids": {
+      "CMP-LRM244-SECTION-4-17-115": {
+        "positive": {
+          "report": "conformance/evidence/files.json",
+          "check": "file-manipulation:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/files.json",
+          "check": "file-manipulation:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/files.json",
+          "check": "file-manipulation:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/files.json",
+          "check": "file-manipulation:recovery"
+        }
+      },
+      "CMP-LRM244-SECTION-4-17-8-123": {
+        "positive": {
+          "report": "conformance/evidence/files.json",
+          "check": "error-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/files.json",
+          "check": "error-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/files.json",
+          "check": "error-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/files.json",
+          "check": "error-policy:recovery"
+        }
+      }
+    },
+    "existing_supported_ids": [
+      "CMP-LRM244-CONSTANT-FILE-MODE-APPEND",
+      "CMP-LRM244-CONSTANT-FILE-MODE-READ",
+      "CMP-LRM244-CONSTANT-FILE-MODE-READ-WRITE",
+      "CMP-LRM244-CONSTANT-FILE-MODE-WRITE",
+      "CMP-LRM244-EXAMPLE-162",
+      "CMP-LRM244-EXAMPLE-163",
+      "CMP-LRM244-EXAMPLE-164",
+      "CMP-LRM244-EXAMPLE-165",
+      "CMP-LRM244-EXAMPLE-166",
+      "CMP-LRM244-EXAMPLE-167",
+      "CMP-LRM244-EXAMPLE-168",
+      "CMP-LRM244-FUNCTION-CANDIDATE-FILE",
+      "CMP-LRM244-FUNCTION-CLOSEFILE",
+      "CMP-LRM244-FUNCTION-DELETEFILE",
+      "CMP-LRM244-FUNCTION-OPENFILE",
+      "CMP-LRM244-FUNCTION-READDIRECTORY",
+      "CMP-LRM244-FUNCTION-READFILE",
+      "CMP-LRM244-FUNCTION-WRITEFILE",
+      "CMP-LRM244-METHOD-FILE-BASENAME",
+      "CMP-LRM244-METHOD-FILE-CANREAD",
+      "CMP-LRM244-METHOD-FILE-CANWRITE",
+      "CMP-LRM244-METHOD-FILE-DIRNAME",
+      "CMP-LRM244-METHOD-FILE-EXISTS",
+      "CMP-LRM244-METHOD-FILE-FILENAME",
+      "CMP-LRM244-METHOD-FILE-ISDIR",
+      "CMP-LRM244-METHOD-FILE-ISFILE",
+      "CMP-LRM244-METHOD-FILE-ISOPEN",
+      "CMP-LRM244-MODIFIER-MODE",
+      "CMP-LRM244-OPERATOR-FILE-PATH-APPEND",
+      "CMP-LRM244-SECTION-4-17-1-116",
+      "CMP-LRM244-SECTION-4-17-2-117",
+      "CMP-LRM244-SECTION-4-17-3-118",
+      "CMP-LRM244-SECTION-4-17-4-119",
+      "CMP-LRM244-SECTION-4-17-5-120",
+      "CMP-LRM244-SECTION-4-17-6-121",
+      "CMP-LRM244-SECTION-4-17-7-122",
+      "CMP-LRM244-TYPE-FILE",
+      "CMP-LRM244-TYPE-FILEHANDLE"
+    ]
+  }
+}

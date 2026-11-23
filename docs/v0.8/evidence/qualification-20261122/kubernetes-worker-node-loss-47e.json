@@ -1,0 +1,196 @@
+{
+  "status": "PASS",
+  "subject": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "scope": "A genuine abrupt stop of the second dedicated KinD node container while a Linux C++ native root ran. Three logical nodes shared one workstation.",
+  "cluster": "kind-obxqual2211",
+  "namespace": "obx-native-node47b",
+  "role_manifest_refs": {
+    "gateway": "docker.io/library/openbexi-qualification-gateway@sha256:91ba8b1ed674b4148035b0ed81b89ead296d702b1a5f232107ea7bf27c533d53",
+    "core": "docker.io/library/openbexi-qualification-core@sha256:a0c44b43555f6c8f92710a80620373a76724658a1aa29843b5bd157a5b8f0f44",
+    "worker": "docker.io/library/openbexi-assigned-worker-updated@sha256:c225d5ef59bb70ec7fa8eb3f041beb771fdc1e7041e04dab4aa114871b205ae3"
+  },
+  "native_root": "66690072-cca6-429f-9a87-2fc720d0bd3a",
+  "job_uid": "990ec13a-1714-45ad-a73b-32bfbdd2c8d7",
+  "pod_uid": "3bf69de1-86a7-4132-8c6b-3470ff7dcae0",
+  "original_processes_observed_inside_worker": [
+    {
+      "executable": "SPELL-Listener",
+      "pid": 150,
+      "ppid": 1
+    },
+    {
+      "executable": "SPELL-Context",
+      "pid": 167,
+      "ppid": 150
+    },
+    {
+      "executable": "SPELL-Executor",
+      "pid": 231,
+      "ppid": 167
+    }
+  ],
+  "native_running_utc": "2026-11-23T03:22:29.984304600Z",
+  "stopped_node": {
+    "name": "obxqual2211-worker2",
+    "container_id": "52121cedfb11b172ac8761f23da152210a52914bb41eabf8f19ced42ba446fd4",
+    "uid": "c8197e4f-6150-4e08-b636-d01123767c29",
+    "stop_signal": "SIGKILL",
+    "original_host_pid": 99010,
+    "stopped_host_pid": 0,
+    "exit": 137,
+    "stopped_at": "2026-11-23T03:22:30.6114261Z",
+    "ready_before": {
+      "uid": "c8197e4f-6150-4e08-b636-d01123767c29",
+      "ready": "True",
+      "reason": "KubeletReady",
+      "transition": "2026-11-23T01:56:41Z",
+      "lease_renewed": "2026-11-23T03:22:24.415686Z",
+      "unschedulable": false
+    },
+    "not_ready": {
+      "uid": "c8197e4f-6150-4e08-b636-d01123767c29",
+      "ready": "Unknown",
+      "reason": "NodeStatusUnknown",
+      "transition": "2026-11-23T03:23:14Z",
+      "lease_renewed": "2026-11-23T03:22:24.415686Z",
+      "unschedulable": true
+    },
+    "ready_after": {
+      "uid": "c8197e4f-6150-4e08-b636-d01123767c29",
+      "ready": "True",
+      "reason": "KubeletReady",
+      "transition": "2026-11-23T03:23:26Z",
+      "lease_renewed": "2026-11-23T03:26:00.443777Z",
+      "unschedulable": false
+    },
+    "returned_same_container_and_kubernetes_node": true,
+    "restored_host_pid": 79414,
+    "restarted_at": "2026-11-23T03:23:25.2211576Z",
+    "seconds_powered_off": 54.61,
+    "restored_daemons": {
+      "k8s-app=kube-proxy": "230ff755-a4b3-41c3-b3e7-936510f6734b",
+      "k8s-app=calico-node": "cb123f0c-e006-41e8-a01d-0798ee7dbfca"
+    }
+  },
+  "unaffected_node": {
+    "name": "obxqual2211-worker",
+    "during_loss": {
+      "uid": "328e3dc5-2cea-469b-ab5a-d8da0180dcf6",
+      "ready": "True",
+      "reason": "KubeletReady",
+      "transition": "2026-11-23T01:56:40Z",
+      "lease_renewed": "2026-11-23T03:23:06.909200Z",
+      "unschedulable": false
+    },
+    "original_service_pod_uids_during_loss": {
+      "gateway": "5d389009-8810-4250-a4c6-4f6172393467",
+      "listener": "34068279-0040-483f-9a65-35d4cc4ce505",
+      "context": "6c42606d-5884-4ae5-8548-c1b6e0da690d"
+    },
+    "public_observer_before_operator_actions": {
+      "id": "66690072-cca6-429f-9a87-2fc720d0bd3a",
+      "lifecycle": "STARTING",
+      "control_state": "OWNED",
+      "native_root_result": null
+    },
+    "gateway_and_listener_same_at_end": true
+  },
+  "operator_recovery": {
+    "job_suspended": true,
+    "retired_worker_leaf": "f7312f6025f090d714885ad71623b51fc286b02ea07c4175ebf61a0b1da1f93d",
+    "node_and_worker_credential_fence": "The retired worker node had PID zero when the operator suspended its Job and removed its certificate pin. The replacement Context served the original PVC on the unaffected node before the old node was restarted.",
+    "old_context_uid": "6c42606d-5884-4ae5-8548-c1b6e0da690d",
+    "new_context_uid": "5d9299a5-9485-47af-bc08-efcfb8fe5063",
+    "pvc_uid": "15c1577b-8d41-42b7-bbd6-ea0e55ff8d17",
+    "old_controller": {
+      "http": 403,
+      "code": "request_denied"
+    },
+    "retired_worker_and_unaffected_identity": [
+      {
+        "slot": "worker-01",
+        "http": 403
+      },
+      {
+        "slot": "worker-02",
+        "http": 200
+      }
+    ],
+    "native_runtime_after_return": {
+      "state": "removed",
+      "id": "d6171bd1add6dd70150599535b96eea9f7c6acae5f884225a2ca12b2e8478677"
+    },
+    "containerd_exit_and_removal_after_node_return": [
+      {
+        "at": "2026-11-23T03:23:27.863637400Z",
+        "event": "CONTAINER_EXITED"
+      },
+      {
+        "at": "2026-11-23T03:24:01.889475300Z",
+        "event": "CONTAINER_EXITED"
+      },
+      {
+        "at": "2026-11-23T03:24:26.893661300Z",
+        "event": "garbage_collected"
+      }
+    ],
+    "active_native_pods": 0,
+    "public_observer_after_operator_reconciliation": {
+      "id": "66690072-cca6-429f-9a87-2fc720d0bd3a",
+      "lifecycle": "RECOVERY_REQUIRED",
+      "control_state": "RECOVERY_REQUIRED",
+      "native_root_result": null
+    },
+    "held_reservation": [
+      {
+        "procedure_id": "procedure-01",
+        "execution_id": "66690072-cca6-429f-9a87-2fc720d0bd3a"
+      }
+    ],
+    "spent_worker_incarnations": 1,
+    "durable_terminal_results": 0
+  },
+  "durability": {
+    "original_event_count": 17,
+    "post_replacement_event_count": 19,
+    "all_original_ordered_events_sha256": "00f8914a201c66eb0274baefb9ccc0bd33548f852e03fbe42001295176afb261",
+    "database_integrity": "ok",
+    "worker_audit_pvc_uid": "5002b08d-8a00-4c06-941a-454a9949bdee",
+    "partial_ASRUN_after_node_return": [
+      {
+        "name": "2026-11-23_032228_Executor_procedure-01#1.ASRUN",
+        "bytes": 361,
+        "sha256": "b2d25fd5bc8cf1914f286d7d91c171ed4a64f973a5f3595420d2bc2ef1892718"
+      }
+    ]
+  },
+  "observed_harness_failures": [
+    {
+      "case": "obx-native-node47",
+      "phase": "before the node stimulus",
+      "observed": "'SPELL-Executor'",
+      "reconciliation": "The worker had reached PAUSED. A startup diagnostic with the full process list was unavailable then. Direct /proc inspection independently confirmed original ancestry. The untested first Job was suspended and its reservation retained. A fresh fixture performed the one actual shutdown."
+    },
+    {
+      "case": "obx-native-node47b",
+      "phase": "final Kubernetes Pod deletion propagation",
+      "observed": "CRI had exited and the node was Ready, but the first post-return API check still reported the terminating Pod. The original result remains failed.",
+      "reconciliation": "A separate read-only pass on the same root observed zero native Pods, removal of the old CRI object, retained holds and audit, and the working restored node. The node journal independently confirmed the original worker was already exited before garbage collection."
+    }
+  ],
+  "receipt_archive": {
+    "file": "kubernetes-worker-node-loss-47e-receipts.zip",
+    "sha256": "3469e7e90b34c4a0dc53fc7a826c9293e341a0b0e979e41e9a4f020992aeb3e7",
+    "member_sha256": {
+      "first-harness-result.json": "32f42e4918a6d71d65fc5462e584fe5a08b489855e31a15544f580f7cb88fd2b",
+      "first-reconciliation.json": "547dd60ba977f5c560c00207a9031d78976b8c60a3965c93181f0a062aad82ec",
+      "node-trial.json": "f5eba82a48b66711cf6032870ac2b156a4d781ebbd86699a07bec0cdaa157bf5",
+      "node-return.json": "cb89dba1281454cde3473129e9e043009124409ab5da932b07c3220118aede40",
+      "public-role-images.json": "b2b374b5a4cb93fd40367a5e1f1e1155804aa23b47151916a9dd1e01b2db7ecf",
+      "recovered-node-operator.py": "ede46cb1d38af6c5deadf0028098431ee0b6e60f4e22ac7123b72df8c08de179",
+      "containerd-observation.json": "3211ecf5b0fa6a09010eb9305d9df4fd7df991df5db606c789bc0f578541a6e1",
+      "operator-as-executed.py": "7dee53073205424e8b58cd1f2f7d5384f7939941d336666da63ccc4dbbfe7080"
+    }
+  },
+  "boundary": "The public Gateway remained available and continued showing the prior STARTING/OWNED record immediately after node loss. Explicit operator fencing moved it to RECOVERY_REQUIRED. Physical host failure, automatic regional recovery and external driver settlement have separate qualification scopes."
+}

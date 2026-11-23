@@ -1,0 +1,81 @@
+{
+  "workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364",
+  "tested_merge": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+  "review_head": "e65f538fb39313562b192d099db289e1b177db3b",
+  "review_and_merge_tree": "7ce9c3996479e92598aa5bd8184579c1f3c11253",
+  "runtime_source": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "identical_runtime_and_resource_harness_paths": true,
+  "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+  "original_limits": {
+    "maximum_combined_window_growth_mib": 64,
+    "resident_peak_limit_mib": 1792,
+    "cgroup_mib": 2048,
+    "swap_bytes": 0
+  },
+  "stages": {
+    "handoff": {
+      "archive_sha256": "a5a245d957979fc18e3efbb3b0276183086775aa13ad907cc5514b08e49fb51b",
+      "resource_acceptance_sha256": "56c6b720a96fa90b068682824e65522dd63789614368abb33e381cf8e60530c0",
+      "artifact": "v08-audit-sanitized-300-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+      "passed": false,
+      "duration_seconds": 303.606232386,
+      "resident_peak_bytes": 1292263424,
+      "combined_window_growth_bytes": 310960128,
+      "sampled_swap_peak_bytes": 0,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "original_processes": 8,
+      "samples": 169,
+      "soak_samples": 144
+    },
+    "ide": {
+      "archive_sha256": "57f44ab520470947a6294b4ffaade1f80223f80b94c11e65339a2bcdf63dcc80",
+      "resource_acceptance_sha256": "0c6ac88b0996371206c01e2d1069bc67e40cc6bfc469d3d5f09a1e73006bcaac",
+      "artifact": "v08-audit-sanitized-300-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+      "passed": false,
+      "duration_seconds": 302.794144673,
+      "resident_peak_bytes": 1298833408,
+      "combined_window_growth_bytes": 314736640,
+      "sampled_swap_peak_bytes": 0,
+      "failures": [
+        "combined_memory_still_growing"
+      ],
+      "original_processes": 8,
+      "samples": 172,
+      "soak_samples": 147
+    }
+  },
+  "jobs": [
+    {
+      "name": "disk-and-restart",
+      "id": 137455515755,
+      "conclusion": "success",
+      "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455515755"
+    },
+    {
+      "name": "five-minute / native (ide)",
+      "id": 137455515976,
+      "conclusion": "failure",
+      "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455515976"
+    },
+    {
+      "name": "actual-native-disk-full",
+      "id": 137455516076,
+      "conclusion": "success",
+      "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455516076"
+    },
+    {
+      "name": "five-minute / native (handoff)",
+      "id": 137455516234,
+      "conclusion": "failure",
+      "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455516234"
+    },
+    {
+      "name": "one-hour",
+      "id": 137458961420,
+      "conclusion": "skipped",
+      "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137458961420"
+    }
+  ]
+}

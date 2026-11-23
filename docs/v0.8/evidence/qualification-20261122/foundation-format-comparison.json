@@ -1,0 +1,63 @@
+{
+  "original_runtime_source": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "test_harness_source": "327a41539988bc92f5a85a32df7595b629a1d397",
+  "sole_changed_file": "server/tests/test_deployment_readiness.py",
+  "shipping_sources_changed": [],
+  "revisions": {
+    "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d": {
+      "test_source_sha256": "16fb4cb9ee598dbb1c7b0906edb92932f8345cb10464da6e5a646eb4193d070b",
+      "python_ast_sha256": "4f6374a9094eec642a5ea8e593ed57125498ec65b24f52d71d3d478870abd0c7"
+    },
+    "327a41539988bc92f5a85a32df7595b629a1d397": {
+      "test_source_sha256": "423d2c87617bc5b8dab690212996343f90fa6cbcced502cdb5d5fff111708227",
+      "python_ast_sha256": "4f6374a9094eec642a5ea8e593ed57125498ec65b24f52d71d3d478870abd0c7"
+    }
+  },
+  "original_failed_attempts": [
+    {
+      "run": 45100630921,
+      "artifact_sha256": "5bb3408b3de837c935b7606cfc868ef30a2499c4cb39351cbc36ca611f83931f",
+      "format_log": "Would reformat: server/tests/test_deployment_readiness.py\n1 file would be reformatted, 162 files already formatted"
+    },
+    {
+      "run": 45100630961,
+      "artifact_sha256": "91ea0b42f1dd03409e2d48748e44cbde208099d0d298fb1713259632250c5b2d",
+      "format_log": "Would reformat: server/tests/test_deployment_readiness.py\n1 file would be reformatted, 162 files already formatted"
+    }
+  ],
+  "isolated_retest": [
+    {
+      "ci_run": 45102099080,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102099080",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455050500,
+          "name": "foundation",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102099080/job/137455050500"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786440870,
+          "name": "v08-foundation-isolated-327a41539988bc92f5a85a32df7595b629a1d397",
+          "sha256": "b1c13c1c849bc0d5a0f2d69d25f2aa7a401c7c4d80803eb40506f6bd65503c50",
+          "bytes": 9256075,
+          "members": 532,
+          "suites": [
+            {
+              "tests": "1842",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "0",
+              "time": "408.784"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

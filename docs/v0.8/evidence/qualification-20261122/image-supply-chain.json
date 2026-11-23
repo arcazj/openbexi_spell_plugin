@@ -160,6 +160,33 @@
     },
     {
       "summary": {
+        "time_utc": "2026-11-23T02:36:06.404728+00:00",
+        "image": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+        "tag": "openbexi-assigned-worker-updated:47e0cb376dac",
+        "tool": "Trivy 0.76.2",
+        "tool_archive_sha256": "691f737a7e5566a673c3a74dab9160552ec32101e953b659e5c77443d16dddb6",
+        "inventory": "PASS",
+        "advisories": "PASS",
+        "components": 143,
+        "sbom_sha256": "7637c1a14fba1b37cfb933529115434ffa5894dfc9b31e8be7fc9a2c135defb0",
+        "supplier_licenses_recorded": 117,
+        "distinct_advisory_package_versions": 390,
+        "severity": {
+          "LOW": 141,
+          "HIGH": 110,
+          "MEDIUM": 122,
+          "UNKNOWN": 17
+        },
+        "with_fix_listed": 3,
+        "advisory_report_sha256": "adfe956637a18139a9f951812f3181732e2d9c51211488eedb2a5231fd3d6456",
+        "release_disposition": "PENDING component-by-component review"
+      },
+      "source_path": "F:\\openbexi-builds\\qualification-20261122\\supply-chain\\489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413\\summary.json",
+      "summary_sha256": "e945584349d913ba93477e77c976d626645da6cbcaa52b17b4d18c38cd6d3812",
+      "critical": []
+    },
+    {
+      "summary": {
         "time_utc": "2026-11-23T02:23:59.892666+00:00",
         "image": "sha256:548c0b74a97bb6ded6585704b9de339a6052829f281f1465cbd5f32fa7ee163a",
         "tag": "openbexi-qualification-core:4a28557a4fe4",
@@ -184,6 +211,49 @@
       "source_path": "F:\\openbexi-builds\\qualification-20261122\\supply-chain\\548c0b74a97bb6ded6585704b9de339a6052829f281f1465cbd5f32fa7ee163a\\summary.json",
       "summary_sha256": "58d5d5d0ec9e314fd62223da5aa73ca914e5dfa28197dbe1c908af98e645a0cf",
       "critical": []
+    },
+    {
+      "summary": {
+        "time_utc": "2026-11-23T02:36:44.739561+00:00",
+        "image": "sha256:58418054f087f2cb36c27e9c1b11843474a6dcee2db6ffcc133cf2bedb26d4a1",
+        "tag": "openbexi-assigned-unpatched:47e0cb376dac",
+        "tool": "Trivy 0.76.2",
+        "tool_archive_sha256": "691f737a7e5566a673c3a74dab9160552ec32101e953b659e5c77443d16dddb6",
+        "inventory": "PASS",
+        "advisories": "PASS",
+        "components": 143,
+        "sbom_sha256": "5948e0682ae4b2ba95e348de1e0457cd15ceb0c9a451db0e37a5b6d8fd5e0b52",
+        "supplier_licenses_recorded": 117,
+        "distinct_advisory_package_versions": 477,
+        "severity": {
+          "HIGH": 124,
+          "LOW": 149,
+          "MEDIUM": 182,
+          "UNKNOWN": 20,
+          "CRITICAL": 2
+        },
+        "with_fix_listed": 90,
+        "advisory_report_sha256": "d574b36d94a4082d78d8e57374ea60535e8e131231423ecbfc0af15dc1bd7cb1",
+        "release_disposition": "PENDING component-by-component review"
+      },
+      "source_path": "F:\\openbexi-builds\\qualification-20261122\\supply-chain\\58418054f087f2cb36c27e9c1b11843474a6dcee2db6ffcc133cf2bedb26d4a1\\summary.json",
+      "summary_sha256": "dbad30eca968af0eed589d9c9ff0059254f49d40ebf51bea2b6ba81b84235937",
+      "critical": [
+        {
+          "VulnerabilityID": "CVE-2026-111497",
+          "PkgName": "libbrotli1",
+          "InstalledVersion": "1.1.0-2+b7",
+          "FixedVersion": "1.1.0-2+deb13u1",
+          "Status": "fixed"
+        },
+        {
+          "VulnerabilityID": "GHSA-6q48-6c7w-9gw2",
+          "PkgName": "certifi",
+          "InstalledVersion": "2026.6.17",
+          "FixedVersion": "2026.10.18",
+          "Status": "fixed"
+        }
+      ]
     },
     {
       "summary": {
@@ -283,6 +353,42 @@
       },
       "source_path": "F:\\openbexi-builds\\qualification-20261122\\supply-chain\\7656cebcd78df8a7166ee9fc416a1581aa285a92351c6c4f57f4d00a3fa14c98\\summary.json",
       "summary_sha256": "7438fabb5e2aab89b20623e1aef39589651f1924fbc7c037b98e03f3645a7bfa",
+      "critical": [
+        {
+          "VulnerabilityID": "CVE-2026-6653",
+          "PkgName": "libxml2",
+          "InstalledVersion": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
+          "FixedVersion": null,
+          "Status": "affected"
+        }
+      ]
+    },
+    {
+      "summary": {
+        "time_utc": "2026-11-23T02:37:08.844494+00:00",
+        "image": "sha256:9061407f337a593af187e66c55c5c014744891d8ad3dd4d7684139e52090dfcf",
+        "tag": "openbexi-ide-spell-v08-qualification:1.2.2-0.8.0-47e0cb37",
+        "tool": "Trivy 0.76.2",
+        "tool_archive_sha256": "691f737a7e5566a673c3a74dab9160552ec32101e953b659e5c77443d16dddb6",
+        "inventory": "PASS",
+        "advisories": "PASS",
+        "components": 401,
+        "sbom_sha256": "4ee84de89aea237ada661ecf5969de451a0deaf2fe5410ffbdc4da2c0efd5ef4",
+        "supplier_licenses_recorded": 288,
+        "distinct_advisory_package_versions": 866,
+        "severity": {
+          "LOW": 285,
+          "HIGH": 190,
+          "MEDIUM": 303,
+          "UNKNOWN": 87,
+          "CRITICAL": 1
+        },
+        "with_fix_listed": 3,
+        "advisory_report_sha256": "cf649cd3f81c77c48703b3e62e619ba2d5e6a6f093410531031b4492c8078442",
+        "release_disposition": "PENDING component-by-component review"
+      },
+      "source_path": "F:\\openbexi-builds\\qualification-20261122\\supply-chain\\9061407f337a593af187e66c55c5c014744891d8ad3dd4d7684139e52090dfcf\\summary.json",
+      "summary_sha256": "f68a0d259d1e69f87f0966d6dc242c32c9dcf16bd2d0e8293d0adfe9ecbfdeab",
       "critical": [
         {
           "VulnerabilityID": "CVE-2026-6653",

@@ -1,0 +1,188 @@
+{
+  "schema": "openbexi.v08.single-gateway-observer-capacity/1",
+  "status": "PASS",
+  "requirement": "G8 / J bounded read-only viewer load, 100+ where capacity permits.",
+  "scope": "101 distinct, simultaneously active read-only protocol clients on one delivery Gateway. Thirty-two maintained WSS while all 101 read HTTPS state, including 69 HTTPS-only observers. A separate authenticated owner started and ran one native root.",
+  "subject": {
+    "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "gateway": "sha256:f500c700cb5714a2040064a1a9bc93e3e86ae086cdc28dc65d363161af3ba94e",
+    "core": "sha256:b1b46dcda1f8db45889f6a145d2125362bbc04c41ded6e956ea99ca1ea61f968",
+    "worker": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+    "fixture_issuer": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+    "server_wheel_sha256": "d39f4c6cc0735fea0c1331724a520658d866faf4548ded7f01802fcab2f6f3e8",
+    "clean_ide_client_install": {
+      "archive": "windows/online-47e0cb37/result.json",
+      "sha256": "66398913dc87c09c4f56661ebbbe2979296c2735ee1e630e2c8ea6442f3ea469"
+    },
+    "test_dependencies": {
+      "python": "3.13.15",
+      "installed_ide": "1.2.2",
+      "wsproto": "1.3.2",
+      "h11": "0.16.0"
+    }
+  },
+  "execution": "97093ae7-1279-4b6d-aa9e-aa4491a4543c",
+  "immutable_source_revision": "a71f87c4c36d96c6a4c0c5f7f33a55587eddbad4",
+  "immutable_source_sha256": "778a6c3179927cffd284e31cd6bad3811a88e5c3146846fa4146a8aace430a10",
+  "native": {
+    "events": [
+      {
+        "utc": "2026-11-23T02:57:22.550097900Z",
+        "event": "native-ready",
+        "status": "PAUSED",
+        "execution": "97093ae7-1279-4b6d-aa9e-aa4491a4543c"
+      },
+      {
+        "utc": "2026-11-23T02:57:25.482976100Z",
+        "event": "native-running",
+        "status": null,
+        "execution": "97093ae7-1279-4b6d-aa9e-aa4491a4543c"
+      },
+      {
+        "utc": "2026-11-23T02:57:39.675261500Z",
+        "event": "native-finished",
+        "status": "FINISHED",
+        "execution": "97093ae7-1279-4b6d-aa9e-aa4491a4543c"
+      }
+    ],
+    "programs": [
+      {
+        "pid": 501,
+        "ppid": 7,
+        "executable": "SPELL-Listener"
+      },
+      {
+        "pid": 518,
+        "ppid": 501,
+        "executable": "SPELL-Context"
+      },
+      {
+        "pid": 582,
+        "ppid": 518,
+        "executable": "SPELL-Executor"
+      },
+      {
+        "pid": 7,
+        "ppid": 1,
+        "executable": "python3.13"
+      }
+    ],
+    "audit": [
+      {
+        "name": "2026-11-23_025721_Executor_main#1.ASRUN",
+        "bytes": 597,
+        "sha256": "8a94c56bcf77b32f0f621e49fb60f612743e54009b9c2364ddb469f773ecc7ed"
+      }
+    ],
+    "worker_exit": 0,
+    "authority": {
+      "commands": [
+        [
+          "CMD_RUN",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED"
+        ]
+      ],
+      "spent": 1,
+      "result": [
+        [
+          "97093ae7-1279-4b6d-aa9e-aa4491a4543c",
+          "FINISHED"
+        ]
+      ]
+    }
+  },
+  "load": {
+    "simultaneous_read_only_principals": 101,
+    "additional_controller": 1,
+    "mutual_tls_certificate_fingerprints_verified": 101,
+    "context_policy_verified_for_all": true,
+    "read_only_mutation_http_status": {
+      "observer": 403,
+      "watch-100": 403
+    },
+    "persistent_wss": 32,
+    "https_only": 69,
+    "https_state_readers": 101,
+    "simultaneous_https_read_calls_high_water": 8,
+    "total_https_snapshots": 808,
+    "snapshot_request_ms_including_client_queue": {
+      "median": 19.47,
+      "p95": 47.84,
+      "maximum": 110.29
+    },
+    "total_wss_replay_pages": 366,
+    "fewest_wss_pages_per_stream": 11,
+    "additional_wss_upgrade_http_status": 503,
+    "true_native_running_interval_observed_by": 101,
+    "terminal_result_readers": 101,
+    "browser_processes_in_this_run": 0,
+    "client_disconnects_or_read_errors": 0
+  },
+  "limits": {
+    "gateway_configured_handlers": 48,
+    "product_max_handlers": 64,
+    "gateway_wss_cap": 32,
+    "public_pins_provisioned": 103,
+    "context_policy_limit": 128,
+    "gateway_pin_limit": 128,
+    "docker_vcpus": 8,
+    "docker_memory_bytes": 8322011136,
+    "one_worker_memory_mib": 1536,
+    "source_verified_in_installed_wheel": {
+      "transport": "bf86fed33dbca175d0dacaf0edf5f241f35de71a000dc74079247c53ced2881a",
+      "gateway": "092abb3548cf55e2091b13cb8758cd1ad44f92eaec59ec4ef8738f05c78dd08b",
+      "browser": "bc0fdc636ab51a425cc002f15a3aa0a03fa671792ff72e0922159fb55aec575d",
+      "contracts": "0e843333849b9c1efeb3fc4ff1835afca82f7e3b82debcfebaf0821fa2b5ea8a"
+    },
+    "minimum_handlers_reserved_for_other_requests": 6,
+    "non_stream_handlers_available_on_this_gateway_at_32_streams": 16
+  },
+  "transport": "The installed HTTPS client created normal per-request TLS connections. Its snapshot supplied FINISHED. WebSocket clients used openbexi.events.v1 for event replay. The standard Gateway capped simultaneous WSS at 32 and rejected the 33rd request while HTTPS reads and the owner command continued.",
+  "real_chromium_evidence": "public-live-final.json",
+  "scope_limits": [
+    "One isolated Docker host and configured Gateway. The separate Chromium qualification used 23 authenticated browser contexts.",
+    "Production capacity certification and the independent security review retain separate gates."
+  ],
+  "artifacts": [
+    {
+      "archive": "public-launch/observers47/case.json",
+      "sha256": "08a3b9e6cbd14d413d9212877c29a1ec815e6404a894c2a05821c05e6f0071a2"
+    },
+    {
+      "archive": "public-launch/observers47/capacity.json",
+      "sha256": "0b1d490532eb032cb606666e04984b7d0dc3fda662bf03b4c4604725ed842149"
+    },
+    {
+      "archive": "public-launch/observers47/observers.json",
+      "sha256": "721f551fc68b598c01d012a0e6ed45b291b62ffc239e5a8d95a6170ebebc846d"
+    },
+    {
+      "archive": "public-launch/observers47/deployed-capacity.json",
+      "sha256": "1c8ca54eaf2bc6e2d7b4f4d2b2e3ffa83f49ac4b2f1361c6a184007e40571824"
+    },
+    {
+      "archive": "public-launch/observers47/public-result.json",
+      "sha256": "2e9f162154c47976267a3928ac569a051479f3ed2f9a5dd5bb6ec92a54b6ffbb"
+    },
+    {
+      "archive": "public-launch/observers47/worker.log",
+      "sha256": "bacc9c503552d85502eb2b44fd482b1f77570305a18cc34205a59fb8eada9834"
+    },
+    {
+      "archive": "public-launch/observers47/native-build.json",
+      "sha256": "339433147e9814f12e94291b1cb4b24aacd18553aadeaaa553c761b6debde05e"
+    },
+    {
+      "archive": "public-launch/observers47/fixture-cleanup.json",
+      "sha256": "6736aa9f98882e4a6753a7ebc3787b7f97b12cd82c8c3299d9ba51e6e2aa6ecd"
+    }
+  ],
+  "reproduction": {
+    "repository_file": "public-observer-capacity-tools.zip",
+    "archive": "public-launch/public-observer-capacity-tools.zip",
+    "sha256": "42eed00dc0fc2c7a6080350cd050ddb90b21ba38410528cff6b485447031569b"
+  },
+  "archive_root": "F:/openbexi-builds/qualification-20261122"
+}

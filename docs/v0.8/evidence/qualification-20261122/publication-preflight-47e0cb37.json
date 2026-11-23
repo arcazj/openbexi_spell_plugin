@@ -1,0 +1,179 @@
+{
+  "clean_checkout": "e65f538fb39313562b192d099db289e1b177db3b",
+  "runtime_subject": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "phase": "qualification hold",
+  "results": [
+    {
+      "name": "executable",
+      "exit_code": 1,
+      "command": "python scripts/check_v08_release.py --candidate 47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d --output executable.json",
+      "sha256": "791d02cafb4ec458668cb2d276551a73d37c0d8c9c5cc6c5ed314ee3e98de46f",
+      "result": {
+        "schema": "openbexi.v08.publication-preflight/1",
+        "version": "0.8.0",
+        "candidate_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+        "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+        "full_v08_qualified": false,
+        "eligible_for_publication": false,
+        "publication_performed": false,
+        "failures": [
+          "Candidate has tracked or untracked runtime source changes"
+        ],
+        "gates": {
+          "services": {
+            "qualified": false,
+            "errors": [
+              "Complete the outstanding Listener partition, multi-Context isolation and concurrent alias/version cases on the supported deployment."
+            ]
+          },
+          "native_family": {
+            "qualified": false,
+            "errors": [
+              "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply."
+            ]
+          },
+          "compatibility": {
+            "qualified": false,
+            "errors": [
+              "Correct the reproduced adapter behaviors and finish the four inherited dimensions for the remaining IDs. Rerun affected rows on the intended delivery pair."
+            ]
+          },
+          "driver_faults": {
+            "qualified": false,
+            "errors": [
+              "Demonstrate reliable original deadlines and complete deployed TC/ack/TM, recovery, isolation and uncertain-outcome oracles on the delivered driver and independent DSS."
+            ]
+          },
+          "ide_browser": {
+            "qualified": false,
+            "errors": [
+              "The user must complete JetBrains onboarding in IntelliJ IDEA and PyCharm so the project-level Run and Debug checks can run. Remaining browser request/reject/expiry and multi-panel contracts need complete coverage."
+            ]
+          },
+          "compose": {
+            "qualified": false,
+            "errors": [
+              "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology."
+            ]
+          },
+          "kubernetes": {
+            "qualified": false,
+            "errors": [
+              "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment."
+            ]
+          },
+          "recovery": {
+            "qualified": false,
+            "errors": [
+              "Complete representative multi-node storage restoration, authority fencing and independent DSS uncertain-effect recovery on the target deployment."
+            ]
+          },
+          "security": {
+            "qualified": false,
+            "errors": [
+              "An independent reviewer must assess the implemented system and the exposure of outstanding advisories. The release owner must explicitly decide any proposed risk exceptions."
+            ]
+          },
+          "ci": {
+            "qualified": false,
+            "errors": [
+              "Require all mandatory jobs and supported integration surfaces on the identified delivery pair within their original limits."
+            ]
+          },
+          "packaging": {
+            "qualified": false,
+            "errors": [
+              "Independent risk review and the remaining mandatory gates must pass before tagging, publishing and verifying fresh stable downloads."
+            ]
+          }
+        },
+        "qualification_checkout_commit": "e65f538fb39313562b192d099db289e1b177db3b"
+      }
+    },
+    {
+      "name": "qualification-head",
+      "exit_code": 1,
+      "command": "python scripts/check_v08_release.py --candidate e65f538fb39313562b192d099db289e1b177db3b --output qualification-head.json",
+      "sha256": "f460d73c71a25778a605aabfc244ff12709b5d09f6461043b1db7ea22bb492db",
+      "result": {
+        "schema": "openbexi.v08.publication-preflight/1",
+        "version": "0.8.0",
+        "candidate_commit": "e65f538fb39313562b192d099db289e1b177db3b",
+        "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+        "full_v08_qualified": false,
+        "eligible_for_publication": false,
+        "publication_performed": false,
+        "failures": [],
+        "gates": {
+          "services": {
+            "qualified": false,
+            "errors": [
+              "Complete the outstanding Listener partition, multi-Context isolation and concurrent alias/version cases on the supported deployment."
+            ]
+          },
+          "native_family": {
+            "qualified": false,
+            "errors": [
+              "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply."
+            ]
+          },
+          "compatibility": {
+            "qualified": false,
+            "errors": [
+              "Correct the reproduced adapter behaviors and finish the four inherited dimensions for the remaining IDs. Rerun affected rows on the intended delivery pair."
+            ]
+          },
+          "driver_faults": {
+            "qualified": false,
+            "errors": [
+              "Demonstrate reliable original deadlines and complete deployed TC/ack/TM, recovery, isolation and uncertain-outcome oracles on the delivered driver and independent DSS."
+            ]
+          },
+          "ide_browser": {
+            "qualified": false,
+            "errors": [
+              "The user must complete JetBrains onboarding in IntelliJ IDEA and PyCharm so the project-level Run and Debug checks can run. Remaining browser request/reject/expiry and multi-panel contracts need complete coverage."
+            ]
+          },
+          "compose": {
+            "qualified": false,
+            "errors": [
+              "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology."
+            ]
+          },
+          "kubernetes": {
+            "qualified": false,
+            "errors": [
+              "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment."
+            ]
+          },
+          "recovery": {
+            "qualified": false,
+            "errors": [
+              "Complete representative multi-node storage restoration, authority fencing and independent DSS uncertain-effect recovery on the target deployment."
+            ]
+          },
+          "security": {
+            "qualified": false,
+            "errors": [
+              "An independent reviewer must assess the implemented system and the exposure of outstanding advisories. The release owner must explicitly decide any proposed risk exceptions."
+            ]
+          },
+          "ci": {
+            "qualified": false,
+            "errors": [
+              "Require all mandatory jobs and supported integration surfaces on the identified delivery pair within their original limits."
+            ]
+          },
+          "packaging": {
+            "qualified": false,
+            "errors": [
+              "Independent risk review and the remaining mandatory gates must pass before tagging, publishing and verifying fresh stable downloads."
+            ]
+          }
+        },
+        "qualification_checkout_commit": "e65f538fb39313562b192d099db289e1b177db3b"
+      }
+    }
+  ]
+}

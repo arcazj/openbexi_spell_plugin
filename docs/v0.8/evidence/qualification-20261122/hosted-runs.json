@@ -1,90 +1,41 @@
 {
-  "as_of": "2026-11-23T02:41:45.561887+00:00",
+  "as_of": "2026-11-23T03:34:51.774633+00:00",
   "runs": [
     {
       "repo": "spell",
-      "ci_run": 45100630663,
-      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663",
-      "name": "v0.8 prelaunch multi-service Compose integration",
-      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "ci_run": 45102099080,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102099080",
+      "name": "v0.8 isolated exact-source foundation",
+      "commit": "327a41539988bc92f5a85a32df7595b629a1d397",
       "head_branch": "qualification/ide-spell-20261122",
       "event": "workflow_dispatch",
       "status": "completed",
       "conclusion": "success",
       "jobs": [
         {
-          "id": 137450424431,
-          "name": "compose-prelaunch",
+          "id": 137455050500,
+          "name": "foundation",
           "conclusion": "success",
           "status": "completed",
-          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663/job/137450424431"
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102099080/job/137455050500"
         }
       ],
       "artifacts": [
         {
-          "id": 14785232456,
-          "name": "v08-compose-prelaunch-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
-          "sha256": "3774d7f0309db1a904a77587da104560dce685abf6edb0edca10699522519e78",
-          "bytes": 852,
-          "members": 2
-        }
-      ]
-    },
-    {
-      "repo": "spell",
-      "ci_run": 45100630899,
-      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899",
-      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
-      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
-      "head_branch": "qualification/ide-spell-20261122",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "id": 137450424662,
-          "name": "python-dependency-inventory",
-          "conclusion": "success",
-          "status": "completed",
-          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899/job/137450424662"
-        }
-      ],
-      "artifacts": [
-        {
-          "id": 14785775331,
-          "name": "v08-python-supply-chain-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
-          "sha256": "cba4ac9058d44a9de30d491de764cd9be1d2e8abbb0d046f6892ab737b978d9f",
-          "bytes": 2562,
-          "members": 3
-        }
-      ]
-    },
-    {
-      "repo": "spell",
-      "ci_run": 45100630894,
-      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894",
-      "name": "v0.8 kind five-process prelaunch runtime smoke",
-      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
-      "head_branch": "qualification/ide-spell-20261122",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "id": 137450426010,
-          "name": "kind-prelaunch",
-          "conclusion": "success",
-          "status": "completed",
-          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894/job/137450426010"
-        }
-      ],
-      "artifacts": [
-        {
-          "id": 14785352666,
-          "name": "v08-kind-prelaunch-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
-          "sha256": "56c2db1295aa3e7095bfee3538faa167d8bdb6175254cb3f64df04c0f45af500",
-          "bytes": 4629,
-          "members": 5
+          "id": 14786440870,
+          "name": "v08-foundation-isolated-327a41539988bc92f5a85a32df7595b629a1d397",
+          "sha256": "b1c13c1c849bc0d5a0f2d69d25f2aa7a401c7c4d80803eb40506f6bd65503c50",
+          "bytes": 9256075,
+          "members": 532,
+          "suites": [
+            {
+              "tests": "1842",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "0",
+              "time": "408.784"
+            }
+          ]
         }
       ]
     },
@@ -427,6 +378,93 @@
               "debugpy breakpoint, stack, variables, edit, Step and Continue"
             ]
           }
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45100630663,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663",
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "head_branch": "qualification/ide-spell-20261122",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137450424431,
+          "name": "compose-prelaunch",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663/job/137450424431"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785232456,
+          "name": "v08-compose-prelaunch-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+          "sha256": "3774d7f0309db1a904a77587da104560dce685abf6edb0edca10699522519e78",
+          "bytes": 852,
+          "members": 2
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45100630899,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899",
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "head_branch": "qualification/ide-spell-20261122",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137450424662,
+          "name": "python-dependency-inventory",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899/job/137450424662"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785775331,
+          "name": "v08-python-supply-chain-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+          "sha256": "cba4ac9058d44a9de30d491de764cd9be1d2e8abbb0d046f6892ab737b978d9f",
+          "bytes": 2562,
+          "members": 3
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45100630894,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894",
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "head_branch": "qualification/ide-spell-20261122",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137450426010,
+          "name": "kind-prelaunch",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894/job/137450426010"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785352666,
+          "name": "v08-kind-prelaunch-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+          "sha256": "56c2db1295aa3e7095bfee3538faa167d8bdb6175254cb3f64df04c0f45af500",
+          "bytes": 4629,
+          "members": 5
         }
       ]
     },
@@ -2512,6 +2550,892 @@
       ]
     },
     {
+      "repo": "spell",
+      "ci_run": 45102247471,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247471",
+      "name": "v0.8 development Python supply chain inventory and known-vulnerability scan",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455516098,
+          "name": "python-dependency-inventory",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247471/job/137455516098"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785089395,
+          "name": "v08-python-supply-chain-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "cb21c6a415283799578dda571ee16158a4eccb00689d3d5bea25a84ee35108f9",
+          "bytes": 2563,
+          "members": 3
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247411,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247411",
+      "name": "v0.8 Kubernetes prelaunch static security gate",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455515908,
+          "name": "kubernetes-static",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247411/job/137455515908"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786126299,
+          "name": "v08-kubernetes-prelaunch-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "7c2c094a66af32641f6f488612756dc5f2e8a95ebba2b8e35e164c0a9b00fe3d",
+          "bytes": 2383,
+          "members": 1
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247465,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247465",
+      "name": "v0.8 prelaunch multi-service Compose integration",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455516175,
+          "name": "compose-prelaunch",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247465/job/137455516175"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14784964645,
+          "name": "v08-compose-prelaunch-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "b6a8c9c26187132e33eb88b5e5320ce96f392ce568ed340e58afb5398eb3a5a1",
+          "bytes": 853,
+          "members": 2
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247398,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247398",
+      "name": "v0.8 portable preparation and driver compatibility subset",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455515744,
+          "name": "compatibility-subset",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247398/job/137455515744"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785154176,
+          "name": "v08-compatibility-subset-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "7b87d165f77c07c965d633866c72c5b21036110ff6feb354cde083611be1f0e9",
+          "bytes": 15068,
+          "members": 3,
+          "suites": [
+            {
+              "tests": "241",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "0",
+              "time": "81.814"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247438,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247438",
+      "name": "v0.8 native allocation site investigation (diagnostic only)",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455516170,
+          "name": "original-handoff-allocation-profile",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247438/job/137455516170"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14785779100,
+          "name": "v08-native-allocation-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "24ad0d1f77d5363f6121f924425c45fa1a013f151528505a72c9d985e30b6afb",
+          "bytes": 526590,
+          "members": 66,
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 45.420675039,
+            "peak_bytes": 1030930432,
+            "window_growth_bytes": 38903808,
+            "failures": []
+          }
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247406,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247406",
+      "name": "v0.8 kind five-process prelaunch runtime smoke",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "id": 137455515869,
+          "name": "kind-prelaunch",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247406/job/137455515869"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786416371,
+          "name": "v08-kind-prelaunch-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "b2c7ccfd7f9c4597384f4e1a3b5f1a31fab5b422b006d96bfbde8cd148f8120c",
+          "bytes": 260,
+          "members": 1
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247388,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388",
+      "name": "v0.8 repeated native lifecycle evidence",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455515992,
+          "name": "repeated-lifecycle (native-startup-stress, 1)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455515992"
+        },
+        {
+          "id": 137455516245,
+          "name": "repeated-lifecycle (native-terminal, 1)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516245"
+        },
+        {
+          "id": 137455516325,
+          "name": "repeated-lifecycle (native-listener-survival, 2)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516325"
+        },
+        {
+          "id": 137455516334,
+          "name": "repeated-lifecycle (native-listener-survival, 3)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516334"
+        },
+        {
+          "id": 137455516354,
+          "name": "repeated-lifecycle (native-startup-stress, 3)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516354"
+        },
+        {
+          "id": 137455516360,
+          "name": "repeated-lifecycle (native-terminal, 3)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516360"
+        },
+        {
+          "id": 137455516362,
+          "name": "repeated-lifecycle (native-terminal, 2)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516362"
+        },
+        {
+          "id": 137455516397,
+          "name": "repeated-lifecycle (native-startup-stress, 2)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516397"
+        },
+        {
+          "id": 137455516416,
+          "name": "repeated-lifecycle (native-listener-survival, 1)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388/job/137455516416"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786400030,
+          "name": "v08-lifecycle-native-listener-survival-1-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "bef016f420619a77eb6e0ac89fd2170b7fb8e9954eb1e98862a281a8afeb9000",
+          "bytes": 25180,
+          "members": 31
+        },
+        {
+          "id": 14786371259,
+          "name": "v08-lifecycle-native-startup-stress-3-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "d2da9799ba20d1b92786bb9ccb180911520e6da1c20438f711316268812d5d21",
+          "bytes": 342616,
+          "members": 198
+        },
+        {
+          "id": 14786231603,
+          "name": "v08-lifecycle-native-terminal-2-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "bf8f6e72b5470408ec4cb50b2642fd4ab10ed34cbd0fc05363162e247a4a4c7e",
+          "bytes": 270859,
+          "members": 136
+        },
+        {
+          "id": 14786196074,
+          "name": "v08-lifecycle-native-terminal-1-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "c1f419a9be3035db87bf697e4ef52635b38d7de20f22776246f355013b5b46db",
+          "bytes": 268936,
+          "members": 136
+        },
+        {
+          "id": 14786127167,
+          "name": "v08-lifecycle-native-terminal-3-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "c59106b93807dedae6da7fde780a404a31f2aff7c9f3255e4e4616165fc0c0e8",
+          "bytes": 271654,
+          "members": 136
+        },
+        {
+          "id": 14785538924,
+          "name": "v08-lifecycle-native-startup-stress-1-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "9f359cb972767369638a4e138f620dd493de50e65bc778ea283dc3f736a40bfc",
+          "bytes": 343410,
+          "members": 198
+        },
+        {
+          "id": 14785473277,
+          "name": "v08-lifecycle-native-listener-survival-3-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "cb79d50ff1e9ed33892d45a255e59a00fce23030424d203735370aa9271896c3",
+          "bytes": 25202,
+          "members": 31
+        },
+        {
+          "id": 14785369611,
+          "name": "v08-lifecycle-native-startup-stress-2-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "266d396be4944afa9cc6b081f6357d689024fe03716065292053059c02ae18d1",
+          "bytes": 359072,
+          "members": 198
+        },
+        {
+          "id": 14785074649,
+          "name": "v08-lifecycle-native-listener-survival-2-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "5091b18d4a945e55f0b0653f60719d73d4209110eb89f04aaf4dc8723d37da7f",
+          "bytes": 25181,
+          "members": 31
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247364,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364",
+      "name": "v0.8 durable native audit storage and disk-full failure",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "id": 137455515755,
+          "name": "disk-and-restart",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455515755"
+        },
+        {
+          "id": 137455515976,
+          "name": "five-minute / native (ide)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455515976"
+        },
+        {
+          "id": 137455516076,
+          "name": "actual-native-disk-full",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455516076"
+        },
+        {
+          "id": 137455516234,
+          "name": "five-minute / native (handoff)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137455516234"
+        },
+        {
+          "id": 137458961420,
+          "name": "one-hour",
+          "conclusion": "skipped",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247364/job/137458961420"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786277335,
+          "name": "v08-audit-sanitized-300-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "a5a245d957979fc18e3efbb3b0276183086775aa13ad907cc5514b08e49fb51b",
+          "bytes": 1024694,
+          "members": 70,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 303.606232386,
+            "resident_peak_bytes": 1292263424,
+            "combined_window_growth_bytes": 310960128,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14786116310,
+          "name": "v08-audit-storage-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "3669d9cbb0ec677a6a122f2694b15053c7fdf8a7e0d995a8b353ab31da1f0446",
+          "bytes": 188730,
+          "members": 7
+        },
+        {
+          "id": 14785653933,
+          "name": "v08-audit-sanitized-300-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "57f44ab520470947a6294b4ffaade1f80223f80b94c11e65339a2bcdf63dcc80",
+          "bytes": 1049253,
+          "members": 91,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.794144673,
+            "resident_peak_bytes": 1298833408,
+            "combined_window_growth_bytes": 314736640,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14785408944,
+          "name": "v08-native-audit-full-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "f1ded798586928219e24fda56e734271668cf79d506a32a9cdee34dd74ca2b20",
+          "bytes": 245165,
+          "members": 72
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247376,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376",
+      "name": "v0.8 services, authority and worker preflight",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455515957,
+          "name": "foundation",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455515957"
+        },
+        {
+          "id": 137455516143,
+          "name": "native-boundary",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516143"
+        },
+        {
+          "id": 137455516164,
+          "name": "native-launch (dss, --native-dss)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516164"
+        },
+        {
+          "id": 137455516190,
+          "name": "fault-reproduction",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516190"
+        },
+        {
+          "id": 137455516195,
+          "name": "native-launch (listener-survival, --native-listener-survival)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516195"
+        },
+        {
+          "id": 137455516219,
+          "name": "native-launch (child-gate, --native-child-gate)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516219"
+        },
+        {
+          "id": 137455516264,
+          "name": "native-launch (native-terminal, --native-terminal)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516264"
+        },
+        {
+          "id": 137455516269,
+          "name": "native-launch (native-handoff, --native-handoff)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516269"
+        },
+        {
+          "id": 137455516303,
+          "name": "native-launch (native-prompts, --native-prompts)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516303"
+        },
+        {
+          "id": 137455516305,
+          "name": "native-launch (thread-barrier, --native-thread-barrier)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516305"
+        },
+        {
+          "id": 137455516310,
+          "name": "native-launch (native-ide, --native-ide)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516310"
+        },
+        {
+          "id": 137455516425,
+          "name": "native-launch (audit)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516425"
+        },
+        {
+          "id": 137455516454,
+          "name": "native-launch (native-startup-stress, --native-startup-stress)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516454"
+        },
+        {
+          "id": 137455516567,
+          "name": "native-launch (pause-probe, --native-pause-probe)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376/job/137455516567"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786950148,
+          "name": "v08-native-launch-native-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "681909b573720a9b9e99f26dfdb221da079f8b63e555d054b372122ec46a4d50",
+          "bytes": 418447,
+          "members": 86,
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 45.394228466,
+            "peak_bytes": 1029496832,
+            "window_growth_bytes": 39981056,
+            "failures": []
+          }
+        },
+        {
+          "id": 14786696130,
+          "name": "v08-native-launch-native-startup-stress-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "b48aa966c0effe9480a12bbe5193f8b1b8c7b68aaa1df11d94d87534e0089ce9",
+          "bytes": 349310,
+          "members": 198
+        },
+        {
+          "id": 14786575152,
+          "name": "v08-native-launch-native-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "476116d8d51e8fa281d86eaa378acbfad5b10f7fc351de5766f03e3620482ae3",
+          "bytes": 396520,
+          "members": 66,
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 45.417064647,
+            "peak_bytes": 1029414912,
+            "window_growth_bytes": 40247296,
+            "failures": []
+          }
+        },
+        {
+          "id": 14786436346,
+          "name": "v08-native-launch-native-prompts-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "01090afe04c3f590e5ca8abcdda961af3c918f58438e78189664137280171660",
+          "bytes": 206148,
+          "members": 69
+        },
+        {
+          "id": 14786351970,
+          "name": "v08-server-foundation-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "0113271501b5dbf0482725aef1aa36364ec60c528044ef25dbc08d1442c09d4d",
+          "bytes": 9258899,
+          "members": 531,
+          "suites": [
+            {
+              "tests": "1842",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "0",
+              "time": "556.436"
+            }
+          ]
+        },
+        {
+          "id": 14786290820,
+          "name": "v08-native-launch-dss-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "2187424b4dc1aa7a34bf78d28e94dbd703cce51d1a34b5ba03851a7254a40ab5",
+          "bytes": 27924,
+          "members": 31
+        },
+        {
+          "id": 14786117331,
+          "name": "v08-native-launch-native-terminal-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "32dcc89f2282bfab83997181797bb3a3720353ac03d81b8052f043094b63fa6e",
+          "bytes": 274392,
+          "members": 136
+        },
+        {
+          "id": 14785943697,
+          "name": "v08-native-launch-child-gate-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "16bf82a39a69fb54a8d079753ebeb70bd59c3de87368be5640a6d8782654e98b",
+          "bytes": 185620,
+          "members": 65
+        },
+        {
+          "id": 14785927808,
+          "name": "v08-native-launch-thread-barrier-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "8f3c0f2b417ae006185744d26b5206bb1dc236e0d7550184f59732e98b361787",
+          "bytes": 21176,
+          "members": 25
+        },
+        {
+          "id": 14785648240,
+          "name": "v08-fault-reproduction-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "d3520a913bee46fe0e5ce74405bca5b7a0ca7daee7b22e03e50dc13118ab19f4",
+          "bytes": 38646,
+          "members": 9,
+          "suites": [
+            {
+              "tests": "95",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "0",
+              "time": "85.665"
+            }
+          ]
+        },
+        {
+          "id": 14785599520,
+          "name": "v08-native-launch-listener-survival-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "edf95e871c92448b40556cedeb4aaa942788c02b3be16af98124ec03b9ce0967",
+          "bytes": 25218,
+          "members": 31
+        },
+        {
+          "id": 14785424014,
+          "name": "v08-native-launch-pause-probe-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "5e615d1f76f52ee30edb1b9075d465e08c384651ed6bc822b370fb16dc059098",
+          "bytes": 20806,
+          "members": 25
+        },
+        {
+          "id": 14785158971,
+          "name": "v08-native-boundary-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "7295a3a8b21c5eb00cc94827eb3caf1410a09669677c6a1d0d06e49d74c4e44f",
+          "bytes": 2071,
+          "members": 4
+        },
+        {
+          "id": 14785154568,
+          "name": "v08-native-launch-audit-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "38acecf2276030aa0de43db22035641295f46a4ec0b5a7102ca6738d8af0073e",
+          "bytes": 21950,
+          "members": 27
+        }
+      ]
+    },
+    {
+      "repo": "spell",
+      "ci_run": 45102247430,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430",
+      "name": "v0.8 isolated memory comparisons (not release qualification)",
+      "commit": "e65f538fb39313562b192d099db289e1b177db3b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "id": 137455516265,
+          "name": "profile-regressions",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455516265"
+        },
+        {
+          "id": 137455937057,
+          "name": "comparison (optimized-noswap, handoff)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937057"
+        },
+        {
+          "id": 137455937078,
+          "name": "comparison (asan-noswap, handoff)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937078"
+        },
+        {
+          "id": 137455937080,
+          "name": "comparison (asan-noswap, ide)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937080"
+        },
+        {
+          "id": 137455937110,
+          "name": "comparison (asan-swap, ide)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937110"
+        },
+        {
+          "id": 137455937111,
+          "name": "comparison (asan-swap, handoff)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937111"
+        },
+        {
+          "id": 137455937115,
+          "name": "comparison (asan-o2-noswap, handoff)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937115"
+        },
+        {
+          "id": 137455937117,
+          "name": "comparison (optimized-noswap, ide)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937117"
+        },
+        {
+          "id": 137455937259,
+          "name": "comparison (asan-o2-noswap, ide)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937259"
+        },
+        {
+          "id": 137469596807,
+          "name": "optimized-endurance",
+          "conclusion": "skipped",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137469596807"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14787546777,
+          "name": "v08-memory-asan-o2-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "851c84b4bcec6df7c306dc919c8526bf0c68cc736e4e27a0429e78a4259c9772",
+          "bytes": 1103902,
+          "members": 70,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.379192389,
+            "resident_peak_bytes": 1308426240,
+            "combined_window_growth_bytes": 322408448,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14787311062,
+          "name": "v08-memory-asan-swap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "7dffd4f13270a79c30809c038b1b77c5da4bbf36c9c52170ea86574a2fbd59a4",
+          "bytes": 771,
+          "members": 1
+        },
+        {
+          "id": 14787284631,
+          "name": "v08-memory-asan-o2-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "a023c7f86dcde0b873f22e4ff11a5935b275a9c7d4b7006244a8932fd85a7fa3",
+          "bytes": 1124969,
+          "members": 90,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.44103639,
+            "resident_peak_bytes": 1313411072,
+            "combined_window_growth_bytes": 324587520,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14787176678,
+          "name": "v08-memory-optimized-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "b0fc7c544609b652461242328803e49534e1d6143916c447300dbc1d6e3703ea",
+          "bytes": 1042916,
+          "members": 90,
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 302.533258384,
+            "resident_peak_bytes": 143892480,
+            "combined_window_growth_bytes": 3563520,
+            "sampled_swap_peak_bytes": 0,
+            "failures": []
+          }
+        },
+        {
+          "id": 14787155822,
+          "name": "v08-memory-optimized-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "5dbbdb82e2f042df9f9f873232e9d309e06e522399067f12f927c8b13d82f16a",
+          "bytes": 928635,
+          "members": 70,
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 303.064487275,
+            "resident_peak_bytes": 143659008,
+            "combined_window_growth_bytes": 3428352.0,
+            "sampled_swap_peak_bytes": 0,
+            "failures": []
+          }
+        },
+        {
+          "id": 14787143732,
+          "name": "v08-memory-asan-swap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "cb499a03470e2e8adaebf37d1a2f43cb2f7a548a31170077244df30c57e3dc0c",
+          "bytes": 1023530,
+          "members": 71,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 303.640242919,
+            "resident_peak_bytes": 1304285184,
+            "combined_window_growth_bytes": 310566912,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14786437497,
+          "name": "v08-memory-asan-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "a31b77b7cf0351249c1cfd78f13dc3ad1cb89c647f01116362cd24eb9fc90627",
+          "bytes": 1085940,
+          "members": 90,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.468336875,
+            "resident_peak_bytes": 1313361920,
+            "combined_window_growth_bytes": 325029888,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "id": 14786176145,
+          "name": "v08-memory-profile-unit-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "696535c6af0db61c51cf61b320f189edf3c166c3585d0816f055a2e30705ca12",
+          "bytes": 3109,
+          "members": 1
+        },
+        {
+          "id": 14786019310,
+          "name": "v08-memory-asan-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+          "sha256": "d2d5769a89d14677e1c0a78891913fe91240c4602ea6bda4620d871f5f4b5b97",
+          "bytes": 999898,
+          "members": 70,
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 303.281973725,
+            "resident_peak_bytes": 1287847936,
+            "combined_window_growth_bytes": 305950720,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        }
+      ]
+    },
+    {
       "repo": "ide",
       "ci_run": 45100630795,
       "url": "https://github.com/arcazj/openbexi_ide/actions/runs/45100630795",
@@ -2763,6 +3687,82 @@
           ],
           "wheel_checksums": [
             "d628f50d422947a13892b326b2a45b0b16d494565c6bd9602b5a60d1cefc2f8e  .qualification/v08-client/wheels/openbexi_ide-1.2.2-py3-none-any.whl"
+          ]
+        }
+      ]
+    },
+    {
+      "repo": "ide",
+      "ci_run": 45104107663,
+      "url": "https://github.com/arcazj/openbexi_ide/actions/runs/45104107663",
+      "name": "v0.8 IDE client and existing IDE regressions",
+      "commit": "068a73f67cc277e6afcf4e7b3a5af2d24cb4d74b",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137461336671,
+          "name": "ide",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_ide/actions/runs/45104107663/job/137461336671"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14787425356,
+          "name": "ide-v08-client-3993f42fe50265256199e48b735e96f243a15410",
+          "sha256": "f5d1873b65b31c78717f3676fd4cd6fd061b6770aa76546569b659442a4ab748",
+          "bytes": 209218,
+          "members": 3,
+          "suites": [
+            {
+              "tests": "310",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "1",
+              "time": "316.015"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "repo": "ide",
+      "ci_run": 45102249433,
+      "url": "https://github.com/arcazj/openbexi_ide/actions/runs/45102249433",
+      "name": "v0.8 IDE client and existing IDE regressions",
+      "commit": "455a38c73a35b9740f77a386ff77d1221d9a2643",
+      "head_branch": "qualification-review/ide-spell-20261122",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 137455522713,
+          "name": "ide",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_ide/actions/runs/45102249433/job/137455522713"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 14786386392,
+          "name": "ide-v08-client-ecff3ebfcf3805cb21da4c60e101a94a5adec66b",
+          "sha256": "badee806402ebd004cfa241e28bd9e394fbc2c8f1a03e2640e996c3b7a37bac9",
+          "bytes": 208976,
+          "members": 3,
+          "suites": [
+            {
+              "tests": "310",
+              "failures": "0",
+              "errors": "0",
+              "skipped": "1",
+              "time": "343.780"
+            }
           ]
         }
       ]

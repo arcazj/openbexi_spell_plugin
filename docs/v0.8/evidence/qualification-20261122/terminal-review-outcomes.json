@@ -1,0 +1,313 @@
+{
+  "as_of": "2026-11-23T03:34:51.774633+00:00",
+  "hosted_workflows": 51,
+  "hosted_jobs": 158,
+  "job_conclusions": {
+    "success": 132,
+    "failure": 21,
+    "skipped": 5
+  },
+  "workflow_conclusions": {
+    "success": 37,
+    "failure": 14
+  },
+  "artifacts": 152,
+  "source_index": "hosted-runs.json",
+  "final_runtime": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+  "review_tree": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+  "exact_source_cluster": {
+    "workflow": "v0.8 kind five-process prelaunch runtime smoke",
+    "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894",
+    "head": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "conclusion": "success",
+    "job_results": {
+      "success": 1
+    }
+  },
+  "draft_cluster": {
+    "workflow": "v0.8 kind five-process prelaunch runtime smoke",
+    "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247406",
+    "head": "e65f538fb39313562b192d099db289e1b177db3b",
+    "conclusion": "failure",
+    "job_results": {
+      "failure": 1
+    },
+    "phase": "Calico readiness before application deployment",
+    "failure": "timed out waiting for the condition on tigerastatuses/calico",
+    "log_sha256": "61496858c45f01b62a2de80dbc8bf20722b693b9a1a24e6813e8d9ec33506e48"
+  },
+  "draft_service_matrix": {
+    "workflow": "v0.8 services, authority and worker preflight",
+    "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247376",
+    "head": "e65f538fb39313562b192d099db289e1b177db3b",
+    "conclusion": "success",
+    "job_results": {
+      "success": 14
+    }
+  },
+  "draft_repeated_native_lifecycle": {
+    "workflow": "v0.8 repeated native lifecycle evidence",
+    "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247388",
+    "head": "e65f538fb39313562b192d099db289e1b177db3b",
+    "conclusion": "success",
+    "job_results": {
+      "success": 9
+    }
+  },
+  "online_installer_draft_ci": {
+    "workflow": "v0.8 IDE client and existing IDE regressions",
+    "url": "https://github.com/arcazj/openbexi_ide/actions/runs/45104107663",
+    "head": "068a73f67cc277e6afcf4e7b3a5af2d24cb4d74b",
+    "conclusion": "success",
+    "job_results": {
+      "success": 1
+    },
+    "suite": [
+      {
+        "tests": "310",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "1",
+        "time": "316.015"
+      }
+    ]
+  },
+  "original_sanitizer": "review-five-minute.json",
+  "optional_comparison": {
+    "workflow": "v0.8 isolated memory comparisons (not release qualification)",
+    "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430",
+    "head": "e65f538fb39313562b192d099db289e1b177db3b",
+    "conclusion": "failure",
+    "job_results": {
+      "success": 3,
+      "failure": 6,
+      "skipped": 1
+    },
+    "scope": "Diagnostic only. Swapping and alternate instrumentation do not satisfy the original release workload.",
+    "cases": [
+      {
+        "profile": "optimized-noswap",
+        "scenario": "handoff",
+        "conclusion": "success",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937057",
+        "artifact": "v08-memory-optimized-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "5dbbdb82e2f042df9f9f873232e9d309e06e522399067f12f927c8b13d82f16a",
+        "comparison_sha256": "be87be5d7ce247e59311bafe9ad4be139f7ceaed996b854fbba04e7a9df8de6a",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 559.782894007,
+        "failures": [],
+        "native_error": null,
+        "resources": {
+          "passed": true,
+          "duration_seconds": 303.064487275,
+          "resident_peak_bytes": 143659008,
+          "sampled_combined_peak_bytes": 143253504,
+          "combined_window_growth_bytes": 3428352.0,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": []
+        }
+      },
+      {
+        "profile": "asan-noswap",
+        "scenario": "handoff",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937078",
+        "artifact": "v08-memory-asan-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "d2d5769a89d14677e1c0a78891913fe91240c4602ea6bda4620d871f5f4b5b97",
+        "comparison_sha256": "89759e1d2b23f179eaa42b000fea54de8325614f0892ad64f065cea6a7d5ad69",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 626.911188823,
+        "failures": [],
+        "native_error": "RuntimeError: Native recovery resource acceptance failed",
+        "resources": {
+          "passed": false,
+          "duration_seconds": 303.281973725,
+          "resident_peak_bytes": 1287847936,
+          "sampled_combined_peak_bytes": 1286553600,
+          "combined_window_growth_bytes": 305950720,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": [
+            "combined_memory_still_growing"
+          ]
+        },
+        "job_log_sha256": "0785c335848e8a7acb2a7882ae9dc25523a0499a928802b9a4fe3beafaf5c98a"
+      },
+      {
+        "profile": "asan-noswap",
+        "scenario": "ide",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937080",
+        "artifact": "v08-memory-asan-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "a31b77b7cf0351249c1cfd78f13dc3ad1cb89c647f01116362cd24eb9fc90627",
+        "comparison_sha256": "42dc463890b1c1a58f19759c2b9244d917108862fafddc573a7f90fde20bbc69",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 588.92577688,
+        "failures": [],
+        "native_error": "RuntimeError: Native recovery resource acceptance failed",
+        "resources": {
+          "passed": false,
+          "duration_seconds": 302.468336875,
+          "resident_peak_bytes": 1313361920,
+          "sampled_combined_peak_bytes": 1312280576,
+          "combined_window_growth_bytes": 325029888,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": [
+            "combined_memory_still_growing"
+          ]
+        },
+        "job_log_sha256": "8aeb1be3017e176885d953cfb1a7b0b23c737d210c360a5e3dc395fde8a348c5"
+      },
+      {
+        "profile": "asan-swap",
+        "scenario": "ide",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937110",
+        "artifact": "v08-memory-asan-swap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "7dffd4f13270a79c30809c038b1b77c5da4bbf36c9c52170ea86574a2fbd59a4",
+        "job_log_sha256": "d14fee502656de2630f7707dcd49159b4ba870d84525e580a4bc01160fd3b0f0"
+      },
+      {
+        "profile": "asan-swap",
+        "scenario": "handoff",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937111",
+        "artifact": "v08-memory-asan-swap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "cb499a03470e2e8adaebf37d1a2f43cb2f7a548a31170077244df30c57e3dc0c",
+        "comparison_sha256": "d151a2c67f22ff1b8fbcef04ce392b66c68b6fb2e06753e340d13a0102c7a907",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 639.942668562,
+        "failures": [],
+        "native_error": "RuntimeError: Native recovery resource acceptance failed",
+        "resources": {
+          "passed": false,
+          "duration_seconds": 303.640242919,
+          "resident_peak_bytes": 1304285184,
+          "sampled_combined_peak_bytes": 1303228416,
+          "combined_window_growth_bytes": 310566912,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": [
+            "combined_memory_still_growing"
+          ]
+        },
+        "job_log_sha256": "1a1614aeaed4cf23d67ea72574df8d80000d0c71119cd1fd3badb4dad40df32c"
+      },
+      {
+        "profile": "asan-o2-noswap",
+        "scenario": "handoff",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937115",
+        "artifact": "v08-memory-asan-o2-noswap-handoff-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "851c84b4bcec6df7c306dc919c8526bf0c68cc736e4e27a0429e78a4259c9772",
+        "comparison_sha256": "3e7236bcb55f61bc14114a6bbae9e1a897c020ba2809f4d622051ff7cb7bc854",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 599.410275208,
+        "failures": [],
+        "native_error": "RuntimeError: Native recovery resource acceptance failed",
+        "resources": {
+          "passed": false,
+          "duration_seconds": 302.379192389,
+          "resident_peak_bytes": 1308426240,
+          "sampled_combined_peak_bytes": 1306308608,
+          "combined_window_growth_bytes": 322408448,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": [
+            "combined_memory_still_growing"
+          ]
+        },
+        "job_log_sha256": "874c56a5695efa615be685e9f8b6598b41362a997f1e615e42efcb182e6b3cc1"
+      },
+      {
+        "profile": "optimized-noswap",
+        "scenario": "ide",
+        "conclusion": "success",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937117",
+        "artifact": "v08-memory-optimized-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "b0fc7c544609b652461242328803e49534e1d6143916c447300dbc1d6e3703ea",
+        "comparison_sha256": "be4418ba19419b92fd223e32144275e3672fb4688a24a652223a3627c0608251",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 568.1713425380001,
+        "failures": [],
+        "native_error": null,
+        "resources": {
+          "passed": true,
+          "duration_seconds": 302.533258384,
+          "resident_peak_bytes": 143892480,
+          "sampled_combined_peak_bytes": 143622144,
+          "combined_window_growth_bytes": 3563520,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": []
+        }
+      },
+      {
+        "profile": "asan-o2-noswap",
+        "scenario": "ide",
+        "conclusion": "failure",
+        "job": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45102247430/job/137455937259",
+        "artifact": "v08-memory-asan-o2-noswap-ide-1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "artifact_sha256": "a023c7f86dcde0b873f22e4ff11a5935b275a9c7d4b7006244a8932fd85a7fa3",
+        "comparison_sha256": "ce43035368bb9d8a2e0061d76533ed1b80de28ae7a2263f71e8521ee36234e5c",
+        "source": "1df69f7163911d6e2ab5af4641a4b10431daf58d",
+        "executed": true,
+        "elapsed_seconds": 626.356928931,
+        "failures": [],
+        "native_error": "RuntimeError: Native recovery resource acceptance failed",
+        "resources": {
+          "passed": false,
+          "duration_seconds": 302.44103639,
+          "resident_peak_bytes": 1313411072,
+          "sampled_combined_peak_bytes": 1311739904,
+          "combined_window_growth_bytes": 324587520,
+          "sampled_swap_peak_bytes": 0,
+          "swap_exercised": false,
+          "failures": [
+            "combined_memory_still_growing"
+          ]
+        },
+        "job_log_sha256": "28c74e123329053ec41bd913db97a8e4fb6818d9fc4c2b09f929143e00d4cd40"
+      }
+    ]
+  },
+  "review_shipping_source_checks": {
+    "openbexi_ide": {
+      "runtime_source": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "draft_head": "068a73f67cc277e6afcf4e7b3a5af2d24cb4d74b",
+      "inspected_paths": [
+        "src",
+        "pyproject.toml",
+        "requirements-windows-cp313.lock"
+      ],
+      "changed_paths": []
+    },
+    "openbexi_spell_plugin": {
+      "runtime_source": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "draft_head": "e65f538fb39313562b192d099db289e1b177db3b",
+      "inspected_paths": [
+        "server/src",
+        "shared_plugin/src",
+        "host_plugin/src",
+        "driver_plugin/src",
+        "host_runtime",
+        "src",
+        "jetbrains",
+        "pyproject.toml",
+        "server/pyproject.toml",
+        "shared_plugin/pyproject.toml",
+        "host_plugin/pyproject.toml",
+        "driver_plugin/pyproject.toml"
+      ],
+      "changed_paths": []
+    }
+  }
+}

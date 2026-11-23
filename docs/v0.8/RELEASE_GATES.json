@@ -17,7 +17,7 @@
     "native_family": {
       "qualified": false,
       "receipt": null,
-      "reason": "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply.",
+      "reason": "Correct sustained growth on the original instrumented workload and verify both five-minute scenarios. Run both original one-hour scenarios when their five-minute prerequisites pass.",
       "status": "FAIL",
       "evidence": "docs/v0.8/evidence/qualification-20261122/qualification.json"
     },
@@ -45,14 +45,14 @@
     "compose": {
       "qualified": false,
       "receipt": null,
-      "reason": "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology.",
+      "reason": "Complete deployment-wide worker and Listener loss, egress isolation, and uncertain command-effect settlement on the delivered Compose topology. The local independent-simulator read outage has a separate scope.",
       "status": "NOT RUN",
       "evidence": "docs/v0.8/evidence/qualification-20261122/qualification.json"
     },
     "kubernetes": {
       "qualified": false,
       "receipt": null,
-      "reason": "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment.",
+      "reason": "Provide a representative cluster and operator. Complete multi-host partitions and drains, admission, storage recovery, upgrade and rollback there. The observed node-off, fence and return used a single workstation.",
       "status": "BLOCKED",
       "evidence": "docs/v0.8/evidence/qualification-20261122/qualification.json"
     },
@@ -301,7 +301,7 @@
   "current_reconciliation": {
     "receipt": "docs/v0.8/evidence/qualification-20261122/qualification.json",
     "full_v08_qualified": false,
-    "recorded_at": "2026-11-23T02:36:18+00:00"
+    "recorded_at": "2026-11-23T03:41:54+00:00"
   },
   "historical_gate_reasons_before_dev82": {
     "services": {
@@ -487,7 +487,7 @@
   },
   "documentation_current_status": {
     "path": "docs/v0.8/CURRENT_STATUS.md",
-    "updated_at": "2026-11-23T02:36:18+00:00",
+    "updated_at": "2026-11-23T03:41:54+00:00",
     "qualification_receipt": "docs/v0.8/evidence/qualification-20261122/qualification.json"
   },
   "historical_current_before_root_cause_20261105": {

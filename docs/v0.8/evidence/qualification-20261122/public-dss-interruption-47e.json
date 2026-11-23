@@ -1,0 +1,295 @@
+{
+  "schema": "openbexi.qualification.private-dss-read-interruption/1",
+  "status": "PASS for the bounded local read-interruption and unaffected-worker subcase",
+  "measured_utc": [
+    "2026-11-23T03:27:05.391584+00:00",
+    "2026-11-23T03:27:20.956770+00:00"
+  ],
+  "scope": "Two separate single-use native workers on the same Context, with one ordinary GENERIC telemetry reader, one audit-only witness and a pinned mTLS read-only public observer. The fault was a cgroup pause of the dedicated synthetic DSS, followed by unpause of that same container.",
+  "subjects": {
+    "ide_source": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "ide_wheel_sha256": "1d68d0a13f85a9e64a084757c6be280cdc2feb77d97027df0d98bfc2ebffb58f",
+    "spell_source": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "server_wheel_sha256": "d39f4c6cc0735fea0c1331724a520658d866faf4548ded7f01802fcab2f6f3e8",
+    "dss_wheel_sha256": "93e1b280ef192b4da0994b0fe66d8168dd702e582bcb5e0aa5e6d84c09361caa",
+    "gateway": "sha256:f500c700cb5714a2040064a1a9bc93e3e86ae086cdc28dc65d363161af3ba94e",
+    "listener_core": "sha256:b1b46dcda1f8db45889f6a145d2125362bbc04c41ded6e956ea99ca1ea61f968",
+    "assigned_worker": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+    "private_dss_context_and_simulator": "sha256:37b524ee076c90c52f813b08eaba46c01a95af86cc60b7d82694c7293436d8b6",
+    "private_composition": "Canonical core plus the exact DSS driver wheel, 47e src/dss, and grpcio/protobuf copied from the canonical worker. Both private services ran in separate cgroups. The private adapter image was built for this test.",
+    "installed": {
+      "openbexi-spell-dss": "0.8.0",
+      "openbexi-spell-server": "0.8.0",
+      "protobuf": "7.36.2",
+      "grpcio": "1.84.0"
+    },
+    "runtime_source_hashes": {
+      "server/src/openbexi_spell_server/transport.py": "bf86fed33dbca175d0dacaf0edf5f241f35de71a000dc74079247c53ced2881a",
+      "host_runtime/python/native.py": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+      "host_runtime/python/v08_worker.py": "cef50eabd442cec819409932ab3d27f90402e21b53161449e528dfb795284585",
+      "driver_plugin/src/openbexi_spell_dss/context_driver.py": "4877552cfc1e99476175f5d924b7534f64b33e340648cadf7206e1f50162a74c",
+      "driver_plugin/src/openbexi_spell_dss/fenced_transport.py": "f189f07f2eda14616d7f0600e8ceb4922058c59ed23d858789fde0c5bd917604",
+      "driver_plugin/src/openbexi_spell_dss/transport.py": "8600331ecf4cd475611b172d4a46a01fc0ae8258e7cd1adc3e92edab05ea1d7a",
+      "src/dss/local.py": "67296ae3d64c5df9bb2c620cd3b0cfeacf1a7e07ba76224d5053dbe0a94536ce",
+      "src/dss/server.py": "0b649b3bd9880843524dbdac650725ef5f6df668373e02cb448f333f1139bba5"
+    },
+    "immutable_test_sources": {
+      "sensors": {
+        "procedure_id": "sensors",
+        "source_revision": "992a616363f7e900ecd9d6b5908a3561c2b3ac28",
+        "source_sha256": "12f55b680c60508230199b03fe5c0a255283ae7f690d9a8a5a1b0bc05529e6ee",
+        "runtime_image": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+        "driver_binding": "simulator"
+      },
+      "witness": {
+        "procedure_id": "witness",
+        "source_revision": "992a616363f7e900ecd9d6b5908a3561c2b3ac28",
+        "source_sha256": "8890b036d2a63b8031b36079a6c0fb5526da538b8d10c5bc68cc7d792bc9f3b0",
+        "runtime_image": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+        "driver_binding": "context-audit"
+      }
+    }
+  },
+  "fixture": {
+    "public_interface": "Windows installed SpellServerClient over loopback pinned-mTLS HTTPS",
+    "observer": {
+      "subject": "observer",
+      "permissions": [
+        "context:read",
+        "execution:read"
+      ],
+      "transport": "pinned mTLS HTTPS"
+    },
+    "linux_container_pids_during_fault": {
+      "simulator": 84375,
+      "context": 84611,
+      "listener": 84693,
+      "gateway": 84756,
+      "worker": 84842,
+      "worker2": 84897
+    },
+    "suspended_roles": [
+      "simulator"
+    ],
+    "worker_networks_separate": true,
+    "simulator_endpoint": "private loopback in the Context and DSS shared network namespace",
+    "public_port_roles": [
+      "gateway"
+    ],
+    "driver_permission": {
+      "binding": "simulator",
+      "url": "http://127.0.0.1:8085",
+      "tcp": [
+        "127.0.0.1",
+        45505
+      ],
+      "commands": [],
+      "telemetry": [
+        "TM.POWER.BUS_VOLTAGE"
+      ]
+    },
+    "clock": "One explicit manual synthetic STEP refreshed the healthy sample before the original reads."
+  },
+  "observed": {
+    "successful_read": {
+      "native_GetTM_volts": 28.0,
+      "request_id": "038535b3-e757-4c23-a309-be176873b438",
+      "response_sha256": "1e48c049df3ca8f9827efea608bd4631d05dd0a81b2163352855b88da547a2f7"
+    },
+    "interrupted_read": {
+      "method": "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+      "request_id": "3aea289c-6a75-4f6b-9100-92efa7e65d16",
+      "payload_sha256": "e460008acce4c79e2393bed0dced646431d0ec87a1487864fac881a66c3710ed",
+      "states": [
+        "ADMITTED",
+        "UNCERTAIN"
+      ],
+      "persisted_response_sha256": null,
+      "failure_event_sequence": 33,
+      "error_chain": [
+        {
+          "type": "TimeoutError"
+        }
+      ],
+      "seconds_from_external_signal_to_first_observation": 3.398,
+      "native_result": {
+        "execution_id": "f33e15e9-8c67-4300-92c7-609c2af08ba3",
+        "image_role": "worker",
+        "worker_exit_code": 1,
+        "worker_events": [
+          {
+            "utc": "2026-11-23T03:27:05.373833800Z",
+            "event": "native-ready",
+            "execution_id": "f33e15e9-8c67-4300-92c7-609c2af08ba3",
+            "native_status": "PAUSED"
+          },
+          {
+            "utc": "2026-11-23T03:27:08.576524900Z",
+            "event": "native-running",
+            "execution_id": "f33e15e9-8c67-4300-92c7-609c2af08ba3"
+          },
+          {
+            "utc": "2026-11-23T03:27:12.700205400Z",
+            "event": "native-driver-denied",
+            "path": "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+            "status": 503,
+            "code": "context_unavailable"
+          },
+          {
+            "utc": "2026-11-23T03:27:16.507390000Z",
+            "event": "native-worker-failed",
+            "error": "RuntimeError",
+            "hold_retained": true
+          }
+        ],
+        "procedure_marker": "DriverException",
+        "asrun": {
+          "file": "sensors.ASRUN",
+          "size": 2998,
+          "sha256": "833ee35fe0ae90ffda3309d0e1e8b430025c7048d3d372ea08ced89a6d60cec5"
+        }
+      },
+      "public_native_root_result": "FINISHED"
+    },
+    "unaffected_worker": {
+      "progress_counter_before_pause_during_pause_after_restore": [
+        6,
+        38,
+        94
+      ],
+      "native_result": {
+        "execution_id": "481f09c4-1337-4c69-811e-fc90982d5d4f",
+        "image_role": "worker2",
+        "worker_exit_code": 0,
+        "worker_events": [
+          {
+            "utc": "2026-11-23T03:27:07.801637800Z",
+            "event": "native-ready",
+            "execution_id": "481f09c4-1337-4c69-811e-fc90982d5d4f",
+            "native_status": "PAUSED"
+          },
+          {
+            "utc": "2026-11-23T03:27:08.474596100Z",
+            "event": "native-running",
+            "execution_id": "481f09c4-1337-4c69-811e-fc90982d5d4f"
+          },
+          {
+            "utc": "2026-11-23T03:27:20.279395700Z",
+            "event": "native-finished",
+            "execution_id": "481f09c4-1337-4c69-811e-fc90982d5d4f",
+            "native_status": "FINISHED",
+            "hold_retained": true,
+            "native_lifecycle_receipts_settled": true
+          }
+        ],
+        "procedure_marker": "witness completed",
+        "asrun": {
+          "file": "witness.ASRUN",
+          "size": 29504,
+          "sha256": "4921a9a5fea153d3719f0aaa5c0f7bb56caa480ea7d4c5bcc2cacdcb23ef261b"
+        }
+      },
+      "public_native_root_result": "FINISHED"
+    },
+    "observer_views_during_pause": {
+      "utc": "2026-11-23T03:27:09.661353+00:00",
+      "executions": [
+        {
+          "id": "481f09c4-1337-4c69-811e-fc90982d5d4f",
+          "native_root_registered": true,
+          "native_root_result": null,
+          "owner": "alice",
+          "procedure_id": "witness"
+        },
+        {
+          "id": "f33e15e9-8c67-4300-92c7-609c2af08ba3",
+          "native_root_registered": true,
+          "native_root_result": null,
+          "owner": "alice",
+          "procedure_id": "sensors"
+        }
+      ]
+    },
+    "observer_terminal": {
+      "utc": "2026-11-23T03:27:20.325447+00:00",
+      "executions": [
+        {
+          "id": "481f09c4-1337-4c69-811e-fc90982d5d4f",
+          "native_root_registered": true,
+          "native_root_result": "FINISHED",
+          "owner": "alice",
+          "procedure_id": "witness"
+        },
+        {
+          "id": "f33e15e9-8c67-4300-92c7-609c2af08ba3",
+          "native_root_registered": true,
+          "native_root_result": "FINISHED",
+          "owner": "alice",
+          "procedure_id": "sensors"
+        }
+      ]
+    },
+    "post_restore_no_replay": {
+      "unchanged_ledger_seconds": 6.434,
+      "driver_states": [
+        [
+          "/spell.driver.SPELLDriverInterface_TM/CreateTmItem",
+          "COMPLETED",
+          1
+        ],
+        [
+          "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+          "COMPLETED",
+          1
+        ],
+        [
+          "/spell.driver.SPELLDriverInterface_TM/RefreshItem",
+          "UNCERTAIN",
+          1
+        ]
+      ],
+      "failure_events": 1,
+      "effect_stage_rows": 0,
+      "simulator_commands_executed_before_after": [
+        0,
+        0
+      ],
+      "same_simulator_epoch": true,
+      "spent_worker_slots": [
+        [
+          "one",
+          1
+        ],
+        [
+          "two",
+          1
+        ]
+      ]
+    }
+  },
+  "deadlines": {
+    "native_default_TM_option_seconds": 3,
+    "context_max_TM_option_seconds": 3,
+    "metadata_handler_admission_seconds": 0.25,
+    "DSS_metadata_HTTP_seconds": 3,
+    "worker_to_Context_driver_response_seconds": 5,
+    "other_private_RPC_connect_and_response_seconds": 2,
+    "absolute_worker_RPC_watchdog_seconds": 5,
+    "interpretation": "The timeout occurred during current_state before telemetry sampling. The external observation includes marker delivery and ledger sampling. All candidate deadlines were unchanged."
+  },
+  "interpretation": "The source caught DriverException and the original C++ root reported FINISHED. The worker independently classified the driver failure, exited 1, and retained the occupied hold. The other worker finished, reported settled lifecycle receipts, exited 0, and retained its own single-use hold. The authority preserved the failed read identity and disclosed no response.",
+  "boundary": "Only an ordinary telemetry read and a disposable synthetic DSS interruption were exercised. Lost telecommand acknowledgements, external hardware, Listener loss, and cluster node failure are separate scopes.",
+  "reproduction": {
+    "dedicated_private_run": "dssfault47c",
+    "source_bundle_path": "F:/openbexi-builds/qualification-20261122/public-launch/dssfault47c/dss-interruption-evidence.zip",
+    "bundle_sha256": "3c358e05877adb86a0f64e66905a6684d0d21c8a1dc13f5ffd3fd707c7e31d53",
+    "bytes": 40620,
+    "public_evidence_files": {
+      "measured_run": "4e0307b9ec5e102a88c9e2ecefbc4b34e6adaa896d215707dd981c308370e12c",
+      "private_adapter_recipe": "e5cf5be10b9bd8b315e5973c45f152638694b77e05bfb724c7e90c4532ac5bc4",
+      "private_wrapper_build": "43ffbe1e73bb25370c708499ddaa96beda171eeb254e0da47710815b52647a2c",
+      "worker_isolation": "5abe773205befa24ad9567f7e68ee094407b7a989b17dc9b79c9d1e38703cffd",
+      "final_readonly_ledger": "c8088d091c8ecc20c7569e56d46de7836bc132652a63db5e1b4bfef0d870eb09"
+    }
+  }
+}
