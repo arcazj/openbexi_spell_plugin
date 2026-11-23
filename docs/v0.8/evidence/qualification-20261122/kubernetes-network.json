@@ -1,0 +1,117 @@
+{
+  "workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419863",
+  "artifact_sha256": "2ffb9e380be4ac56e60a0301822d4475602bb52c2a66017828fc321794e284f9",
+  "network_policy": {
+    "passed": true,
+    "scope": "Five prelaunch services on a three-node kind cluster with Calico",
+    "checks": [
+      {
+        "source": "context-a",
+        "target": "dss",
+        "port": 8085,
+        "allowed": true,
+        "outcome": "connected"
+      },
+      {
+        "source": "gateway",
+        "target": "dss",
+        "port": 8085,
+        "allowed": false,
+        "outcome": "timeout"
+      },
+      {
+        "source": "context-a",
+        "target": "dss",
+        "port": 8085,
+        "allowed": true,
+        "outcome": "connected"
+      },
+      {
+        "source": "listener",
+        "target": "context-a",
+        "port": 9441,
+        "allowed": true,
+        "outcome": "connected"
+      },
+      {
+        "source": "gateway",
+        "target": "context-a",
+        "port": 9441,
+        "allowed": false,
+        "outcome": "timeout"
+      },
+      {
+        "source": "listener",
+        "target": "context-a",
+        "port": 9441,
+        "allowed": true,
+        "outcome": "connected"
+      },
+      {
+        "source": "gateway",
+        "target": "listener",
+        "port": 9444,
+        "allowed": true,
+        "outcome": "connected"
+      }
+    ],
+    "nodes": {
+      "v08prelaunch-control-plane": "v1.32.2",
+      "v08prelaunch-worker": "v1.32.2",
+      "v08prelaunch-worker2": "v1.32.2"
+    },
+    "cni_images": [
+      "docker.io/calico/node:v3.30.3"
+    ],
+    "pods": {
+      "context-a": {
+        "uid": "a8a5bf25-72e3-4d04-a722-da628fac39a4",
+        "node": "v08prelaunch-worker2"
+      },
+      "context-b": {
+        "uid": "5fecfa33-e024-4df8-963d-9ed8290061ef",
+        "node": "v08prelaunch-worker2"
+      },
+      "dss": {
+        "uid": "d267c598-2dcd-495f-87d9-7ab75b237fe2",
+        "node": "v08prelaunch-worker"
+      },
+      "gateway": {
+        "uid": "d0bc8619-9135-4b59-b08f-2dc2ac8863b0",
+        "node": "v08prelaunch-worker2"
+      },
+      "listener": {
+        "uid": "fc6e3405-b887-4e9b-8362-a2e39e6060bc",
+        "node": "v08prelaunch-worker2"
+      }
+    },
+    "policies": {
+      "v08-contexts-from-listener": "e1669cb0-812a-488e-9b59-50db495d20f7",
+      "v08-contexts-to-dss": "949870aa-d4be-48ec-8a49-252e2b8685de",
+      "v08-default-deny": "f1a57814-cf9c-49a2-b34b-afba37b55639",
+      "v08-dns-only": "fd180ca4-6de1-48b5-8933-b3d19a6a5203",
+      "v08-dss-from-contexts": "dbc8d1d7-ae92-48eb-b54c-c1406da542b4",
+      "v08-gateway-to-listener": "b7f97090-896d-452b-b7f5-b3d5749f703d",
+      "v08-listener-from-gateway": "54658dd9-bd09-484a-ab4a-720b48d7524b",
+      "v08-listener-to-contexts": "7061f68d-50c9-427f-b2ce-76f8c16714e6"
+    }
+  },
+  "restart": {
+    "executed_checks": [
+      "context_a_restart_incarnation_rotated",
+      "context_b_incarnation_unchanged",
+      "context_a_durable_state",
+      "cross_context_isolation",
+      "runtime_remains_disabled"
+    ],
+    "full_v08_qualified": false,
+    "incarnation_a": "3459e41d-b30c-4a38-9bec-a609f633ba48",
+    "incarnation_b": "8eeed41b-5044-42dd-ab2a-5c7633a54d7c",
+    "native_runtime_qualified": false,
+    "passed": true,
+    "phase": "after",
+    "prelaunch_only": true,
+    "production_migration_authorized": false,
+    "schema": "openbexi.v08.compose-prelaunch/1"
+  }
+}

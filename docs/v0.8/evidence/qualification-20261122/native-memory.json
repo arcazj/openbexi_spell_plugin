@@ -1,0 +1,942 @@
+{
+  "schema": "openbexi.v08.qualification-native-memory/1",
+  "record_date": "2026-11-22",
+  "use": "Native memory attribution and measured scoped correction. Separate original whole-family receipts decide resource qualification.",
+  "candidate": {
+    "qualification_tools_and_runtime_commit": "a260204f4fb6b64dfe99ff87c8535c29a6ccd69b",
+    "exact_source_sha256": {
+      "host_runtime/build_admission_context.py": "fa51be188d92765bdf041a5e72c6bfd27ba5312762bba8c35d88ad3e3f0bdb7d",
+      "scripts/v08_memory_experiment.py": "d5680708ba1e82f01934061e133d1549a66e979f35767f0974ccebb0fa67dd1d",
+      "scripts/profile_v08_progress_writers.py": "d05f566dd0ae18e2958e3299f16216f24e2ab40070bbf7bdf386f28fea916f63",
+      "server/tests/test_executor_info_log_storage.py": "bee0905d48ac43757ae2b60ae663e288cd612e12872d4f041c17da7d829408ec"
+    },
+    "frozen_native_image": "sha256:d99b095d65c7fef008f9e6c02ff95c678cff295ee85a129f7a62fc0b795b1283",
+    "frozen_archive_sha256": "d7535367869416f807b376dd0289b62a8aec70a9891a78e59a4e1535a03b25cd",
+    "frozen_archive_bytes": 207521854,
+    "reference_ide_commit": "08c314fb6b802b407cbabe01777072884d2b7504",
+    "reference_ide_wheel_sha256": "43bbc5cdae4e6bff9cf258faf9c28f778c7e8617df304ca93436ddceeb4df96b"
+  },
+  "original_limits": {
+    "resident_cgroup_bytes": 2147483648,
+    "resident_and_combined_peak_budget_bytes": 1879048192,
+    "peak_headroom_below_cgroup_bytes": 268435456,
+    "max_window_growth_bytes": 67108864,
+    "swap_bytes": 0,
+    "original_short_seconds": 45,
+    "intermediate_diagnostic_seconds": 300,
+    "original_hours_seconds": 3600
+  },
+  "verified_five_minute_whole_family_trace": {
+    "symbolized_source": "docs/v0.8/evidence/context-deadlines-20261105/memory-300-attribution-symbolized.json",
+    "source_sha256": "67f8aa34cb65e8bdaa12b3d7d89b7ca56f3678aa8c21103c355fbada12f10573",
+    "verified_archived_inputs": {
+      "native-resources.jsonl": {
+        "sha256": "e1be1288dc2db165ad34c9d6b67667c60bcfc04fdac5d7df6a3d1a15512b5984",
+        "bytes": 16348847,
+        "archive_shard": "0055.zip"
+      },
+      "native-recovery-soak.json": {
+        "sha256": "d372ec5f806fbaaea79653a950918ecc4e1d9c67e664acf2b5b776a08a496bfb",
+        "bytes": 274,
+        "archive_shard": "0055.zip"
+      },
+      "native-resource-observer.json": {
+        "sha256": "f4dedc0b892272c0d744d1da2cd68559f02057e3b1a778d94a76dd4c5286e622",
+        "bytes": 237,
+        "archive_shard": "0055.zip"
+      }
+    },
+    "whole_family_original_processes": 8,
+    "observed_samples": 169,
+    "soak_samples": 143,
+    "duration_seconds": 303.490967687,
+    "first_10s_median_bytes": 990781440,
+    "last_10s_median_bytes": 1310349312.0,
+    "combined_growth_bytes": 319567872.0,
+    "late_minute_growth_bytes": 64391168.0,
+    "late_minute_windows": "Median of final ten seconds minus median of ten seconds ending one minute earlier. Both windows lie within the recorded soak.",
+    "resident_peak_bytes": 1315971072,
+    "swap_peak_bytes": 0,
+    "memory_max_events": 0,
+    "failures": [
+      "combined_memory_still_growing"
+    ],
+    "cgroup_delta_bytes": {
+      "anon": 314701824.0,
+      "file": 4352000.0,
+      "shmem": 4341760.0
+    },
+    "file_includes_shmem": true,
+    "processes": [
+      {
+        "name": "SPELL-Executor",
+        "archive_host_pid": 18022,
+        "start_ticks": 30047,
+        "anonymous_growth_bytes": 169807872.0,
+        "live_allocator_growth_bytes": 3182.0,
+        "allocator_heap_growth_bytes": 151060480.0,
+        "first_recorded_quarantine_bytes": 136691792,
+        "last_recorded_quarantine_bytes": 250280144,
+        "quarantine_records": 25
+      },
+      {
+        "name": "SPELL-Executor",
+        "archive_host_pid": 18345,
+        "start_ticks": 30243,
+        "anonymous_growth_bytes": 83771392.0,
+        "live_allocator_growth_bytes": 0.0,
+        "allocator_heap_growth_bytes": 70189056.0,
+        "first_recorded_quarantine_bytes": 124005457,
+        "last_recorded_quarantine_bytes": 179747889,
+        "quarantine_records": 26
+      },
+      {
+        "name": "SPELL-Context",
+        "archive_host_pid": 17801,
+        "start_ticks": 29921,
+        "anonymous_growth_bytes": 39800832.0,
+        "live_allocator_growth_bytes": 5770.0,
+        "allocator_heap_growth_bytes": 20381696.0,
+        "first_recorded_quarantine_bytes": 139962998,
+        "last_recorded_quarantine_bytes": 150542768,
+        "quarantine_records": 27
+      }
+    ],
+    "progress_counts_before": {
+      "root": 1283,
+      "background": 1667,
+      "child": 1413
+    },
+    "progress_counts_after": {
+      "root": 13656,
+      "background": 16571,
+      "child": 14644
+    },
+    "successful_renames_by_writer": {
+      "root": 12373,
+      "background": 14904,
+      "child": 13231
+    },
+    "possible_4096_byte_buffer_traffic": 165920768,
+    "traffic_interpretation": "Modeled allocation traffic if each append-and-replace iteration obtains one 4096-byte buffer. The model is separate from resident growth. The ASan and cgroup memory measures overlap.",
+    "all_progress_intervals_advanced": true,
+    "buffer_allocation_stack_control": {
+      "four_library_return_offsets": [
+        "0x179ef0",
+        "0x25012a",
+        "0x25f754",
+        "0x18b7cb"
+      ],
+      "previous_control_receipt": "docs/v0.8/evidence/root-cause-20261105/qualification.json",
+      "previous_control_sha256": "6904dc410e358473d4831c42b39fac3927a2a29e290cf0c2f56f52d50ac6f2d4",
+      "scope": "Matching CPython mapped ELF in the original trace and independent text-open/BufferedWriter controls. The private library symbols are stripped. Each prior control recorded 16 matching 4096-byte allocations and 16 matching frees. The three new comparisons use sampled records from the full and independently hash-verified trace.",
+      "current_full_trace_sites": [
+        {
+          "archive_host_pid": 18022,
+          "observations": 25,
+          "sampled_allocated_growth_bytes": 249856,
+          "final_sampled_allocation_bytes": 286720,
+          "final_sampled_freed_bytes": 286720,
+          "remaining_sampled_upper_bound_bytes": 0
+        },
+        {
+          "archive_host_pid": 18022,
+          "observations": 19,
+          "sampled_allocated_growth_bytes": 155648,
+          "final_sampled_allocation_bytes": 176128,
+          "final_sampled_freed_bytes": 176128,
+          "remaining_sampled_upper_bound_bytes": 0
+        },
+        {
+          "archive_host_pid": 18345,
+          "observations": 23,
+          "sampled_allocated_growth_bytes": 217088,
+          "final_sampled_allocation_bytes": 241664,
+          "final_sampled_freed_bytes": 241664,
+          "remaining_sampled_upper_bound_bytes": 0
+        }
+      ]
+    }
+  },
+  "historical_one_hour": {
+    "source": "docs/v0.8/evidence/qualification-dev81-local-20261028.json",
+    "source_sha256": "a83698b5f2dac4ad1602c0b6a5e23c9832701219fbfa92c6dd5dfc33b37b4075",
+    "spell_source": "4c55321bad3a66118e087f1b8b9d7b9f55028065",
+    "paired_ide_source": "b1472b4d5a515b9082db139fb8e16b63677a052e",
+    "rows": [
+      {
+        "scenario": "ide",
+        "profile": "asan-noswap",
+        "run_id": 40770371786,
+        "artifact_id": 12855154534,
+        "duration_seconds": 3600.589913021,
+        "combined_window_growth_bytes": 1079748608.0,
+        "resident_peak_bytes": 2063626240,
+        "sampled_swap_peak_bytes": 0,
+        "late_ten_minute_growth_bytes": 59691008.0,
+        "failures": [
+          "resident_peak_budget_exceeded",
+          "combined_peak_budget_exceeded",
+          "combined_memory_still_growing"
+        ]
+      },
+      {
+        "scenario": "handoff",
+        "profile": "asan-noswap",
+        "run_id": 40770371786,
+        "artifact_id": 12855809168,
+        "duration_seconds": 3603.335168907,
+        "combined_window_growth_bytes": 1076039680,
+        "resident_peak_bytes": 2057900032,
+        "sampled_swap_peak_bytes": 0,
+        "late_ten_minute_growth_bytes": 56569856.0,
+        "failures": [
+          "resident_peak_budget_exceeded",
+          "combined_peak_budget_exceeded",
+          "combined_memory_still_growing"
+        ]
+      },
+      {
+        "scenario": "handoff",
+        "profile": "optimized-noswap",
+        "run_id": 40770371788,
+        "artifact_id": 12859190925,
+        "duration_seconds": 3602.321767715,
+        "combined_window_growth_bytes": 5296128,
+        "resident_peak_bytes": 145727488,
+        "sampled_swap_peak_bytes": 0,
+        "late_ten_minute_growth_bytes": 8192,
+        "failures": []
+      },
+      {
+        "scenario": "ide",
+        "profile": "optimized-noswap",
+        "run_id": 40770371788,
+        "artifact_id": 12859190975,
+        "duration_seconds": 3603.986820283,
+        "combined_window_growth_bytes": 7610368,
+        "resident_peak_bytes": 147615744,
+        "sampled_swap_peak_bytes": 0,
+        "late_ten_minute_growth_bytes": 2328576.0,
+        "failures": []
+      }
+    ]
+  },
+  "progress_writer_comparison": {
+    "scope": "Direct execution of the original handoff_fixture progress function in two embedded interpreters, three 20 ms writers. The root and background share a process. The fixture uses the original buffered open, atomic rename and tmpfs. The producer, scheduling and observer exist independently of native SPELL control, dispatch, network, DSS, and audit.",
+    "rows_order": [
+      "root",
+      "background",
+      "child"
+    ],
+    "controls": {
+      "sanitized": {
+        "scope": "Isolated root/background/child file writers only",
+        "profile": "sanitized",
+        "runtime": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
+        "binary_sha256": "fb120352a08a5f86d188084e185a9e5ac48b479e2818f8dd7ee4db24cf96411c",
+        "fixture_sha256": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
+        "writer_sha256": "1353da49d8fe5a32dc3f941820aaf34d4075e2cc3204705b2f7e3b44693c22a0",
+        "mapped_libraries": {
+          "/usr/lib/x86_64-linux-gnu/libasan.so.8.0.0": "f5c57422d80671ced6cffe350f92c8ab9bec23fda9b155658aac630d2bc2a240",
+          "/usr/lib/x86_64-linux-gnu/libubsan.so.1.0.0": "c3912c88d4d1d3772d44c2a77fcda85ebf2790e6efc3602f9489a4e23f4899e2",
+          "/usr/local/lib/libpython3.13.so.1.0": "085a2b2227f39be171d5fd68967fba933adb37b7ab8b879d2a2565d4f7bb6b41"
+        },
+        "original_writer_pids": [
+          8,
+          9
+        ],
+        "asan_options": "detect_leaks=0:abort_on_error=1",
+        "ubsan_options": "halt_on_error=1:print_stacktrace=1",
+        "pythonmalloc": null,
+        "memory_limit": 2147483648,
+        "swap_limit": 0,
+        "memory_events": [
+          "low 0",
+          "high 0",
+          "max 0",
+          "oom 0",
+          "oom_kill 0",
+          "oom_group_kill 0",
+          "sock_throttled 0"
+        ],
+        "cgroup_peak_bytes": 410157056,
+        "swap_peak_bytes": 0,
+        "first_median_bytes": 134307840,
+        "last_median_bytes": 405581824.0,
+        "window_growth_bytes": 271273984.0,
+        "elapsed_seconds": 300.6077099999966,
+        "returncode": 0,
+        "samples": 151,
+        "duration_seconds": 300.000368,
+        "first_counts": [
+          7,
+          7,
+          7
+        ],
+        "last_counts": [
+          14624,
+          14625,
+          14720
+        ]
+      },
+      "optimized": {
+        "scope": "Isolated root/background/child file writers only",
+        "profile": "optimized",
+        "runtime": "3.13.15 (main, Sep 19 2026, 01:05:27) [GCC 14.2.0]",
+        "binary_sha256": "d6d155158ba8cf52e7a3b74ebadbd025414a72ce2eb9d80bfd581ec43929740c",
+        "fixture_sha256": "d54ca70c8073f96445a30d57fd7fd5adc116e21b28657f508e07caeaea241117",
+        "writer_sha256": "1353da49d8fe5a32dc3f941820aaf34d4075e2cc3204705b2f7e3b44693c22a0",
+        "mapped_libraries": {
+          "/usr/local/lib/libpython3.13.so.1.0": "085a2b2227f39be171d5fd68967fba933adb37b7ab8b879d2a2565d4f7bb6b41"
+        },
+        "original_writer_pids": [
+          8,
+          9
+        ],
+        "asan_options": "detect_leaks=0:abort_on_error=1",
+        "ubsan_options": "halt_on_error=1:print_stacktrace=1",
+        "pythonmalloc": null,
+        "memory_limit": 2147483648,
+        "swap_limit": 0,
+        "memory_events": [
+          "low 0",
+          "high 0",
+          "max 0",
+          "oom 0",
+          "oom_kill 0",
+          "oom_group_kill 0",
+          "sock_throttled 0"
+        ],
+        "cgroup_peak_bytes": 44224512,
+        "swap_peak_bytes": 0,
+        "first_median_bytes": 42102784,
+        "last_median_bytes": 42547200.0,
+        "window_growth_bytes": 444416.0,
+        "elapsed_seconds": 300.46809969999595,
+        "returncode": 0,
+        "samples": 151,
+        "duration_seconds": 300.000327,
+        "first_counts": [
+          4,
+          4,
+          4
+        ],
+        "last_counts": [
+          14736,
+          14738,
+          14768
+        ]
+      }
+    },
+    "worker_cpu_quota": 2,
+    "worker_pids_limit": 256,
+    "supervisor_cgroup_included": true,
+    "all_samples_included": true,
+    "executed_profiler_sha256": "324da55cfc1734124b0c9dd51afdfa241a44524d5231169fc5c7365b35622d70",
+    "checked_in_profiler_ast_equals_executed": true,
+    "full_samples_and_commands": "native-memory-writer-samples.json",
+    "full_samples_and_commands_sha256": "8d43b9a367f17c545db79918ff7e279e22b2f24fc6448e465282e1367c3d2119",
+    "interpretation": "These independent measurements explain a substantial sanitizer-dependent source of allocator traffic and retained memory. Isolating the writers changes scheduling and allocation interactions. Their resident growth cannot be subtracted from a qualified family or treated as its mathematical lower bound."
+  },
+  "context_allocation_correction": {
+    "upstream_source": "lib/SPELL_CTX/src/SPELLexecutorManager.C",
+    "upstream_method_sha256": "b8af60cf1a3bef3a92e738c4bfae17ff72c43ffab0c7890ce3d9bf23f2e0ff08",
+    "generated_translation_unit_source_sha256": "5f5416d9eaa280ea7590f1dbb4d71f01eb9a734fe467cb5fd08cf1c31a7ff3a8",
+    "change": "Format the four measured executor INFO messages in the existing bounded, reentrant V08LineStack; the complete logger call consumes the scoped string before reuse.",
+    "tests": "server/tests/test_executor_info_log_storage.py",
+    "calls_per_version": 10000,
+    "records_per_call": 4,
+    "accepted": {
+      "before_allocations": 50000,
+      "before_bytes": 2210000,
+      "after_allocations": 10003,
+      "after_bytes": 410213
+    },
+    "rejected_first_attempt": {
+      "before_allocations": 50000,
+      "before_bytes": 2210000,
+      "after_bytes": 2540000,
+      "reason": "A fresh string grown separately for each invocation increased cumulative allocation bytes.",
+      "original_junit_sha256": "44c212528fd4b7245a14a2d36eb711bb470f24d2fcab1f420ecf54f8ee29a173"
+    },
+    "checks": [
+      "content/call-count parity for all four getters",
+      "0, 15, 16, 127 and 8192 byte payloads and embedded NUL",
+      "nested callback reaching ten scopes including fallback beyond eight cached slots",
+      "all reported C++ log line numbers retained",
+      "unexpected upstream method text rejected",
+      "original fixed workload, sanitizer configuration, audit records, resource limits and deadlines retained"
+    ],
+    "cost_scope": "Allocator hooks wrapped the four original Context log expressions using a synchronous test logger. Counts measure transient allocation traffic. The isolated test provides no family-RSS or hour bound.",
+    "native_method": "SPELLexecutorManager::buildExecutorInfo, called by SPELLcontext::getExecutorInfo",
+    "upstream_log_lines": [
+      648,
+      649,
+      650,
+      676
+    ],
+    "source_mapped_composed_archive_log_lines": [
+      649,
+      650,
+      651,
+      677
+    ],
+    "source_mapped_archive_sites": [
+      {
+        "archive_site_index": 4,
+        "sampled_growth_bytes": 1116,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:650 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 5,
+        "sampled_growth_bytes": 975,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:649 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 6,
+        "sampled_growth_bytes": 837,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:649 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 7,
+        "sampled_growth_bytes": 744,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:651 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 8,
+        "sampled_growth_bytes": 744,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:677 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 10,
+        "sampled_growth_bytes": 630,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:677 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 14,
+        "sampled_growth_bytes": 585,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:677 (discriminator 1)"
+      },
+      {
+        "archive_site_index": 15,
+        "sampled_growth_bytes": 564,
+        "archive_source": "/tmp/v08-context-source/lib/SPELL_CTX/src/SPELLexecutorManager.C:650 (discriminator 1)"
+      }
+    ]
+  },
+  "local_short_cohort": {
+    "source": {
+      "client": "5274730a4a3198c91406922f0f3a852a606b28f5c01c5891eeb14a8231815d80",
+      "wheel_version": "1.2.1",
+      "builder": "058eafbbf8f7e5ec5372fd2a02097a57d65b18db4c743002533fd7ef41beed23",
+      "overlay": "abf94d18387d0a1d55d0c5263e53de0f8d4379f20f1a89effa3159a3d61e91a5",
+      "spell_base": "3beecb4d7bf76a99370ab2e7256a2445b9570e1d",
+      "patch_sha256": "5faa907ca68826470c88d5455debef228c53c1412429c0ad3375847846b8e0f5"
+    },
+    "prior_to_source_formatting": true,
+    "scope": "Original normalized 45-second handoff and installed-IDE paths, with historical IDE 1.2.1, frozen runtime archive, non-root checked helper, and the scoped Context change. The production-builder AST and generated native translation unit match the final committed source.",
+    "full_builder_ast_identical": true,
+    "generated_context_unit_identical": true,
+    "runner_preflight": {
+      "container_id": "5d53e8c51a232e8585ae2caa73c760bef81448db143862b82b0d152d04bf9022",
+      "host_pid": 13231,
+      "observer_pid_namespace": "pid:[4026531836]",
+      "passed": true,
+      "pidfd_open": true,
+      "target_pid_namespace": "pid:[4026531836]",
+      "cgroup": "docker/5d53e8c51a232e8585ae2caa73c760bef81448db143862b82b0d152d04bf9022",
+      "memory_max": "3221225472",
+      "privileged_read_exit": 0,
+      "privileged_read": {
+        "uid": 0,
+        "root_readable": true,
+        "status_readable": true
+      }
+    },
+    "helper_image": "sha256:33d994f4d053473ed9aa2fa6d224ade72d2fec3302c9e90952c9cf87c5ad1b61",
+    "helper_command": [
+      "run",
+      "-d",
+      "--name",
+      "obx-v08-observer-fix-20261122",
+      "--user",
+      "10003:10003",
+      "--group-add",
+      "0",
+      "--cap-add",
+      "SYS_PTRACE",
+      "--network",
+      "host",
+      "--pid",
+      "host",
+      "--cgroupns",
+      "host",
+      "--memory",
+      "3g",
+      "--pids-limit",
+      "512",
+      "--mount",
+      "type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock",
+      "--mount",
+      "type=volume,src=obx-v08-fix-20261122,dst=/var/lib/docker/volumes/obx-v08-fix-20261122/_data",
+      "--entrypoint",
+      "sleep",
+      "sha256:33d994f4d053473ed9aa2fa6d224ade72d2fec3302c9e90952c9cf87c5ad1b61",
+      "infinity"
+    ],
+    "stock_capture_wrapper_sha256": "9b248a7cf637c667da49366c80edc5a5d6427f0b08f3b637ddabe54b2e76261b",
+    "result": {
+      "handoff": {
+        "command": [
+          "docker",
+          "exec",
+          "-e",
+          "HOME=/var/lib/docker/volumes/obx-v08-fix-20261122/_data",
+          "-e",
+          "TMPDIR=/var/lib/docker/volumes/obx-v08-fix-20261122/_data",
+          "-w",
+          "/var/lib/docker/volumes/obx-v08-fix-20261122/_data/spell",
+          "obx-v08-observer-fix-20261122",
+          "python",
+          "/tmp/capture-native-start.py",
+          "--native-handoff"
+        ],
+        "started_utc": "2026-11-23T00:39:50.871588+00:00",
+        "stopped_utc": "2026-11-23T00:43:56.760896+00:00",
+        "elapsed": 245.875,
+        "exit": 1,
+        "run": "run-3e5fd5b7390047749004191970964825",
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-child-running",
+        "result_sha256": "82e50d5845081a66239aae1ba687cefeb1b8d2774f573fb89204b6e9dc723a01",
+        "candidate_worker_image": "sha256:88143bbfa7c253ba195f635ba3945e8b18a06d744975fade2c0b69e370cebba6",
+        "candidate_context_image": "sha256:835ec78b8ae5d1712f973406c6e22ec7916e9c488f2851de0de15a5a396378db",
+        "native_build_identity": {
+          "original_context_sha256": "0c58b8c85aec63c4cb3bfefc4c4792d4a1ea71257dab0208431e715e689dc9d8",
+          "original_unit_sha256": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598",
+          "candidate_context_sha256": "ae9bdf45ff02bab4ba0e2a446608ba6d357a909cd8994a61cef991bf8bb2d423",
+          "candidate_executor_sha256": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c",
+          "original_executor_sha256": "0698c322ff6abd440f9419d36345d2fdc2718957aa75da20180b714be33abdd5",
+          "candidate_shared_runtime_sha256": "280e11f1e9625c3dd82262d46e8547bbcf0f1c0e919af338765fd32f3aa58ddb",
+          "candidate_bridge_sha256": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445",
+          "candidate_bridge_source_sha256": "0625fa8196b2981fb23857f1467b60912befff81027231b5bcd3b48ca636b4bf",
+          "candidate_bridge_fields_sha256": "c7920adad9e75c6eb6e7d5478a20d22272478a793c9d84dccab0333b60ecbb6a",
+          "original_shared_runtime_sha256": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a"
+        },
+        "error_phase": null,
+        "source_manifest_from_run_sha256": "fc6b36f97d5cd3dffea9c52dfa9c047a8cba4095da3e764789112572929d8293",
+        "recorded_admission_timeouts": [
+          {
+            "source": "spell-v08-launch-60a350b4a2c7-4.stdout.jsonl",
+            "source_sha256": "ba485317bb6c2f9c8eae9ade50bdeb25758c550310d118339afb9f7ef639d5d4",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 5169,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/child-admit",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1486821549100,
+                  "finished_ns": 1491958921200,
+                  "thread_cpu_ns": 3965700
+                }
+              }
+            ]
+          },
+          {
+            "source": "spell-v08-launch-60a350b4a2c7-5.stdout.jsonl",
+            "source_sha256": "75c13ba9cf5093ebd24016237459fcee76fa758c27eeaef1b4474e9d9cec01ee",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 2012,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-consume",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493196306200,
+                  "finished_ns": 1495208371800,
+                  "thread_cpu_ns": 8358400
+                }
+              }
+            ]
+          },
+          {
+            "source": "spell-v08-launch-60a350b4a2c7-7.stdout.jsonl",
+            "source_sha256": "03030051c234920b226af5a6177393f3a75e53d897f7c400ed117203734a2096",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 2012,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-forward",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493195177900,
+                  "finished_ns": 1495207115700,
+                  "thread_cpu_ns": 6367100
+                }
+              }
+            ]
+          },
+          {
+            "source": "spell-v08-launch-60a350b4a2c7-8.stdout.jsonl",
+            "source_sha256": "cf72727846cf6b5d7d36f6ec7a9adb599aa71207be8d2b96496f0888ff9a31ee",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 2006,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-disposition",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493313531200,
+                  "finished_ns": 1495319413200,
+                  "thread_cpu_ns": 2156900
+                }
+              }
+            ]
+          },
+          {
+            "source": "spell-v08-launch-60a350b4a2c7-9.stdout.jsonl",
+            "source_sha256": "7a4ebf470a5827c6389b1bb909ceb5f01f65919d63321be0321b85732f66f623",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 2006,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-forward",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493179981100,
+                  "finished_ns": 1495186133100,
+                  "thread_cpu_ns": 2418200
+                }
+              }
+            ]
+          }
+        ],
+        "prior_short_reference": {
+          "path_relative_to_ide_repo": "docs/evidence/ide-1.2.1/reference-runner-20261105/local/native-host-observer-mounted.json",
+          "sha256": "a75d28342fc623b1e3d7787ecb7acffdd14725bd6df6e8c0c71413adc698bd0b",
+          "passed": true,
+          "recorded_input_differences": [
+            "host_runtime/build_admission_context.py"
+          ],
+          "binary_comparison": {
+            "candidate_context_sha256": {
+              "reference": "98dc5646af56953fd4291ca2fb8a59452520468f0821e901fc2cc68e182736d8",
+              "current": "ae9bdf45ff02bab4ba0e2a446608ba6d357a909cd8994a61cef991bf8bb2d423"
+            },
+            "candidate_executor_sha256": {
+              "reference": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c",
+              "current": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c"
+            },
+            "candidate_shared_runtime_sha256": {
+              "reference": "280e11f1e9625c3dd82262d46e8547bbcf0f1c0e919af338765fd32f3aa58ddb",
+              "current": "280e11f1e9625c3dd82262d46e8547bbcf0f1c0e919af338765fd32f3aa58ddb"
+            },
+            "candidate_bridge_sha256": {
+              "reference": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445",
+              "current": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445"
+            }
+          },
+          "resource_result": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": true,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [],
+            "samples": 48,
+            "soak_samples": 22,
+            "duration_seconds": 45.5022636,
+            "peak_bytes": 1256972288,
+            "window_growth_bytes": 18456576,
+            "first_window_median_bytes": 1232379904,
+            "last_window_median_bytes": 1250836480
+          },
+          "attribution": "The observer environment/time differs. Two runs alone cannot assign or exclude causation of a startup timeout."
+        },
+        "worker_failures": [
+          {
+            "worker_output": "spell-v08-launch-60a350b4a2c7-7.stdout.jsonl",
+            "output_sha256": "03030051c234920b226af5a6177393f3a75e53d897f7c400ed117203734a2096",
+            "worker_error": "context_unavailable",
+            "state_sha256": "02a4c5750e90d1da64df87abdefcbb25c439ca636a86a6fdd3229b18ba8344b4",
+            "oom_killed": false,
+            "exit_code": 1,
+            "traced_rpc": [
+              {
+                "event": "native-before-spawn-denied",
+                "error": "context_unavailable",
+                "platform_status": 503,
+                "cause_type": "TimeoutError",
+                "elapsed_ms": 2012,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-forward",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493195177900,
+                  "finished_ns": 1495207115700,
+                  "thread_cpu_ns": 6367100
+                }
+              },
+              {
+                "event": "native-worker-failed",
+                "error": "context_unavailable",
+                "platform_status": 503,
+                "cause_type": "Fault",
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/control-report",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1493154136400,
+                  "finished_ns": 1495163202900,
+                  "thread_cpu_ns": 2254200
+                }
+              }
+            ],
+            "causes": [
+              {
+                "type": "Fault",
+                "message": "context_unavailable"
+              },
+              {
+                "type": "TimeoutError",
+                "message": "The read operation timed out"
+              }
+            ]
+          }
+        ],
+        "native_resource_gate_reached": false
+      },
+      "ide": {
+        "command": [
+          "docker",
+          "exec",
+          "-e",
+          "HOME=/var/lib/docker/volumes/obx-v08-fix-20261122/_data",
+          "-e",
+          "TMPDIR=/var/lib/docker/volumes/obx-v08-fix-20261122/_data",
+          "-w",
+          "/var/lib/docker/volumes/obx-v08-fix-20261122/_data/spell",
+          "obx-v08-observer-fix-20261122",
+          "python",
+          "/tmp/capture-native-start.py",
+          "--native-ide"
+        ],
+        "started_utc": "2026-11-23T00:43:56.761896+00:00",
+        "stopped_utc": "2026-11-23T00:49:00.474559+00:00",
+        "elapsed": 303.7039999999979,
+        "exit": 1,
+        "run": "run-b8785bf6a5844b468ffd767cb11ab800",
+        "passed": false,
+        "error": "RuntimeError: Native worker failed before native-child-running",
+        "result_sha256": "e14da44dc0033daf89f377e1a7f8de90d53def0d7bace292e454c18b137008f0",
+        "candidate_worker_image": "sha256:02e091c5daf5b7225e1183c9847374cb6499e1643185a89f6026baa4df439b0d",
+        "candidate_context_image": "sha256:835ec78b8ae5d1712f973406c6e22ec7916e9c488f2851de0de15a5a396378db",
+        "native_build_identity": {
+          "original_context_sha256": "0c58b8c85aec63c4cb3bfefc4c4792d4a1ea71257dab0208431e715e689dc9d8",
+          "original_unit_sha256": "e8d1c0ed2ee9b66894add739f3b0a0f880a1a2f59bc50034dde5050117fec598",
+          "candidate_context_sha256": "04a4fa7d87d8bbaa777b45a232b908558d26b0798b08679e174893fab63b14c4",
+          "candidate_executor_sha256": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c",
+          "original_executor_sha256": "0698c322ff6abd440f9419d36345d2fdc2718957aa75da20180b714be33abdd5",
+          "candidate_shared_runtime_sha256": "32d3a993050c4e339cd382962f06031bd52b58caf7a7c7b9b193625a51839f33",
+          "candidate_bridge_sha256": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445",
+          "candidate_bridge_source_sha256": "0625fa8196b2981fb23857f1467b60912befff81027231b5bcd3b48ca636b4bf",
+          "candidate_bridge_fields_sha256": "c7920adad9e75c6eb6e7d5478a20d22272478a793c9d84dccab0333b60ecbb6a",
+          "original_shared_runtime_sha256": "2e91992b9c8f53c14df5111e4c6fccfdf3879833990d3c729b95ef41cad2b78a"
+        },
+        "error_phase": null,
+        "source_manifest_from_run_sha256": "fc6b36f97d5cd3dffea9c52dfa9c047a8cba4095da3e764789112572929d8293",
+        "recorded_admission_timeouts": [
+          {
+            "source": "spell-v08-launch-434f6c6ec3c5-8.stdout.jsonl",
+            "source_sha256": "a7523fe01042c9ce17ad97d6d81920b48782a375d9724ca80d4bf5e412560214",
+            "failures": [
+              {
+                "event": "native-before-spawn-denied",
+                "code": "context_unavailable",
+                "cause_type": "TimeoutError",
+                "reason": "admission_unavailable",
+                "elapsed_ms": 2008,
+                "rpc_provenance": {
+                  "schema": "openbexi.rpc-failure/1",
+                  "path": "/v1/worker/child-admit",
+                  "phase": "response_headers",
+                  "http_status": null,
+                  "upstream_code": null,
+                  "started_ns": 1740685412400,
+                  "finished_ns": 1742693197900,
+                  "thread_cpu_ns": 2571200
+                }
+              }
+            ]
+          }
+        ],
+        "prior_short_reference": {
+          "path_relative_to_ide_repo": "docs/evidence/ide-1.2.1/reference-runner-20261105/local/native-ide-host-observer.json",
+          "sha256": "a663baf966e5fc268dc4ecf43e13648b2bab163489e90a00ae058d421fad1591",
+          "passed": true,
+          "recorded_input_differences": [
+            "host_runtime/build_admission_context.py"
+          ],
+          "binary_comparison": {
+            "candidate_context_sha256": {
+              "reference": "93bff680e59cd81bf6fe862dd2426075931d9c0157ac5ad13b56b4fb2961f38c",
+              "current": "04a4fa7d87d8bbaa777b45a232b908558d26b0798b08679e174893fab63b14c4"
+            },
+            "candidate_executor_sha256": {
+              "reference": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c",
+              "current": "ff5e56fb07fa4dfadf81cb9bb4bbf9080952b148f3b5a20c3d4124c557dba07c"
+            },
+            "candidate_shared_runtime_sha256": {
+              "reference": "32d3a993050c4e339cd382962f06031bd52b58caf7a7c7b9b193625a51839f33",
+              "current": "32d3a993050c4e339cd382962f06031bd52b58caf7a7c7b9b193625a51839f33"
+            },
+            "candidate_bridge_sha256": {
+              "reference": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445",
+              "current": "b0e0385cce137feafdc90d247b2c5067a9f8d2eba3bbb8c96a38e64d39786445"
+            }
+          },
+          "resource_result": {
+            "schema": "openbexi.native-recovery-resources/1",
+            "passed": true,
+            "resident_limit_bytes": 2147483648,
+            "swap_limit_bytes": 0,
+            "peak_budget_bytes": 1879048192,
+            "maximum_window_growth_bytes": 67108864,
+            "full_v08_qualified": false,
+            "failures": [],
+            "samples": 48,
+            "soak_samples": 22,
+            "duration_seconds": 45.5334735,
+            "peak_bytes": 1287147520,
+            "window_growth_bytes": 26036224.0,
+            "first_window_median_bytes": 1255184384.0,
+            "last_window_median_bytes": 1281220608
+          },
+          "attribution": "The observer environment/time differs. Two runs alone cannot assign or exclude causation of a startup timeout."
+        },
+        "worker_failures": [
+          {
+            "worker_output": "spell-v08-launch-434f6c6ec3c5-1.stdout.jsonl",
+            "output_sha256": "63a21ca88296348353db1c3f4ef1688cd87a9902b8e6fb5c3f0304e6e2bb4285",
+            "worker_error": "RuntimeError",
+            "state_sha256": "16d023552c51752115f91aec85d4076872c0fb81bc83a755f2a4c084a51d13e4",
+            "oom_killed": false,
+            "exit_code": 0,
+            "traced_rpc": [],
+            "causes": [
+              {
+                "type": "RuntimeError",
+                "message": "REQ_EXEC_INFO: Native reply timed out"
+              }
+            ]
+          },
+          {
+            "worker_output": "spell-v08-launch-434f6c6ec3c5-5.stdout.jsonl",
+            "output_sha256": "634426cf623361a4c6d250aed5201f904efb60025f0aee752856585416886084",
+            "worker_error": "RuntimeError",
+            "state_sha256": "6e5bf00262449f593e752a5adaf171459ad98740c825a9c214eeb7400f2f57ad",
+            "oom_killed": false,
+            "exit_code": 0,
+            "traced_rpc": [],
+            "causes": [
+              {
+                "type": "RuntimeError",
+                "message": "REQ_EXEC_INFO: Native reply timed out"
+              }
+            ]
+          }
+        ],
+        "native_resource_gate_reached": false
+      }
+    }
+  },
+  "verification": {
+    "intermediate_linux": {
+      "tests": 88,
+      "failures": 0,
+      "xml_sha256": "cc41b5d5fcf9bbbd7a1f53914da7bff92b83dd98c791a1baab8fdb9076210169"
+    },
+    "windows_attempt": {
+      "tests": 86,
+      "fails": 2,
+      "reasons": [
+        "Native C++ compiler absent",
+        "Windows bash launcher did not start Linux /bin/bash"
+      ],
+      "xml_sha256": "a2dd6988defa1c0e99b5e6462a3ae0184b5e48cfbebb1172aa50b64c69db5a0c"
+    },
+    "final_source_format_and_lint": "4 files passed ruff check and ruff format --check in the Linux trusted helper.",
+    "measurement_setup": [
+      {
+        "attempt": "Windows Docker Desktop bind for the writer control",
+        "outcome": "Stalled before daemon created the named container. The recorded CLI was stopped; a Docker named volume and docker cp supplied equivalent files."
+      },
+      {
+        "attempt": "Initial compiler step on fresh named volume",
+        "outcome": "UID 10003 could not create the two diagnostic wrapper binaries on the root-owned empty volume. The compiler prepared binaries as root without network or capabilities; both measurement containers ran as UID 10003 on a read-only mount."
+      }
+    ],
+    "final_linux": {
+      "commit": "a260204f4fb6b64dfe99ff87c8535c29a6ccd69b",
+      "tests": 88,
+      "failure_count": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_seconds": 2.821,
+      "junit_sha256": "861db3495f7306b74468f2389fa0402c8b2648505eedc4a9f7bc103029f16790",
+      "command": "python -m pytest -q -s server/tests/test_v08_memory_experiment.py server/tests/test_executor_info_log_storage.py",
+      "workload": "Exact final tracked inputs exported with git archive. Existing resource/profile overlay validation uses the strict updated SHA. Compiler -fsanitize=address,undefined exercises both C++ paths."
+    }
+  },
+  "resource_decision": {
+    "full_v08_qualified": false,
+    "eligible_for_publication": false,
+    "supported_ten_procedure_capacity": false,
+    "assessment": "The stock interpreter and original input control exceed the +64 MiB growth limit under sanitizers in five minutes. The Context correction reduces one measured source of transient allocations. Both original one-hour passing receipts on the exact delivery subject are required for a capacity claim. This evidence supplies no ten-procedure capacity estimate."
+  },
+  "raw_evidence": {
+    "directory": "F:/openbexi-builds/qualification-20261122/native-memory",
+    "files_hashed": 161,
+    "bytes": 4072364,
+    "manifest": "SHA256.json",
+    "manifest_sha256": "ac41e20ca47b15203746d8377d634ff8100ea29c1cf009c24815c29af34ee750"
+  }
+}

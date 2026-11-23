@@ -1,0 +1,170 @@
+{
+  "schema": "openbexi.v08.public-advanced-controls/1",
+  "subject": {
+    "ide": {
+      "commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+      "manifest_sha256": "d0dfd65584ffb09c0f125940091ad606343abef7fbc989148d6f03845918ea09"
+    },
+    "spell": {
+      "commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "manifest_sha256": "a3c6d72b7640df1d6a843c800216bc905088ec3ba45d5a739b409a4dfaa2ae98"
+    }
+  },
+  "browser": "158.0.8127.18",
+  "server_image": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+  "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+  "native_step_pause": {
+    "status": "PASS",
+    "execution": "bc9e03b2-28b6-4ccc-9575-b4fc33e5eb66",
+    "methods": "Three distinct mTLS browser identities, real owner widgets and independent read-only Context/worker diagnostics.",
+    "observed": {
+      "action": "Owner pressed Pause on the running original Executor",
+      "at": "2026-11-23T01:31:45.762Z",
+      "commands": [
+        [
+          "CMD_STEP",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_RUN",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ],
+        [
+          "CMD_PAUSE",
+          "EXECUTION_UNPROVEN",
+          "IPC_SEND_ACKNOWLEDGED",
+          "HANDLER_RETURNED"
+        ]
+      ],
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-running",
+          null
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ]
+      ]
+    },
+    "evidence": {
+      "archive": "public-launch/live996/browser-boundary/result.json",
+      "sha256": "2b84c96bd1a3862bd2e200af89b029a27bd9f20eb04584d9c62f4d8b2f1bfdbc"
+    }
+  },
+  "live_family_transfer": {
+    "status": "FAIL",
+    "execution": "bc9e03b2-28b6-4ccc-9575-b4fc33e5eb66",
+    "observed": {
+      "action": "Running transfer blocked pending kernel freezer evidence; old proof rejected",
+      "at": "2026-11-23T01:31:47.988Z",
+      "public": [
+        {
+          "connection_generation": 1,
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 1,
+          "id": "bc9e03b2-28b6-4ccc-9575-b4fc33e5eb66",
+          "lifecycle": "STARTING",
+          "native_root_registered": true,
+          "native_root_result": null,
+          "native_start_admitted": true,
+          "owner": "alice",
+          "pending_claim": null,
+          "procedure_id": "approved-main"
+        }
+      ],
+      "stale_status": 403
+    },
+    "reason": "The assigned single-use configuration had no host freezer. Its original Executor was live. Context blocked transfer, kept Alice at epoch 1, removed the old controller authority and denied the former proof. B never received control.",
+    "evidence": {
+      "archive": "public-launch/live996/browser-boundary/result.json",
+      "sha256": "2b84c96bd1a3862bd2e200af89b029a27bd9f20eb04584d9c62f4d8b2f1bfdbc"
+    }
+  },
+  "public_prompt": {
+    "status": "FAIL",
+    "execution": "a048d7dd-c098-4480-ae91-bd80b6c8f0ad",
+    "observed": "Original native YES/NO prompt had no installed browser prompt or reply widget. The owner API could accept a reply only after the test harness privately looked up the original prompt binding.",
+    "binding_source": "Read-only Context query matching the original admission, prompt and native definition digest.",
+    "owner_api": {
+      "status": "PASS",
+      "observed": {
+        "action": "Authenticated owner supplied the single native answer through HTTPS using host-inspected binding",
+        "at": "2026-11-23T01:31:44.902Z",
+        "observer_status": 403,
+        "owner_status": 200,
+        "native_reply": [
+          "CLOSED",
+          "ANSWER_SELECTED"
+        ],
+        "native": [
+          [
+            "native-ready",
+            "PAUSED"
+          ],
+          [
+            "native-child-parent-status",
+            "PAUSED"
+          ],
+          [
+            "native-child-parent-status",
+            "RUNNING"
+          ],
+          [
+            "native-running",
+            null
+          ],
+          [
+            "native-child-parent-status",
+            "PROMPT"
+          ],
+          [
+            "native-child-parent-status",
+            "RUNNING"
+          ],
+          [
+            "native-child-parent-status",
+            "FINISHED"
+          ],
+          [
+            "native-finished",
+            "FINISHED"
+          ]
+        ]
+      }
+    },
+    "evidence": {
+      "archive": "public-launch/prompt996/browser-boundary/result.json",
+      "sha256": "6b1b2a55bb010370d9f448e85a589e8321394a74dbd5d250db8f3d27f80acc76"
+    }
+  },
+  "source": {
+    "archive": "public-launch/browser_boundary.cjs",
+    "sha256": "858a1e2e92ffe436ba2a39b69d54305126de2552cf953e3b97a9aea46d1f27b1"
+  },
+  "archive_root": "F:/openbexi-builds/qualification-20261122"
+}

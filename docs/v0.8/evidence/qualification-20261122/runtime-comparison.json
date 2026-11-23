@@ -1,0 +1,232 @@
+{
+  "conditions": {
+    "window_seconds": 10,
+    "growth_limit_bytes": 67108864,
+    "resident_peak_limit_bytes": 1879048192,
+    "container_bytes": 2147483648,
+    "swap_bytes": 0
+  },
+  "benchmarks": {
+    "45092025727": {
+      "source": "c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727",
+      "jobs": [
+        {
+          "id": 137423523386,
+          "name": "actual-native-disk-full",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727/job/137423523386"
+        },
+        {
+          "id": 137423523505,
+          "name": "disk-and-restart",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727/job/137423523505"
+        },
+        {
+          "id": 137423523532,
+          "name": "five-minute / native (ide)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727/job/137423523532"
+        },
+        {
+          "id": 137423523798,
+          "name": "five-minute / native (handoff)",
+          "conclusion": "failure",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727/job/137423523798"
+        },
+        {
+          "id": 137426673529,
+          "name": "one-hour",
+          "conclusion": "skipped",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727/job/137426673529"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "v08-native-audit-full-c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+          "sha256": "e7fafd6806ecc407f9810f99208e9f3c4f1c7901d79eb659fe6ab684fbfd15ba"
+        },
+        {
+          "name": "v08-audit-sanitized-300-ide-c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+          "sha256": "de233e2e32431b226dd1b1a726d46b9f91577fe8a55d62c805482f3037d035da",
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.447660806,
+            "resident_peak_bytes": 1311690752,
+            "combined_window_growth_bytes": 323137536,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "name": "v08-audit-sanitized-300-handoff-c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+          "sha256": "d44d77260c109a4cc4889ab11ce28c1b48b59a7667a5a811da4079cf3321f1a3",
+          "native_memory": {
+            "passed": false,
+            "duration_seconds": 302.745054965,
+            "resident_peak_bytes": 1251950592,
+            "combined_window_growth_bytes": 271659008,
+            "sampled_swap_peak_bytes": 0,
+            "failures": [
+              "combined_memory_still_growing"
+            ]
+          }
+        },
+        {
+          "name": "v08-audit-storage-c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+          "sha256": "046dea2447107db2f2e0b0e212f49107b158384f06cf75b24dac020c10c9ac6d"
+        }
+      ]
+    },
+    "45093419521": {
+      "source": "7afd6f95040871ebc6e33dc36926aee9c822fcee",
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521",
+      "jobs": [
+        {
+          "id": 137427843290,
+          "name": "profile-regressions",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521/job/137427843290"
+        },
+        {
+          "id": 137428082895,
+          "name": "comparison (optimized-noswap, ide)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521/job/137428082895"
+        },
+        {
+          "id": 137428082917,
+          "name": "comparison (optimized-noswap, handoff)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521/job/137428082917"
+        },
+        {
+          "id": 137430961048,
+          "name": "optimized-endurance",
+          "conclusion": "skipped",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521/job/137430961048"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "v08-memory-optimized-noswap-ide-7afd6f95040871ebc6e33dc36926aee9c822fcee",
+          "sha256": "b89ce1f5e9851b9e2cc1d3bb644ba494ff2cf5df51d0f9d0ca6070aa8c376af7",
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 302.392432546,
+            "resident_peak_bytes": 143712256,
+            "combined_window_growth_bytes": 3526656,
+            "sampled_swap_peak_bytes": 0,
+            "failures": []
+          }
+        },
+        {
+          "name": "v08-memory-profile-unit-7afd6f95040871ebc6e33dc36926aee9c822fcee",
+          "sha256": "f300d1b5be0bc8230df79f1c08238f7739557b840df72eb330692fbd903c6073"
+        },
+        {
+          "name": "v08-memory-optimized-noswap-handoff-7afd6f95040871ebc6e33dc36926aee9c822fcee",
+          "sha256": "6160d02842afae968db4e2235f786a0e522870e6c076c7a1c5240247955e6276",
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 302.467992689,
+            "resident_peak_bytes": 143736832,
+            "combined_window_growth_bytes": 3633152,
+            "sampled_swap_peak_bytes": 0,
+            "failures": []
+          }
+        }
+      ]
+    },
+    "45093674176": {
+      "source": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176",
+      "jobs": [
+        {
+          "id": 137428634399,
+          "name": "paired-wheel",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176/job/137428634399"
+        },
+        {
+          "id": 137428813860,
+          "name": "native-original-45 (native-handoff)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176/job/137428813860"
+        },
+        {
+          "id": 137428813882,
+          "name": "native-original-45 (native-ide)",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176/job/137428813882"
+        },
+        {
+          "id": 137428813915,
+          "name": "windows-installed",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176/job/137428813915"
+        },
+        {
+          "id": 137428814036,
+          "name": "foundation",
+          "conclusion": "success",
+          "status": "completed",
+          "html_url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176/job/137428814036"
+        }
+      ],
+      "artifacts": [
+        {
+          "name": "v08-resume-foundation-99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+          "sha256": "474b2e1ee48036f44011d8b82eb15db87d9d83328a9a7ce607198cf566723ddc"
+        },
+        {
+          "name": "v08-resume-native-ide-99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+          "sha256": "4b92074d4fd62f357ea3c18f04d110d6b82b0ce4f2140e49bd4e4c4b2ac2f6e7",
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 45.577005785,
+            "peak_bytes": 1024782336,
+            "window_growth_bytes": 39395328,
+            "failures": []
+          }
+        },
+        {
+          "name": "paired-ide-wheel-99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+          "sha256": "7572f7364577657f63f44b71cb028903fdb0388ae36a7580593a7cb6788aa0fa"
+        },
+        {
+          "name": "windows-installed-99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+          "sha256": "f6cb8b44d0c848cb6379aab1ac6c26d54a05caa5e016502a24a584ea2bfeadbb"
+        },
+        {
+          "name": "v08-resume-native-handoff-99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+          "sha256": "434d6d3fb48adb816de226ef81a799e1c8a6be1754103c18e705a99c11c75f84",
+          "native_memory": {
+            "passed": true,
+            "duration_seconds": 45.387294213,
+            "peak_bytes": 1025949696,
+            "window_growth_bytes": 39972864,
+            "failures": []
+          }
+        }
+      ]
+    }
+  },
+  "decision": "No approved amendment. Both original one-hour ASan jobs were skipped after five-minute growth failures."
+}

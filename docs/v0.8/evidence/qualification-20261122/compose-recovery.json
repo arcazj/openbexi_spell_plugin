@@ -1,0 +1,359 @@
+{
+  "status": "PASS",
+  "scope": "Local operator and single-Context Docker Compose recovery. A published RC1 immutable reservation survives upgrade; an active 0.8.0 native root is backed up, host-fenced, restored in recovery-required state, and observed after rollback and roll-forward.",
+  "ide": {
+    "commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+    "manifest_sha256": "d0dfd65584ffb09c0f125940091ad606343abef7fbc989148d6f03845918ea09"
+  },
+  "candidate_spell": {
+    "commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+    "manifest_sha256": "a3c6d72b7640df1d6a843c800216bc905088ec3ba45d5a739b409a4dfaa2ae98"
+  },
+  "original_spell": "ce45fa4fd31b77cb97a1ef3621aa3906d2c94dda",
+  "public_rc1_server_wheel_sha256": "f5c775fe21d8f5f3daba3fd133e6809931c445f943d4a9ef813733e9e919c208",
+  "candidate_server_wheel_sha256": "4b534dc7354bb51715a49e810c49030d3b833f00bac82c0321c5b103b09d35e7",
+  "images": {
+    "public_rc1": "sha256:295638b950a09a0c8c2f8467162407b9adaabfd96d558a9f02c67b97a38644ed",
+    "candidate": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+    "worker": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115"
+  },
+  "operator_checkpoint_sha256": "02c20059d2f20b9cb375d284f5d89278d0237bae74ebf3789f928a0b5a6e2516",
+  "release_compose_sha256": "0bfc01ce47197d64f0a9aa940c79e8a553aa6d878ebb3106314d53f8e9bbae0f",
+  "harnesses": {
+    "compose_fixture.py": "59502445625895264f682d9606cadc4cf1fcc1c47e54a757a75373e6f12d2da7",
+    "provision.py": "867a328d883c9e35975a447ec64ae78dbd4f6f410faf93cca1a01758be7b7ff7",
+    "qualify_recovery.py": "b3f3ded417ea0425f144a1ee12500a6e4483cf48a11bb9a4eba11cdee745db42",
+    "verify_storage.py": "02fab04d2afa6a8846d6a2ae4d32061b210596eb4be89c42ec886e2febfcaabf"
+  },
+  "test_issuer_source": {
+    "path": "C:\\projects\\openbexi_ide\\docs\\evidence\\ide-1.2.1\\qualification-20261122\\windows\\api\\provision.py",
+    "sha256": "0201f749dd186af23f4d8cde5a064a52876d52bc79fc64437cee3a07e0c2dc13"
+  },
+  "commands": [
+    "python -I recovery/compose_fixture.py --output <case> --spell-repo <verified SPELL checkout> --name obx-qual-recovery-r02 --subnet 76",
+    "<verified Windows CPython> -I recovery/qualify_recovery.py --case <case> --output <case>/probe",
+    "<verified Windows CPython> -I recovery/verify_storage.py --case <case> --probe <case>/probe"
+  ],
+  "compose": "Shipped digest-verified Compose file with task-only overrides for Context A, Listener, Gateway, worker, credentials, mounted state, isolated subnets and immutable images. Other shipped services are outside this one-Context test.",
+  "subjects": {
+    "active_native_id": "c6adb84e-1487-412c-a7d1-55700ac929c3",
+    "pid": 7,
+    "state_at_capture": "PAUSED",
+    "existing_rc1_execution": "bbfc8e09-79f1-4f82-97cf-bd1c540d209f"
+  },
+  "generations": {
+    "rc1": {
+      "incarnation": "a177fb80-f506-4e77-98a2-f7dd141e5391",
+      "events": 3,
+      "last_sequence": 3,
+      "audit_sha256": "f8a81d91a13524548704d23a2b612450bdc02f5da16e9bedf009f40b1ee60128"
+    },
+    "upgraded": {
+      "incarnation": "5a1ac3d2-020b-4dc8-8e3e-4a05432ec167",
+      "events": 5,
+      "last_sequence": 5,
+      "audit_sha256": "205b9445c69a8b40ab5b55153b5f2a3d511a624b02907e9f087013ac102b8b3a"
+    },
+    "restored": {
+      "incarnation": "25b3bf0e-b412-4ddb-a0b2-7a28ff898655",
+      "events": 17,
+      "last_sequence": 17,
+      "audit_sha256": "58f7784224f911546db0a9ce445175957fee80f37fc464cda140678093cebf03"
+    },
+    "rolled_back": {
+      "incarnation": "5fbf4bb3-e295-4953-9178-f90f472281cf",
+      "events": 22,
+      "last_sequence": 22,
+      "audit_sha256": "e997bde790a7f9c286217e6dc18486905ca52a31e9c9410a4ef5c534cfd4b90b"
+    },
+    "rolled_forward": {
+      "incarnation": "1ae2a60d-1b29-4805-905d-9f6ee13bc1ef",
+      "events": 24,
+      "last_sequence": 24,
+      "audit_sha256": "e2afd749e0c83f97bc216147a4977ede77088606b08c5650196cf985febaa10a"
+    }
+  },
+  "capture": {
+    "audit_events": 15,
+    "audit_sha256": "3605230a822836daa9bf3dedb0e4f6586ee360c1731115487038c671883d1f1f",
+    "context_id": "A",
+    "database_sha256": "af6bb390982d0a9a1ede12e4fc03dbce8c64fdbbb6d814d04b5164df802a7ddc",
+    "format": "openbexi.context-checkpoint/1",
+    "incarnation": "5a1ac3d2-020b-4dc8-8e3e-4a05432ec167",
+    "last_sequence": 15,
+    "manifest_sha256": "28e35893787aa5f585e5f013fd5c3c99038d34cdd7ec893b61c127fea92f4ec2",
+    "user_version": 23
+  },
+  "audit_cutover": {
+    "original_checkpoint_events": 15,
+    "last_old_authority_events": 15,
+    "original_native_final_sequence": 15,
+    "restored_archive": "live",
+    "all_old_events_included": true
+  },
+  "stored_native_audit": {
+    "2026-11-23_013025_Executor_procedure-01#1.ASRUN": {
+      "bytes": 232,
+      "sha256": "0d5a2c328e72a01e49d0864ba898311189801a38fb351816ab1a14db8d85416c"
+    }
+  },
+  "old_process_receipts": {
+    "qualification-worker": {
+      "container": "b1b60fa8c5a0ea6962282d4a58e4d7404c9557e9e9fe603610ff644ae91d22d1",
+      "exit": 137,
+      "pid": 0,
+      "running": false,
+      "original_worker_log_sha256": "2584569bcdef0d520cf94de640180a26c42c0be5df91af3c25048d07e3f1959e"
+    },
+    "gateway": {
+      "container": "8489a8ad714f7e63090917709d253c16aebc701781f1bcc822f215b81e5d055c",
+      "exit": 0,
+      "pid": 0,
+      "running": false
+    },
+    "listener": {
+      "container": "7acf793b7f93c6e45a93d64d5234ebc36adbba51efb3e4b21d5cf7b1550d0dca",
+      "exit": 0,
+      "pid": 0,
+      "running": false
+    },
+    "context-a": {
+      "container": "2867357aba5779255a962071634116f6a97b0eb3706d9e08eac21b759d1ffec5",
+      "exit": 0,
+      "pid": 0,
+      "running": false
+    }
+  },
+  "stale_grants": {
+    "on_upgrade": {
+      "http": 403,
+      "code": "request_denied",
+      "route": "POST /v1/contexts/A/commands",
+      "credential": "unchanged prior server-issued controller proof"
+    },
+    "on_restore": {
+      "http": 403,
+      "code": "request_denied",
+      "route": "POST /v1/contexts/A/commands",
+      "credential": "unchanged prior server-issued controller proof"
+    },
+    "retired_worker_mtls": {
+      "http": 403,
+      "code": "context_request_denied"
+    },
+    "on_rc1_rollback": {
+      "http": 404,
+      "code": "request_denied",
+      "route": "POST /v1/contexts/A/commands",
+      "credential": "unchanged prior server-issued controller proof"
+    },
+    "on_roll_forward": {
+      "http": 403,
+      "code": "request_denied",
+      "route": "POST /v1/contexts/A/commands",
+      "credential": "unchanged prior server-issued controller proof"
+    }
+  },
+  "old_private_certificate_fingerprints": {
+    "context": "634ac6c6b006c65dc2e1fa89edaf0b4c72258316583b438f35e350bd9c03dd0c",
+    "listener": "030c3183f3f0cc3baa9a5e73366de1d1f959b46a453ecaea8c7606341d3a8b43",
+    "worker-02": "7717ee51e13855cff099cef625afaaacbb4da249eac13194407a7b5f3178ecd4"
+  },
+  "replacement_private_certificate_fingerprints": {
+    "context": "a6196a804156ae168c2c085b4dc779eae923981b098518cc33050c62d96b266c",
+    "listener": "be59dc4784653b33dc708dbdcbb56bec6e967c6cd4a3a64c589f1bab85e086b4",
+    "worker-02": "d804dff54b9bf3f98af738ff216a53ec66dd52b29843008741a5f6ab9f7bdf3e"
+  },
+  "same_logical_start_after_restore": {
+    "http": 409,
+    "code": "request_denied"
+  },
+  "public_observations": {
+    "replacement_public_and_authority": {
+      "subject": "watch-01",
+      "incarnation": "25b3bf0e-b412-4ddb-a0b2-7a28ff898655",
+      "executions": [
+        {
+          "id": "bbfc8e09-79f1-4f82-97cf-bd1c540d209f",
+          "procedure_id": "procedure-02",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 3,
+          "connection_generation": 3,
+          "native_root_result": null
+        },
+        {
+          "id": "c6adb84e-1487-412c-a7d1-55700ac929c3",
+          "procedure_id": "procedure-01",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 2,
+          "connection_generation": 2,
+          "native_root_result": null
+        }
+      ]
+    },
+    "published_rc1_rollback": {
+      "subject": "watch-01",
+      "incarnation": "5fbf4bb3-e295-4953-9178-f90f472281cf",
+      "executions": [
+        {
+          "id": "bbfc8e09-79f1-4f82-97cf-bd1c540d209f",
+          "procedure_id": "procedure-02",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 4,
+          "connection_generation": 4
+        },
+        {
+          "id": "c6adb84e-1487-412c-a7d1-55700ac929c3",
+          "procedure_id": "procedure-01",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 3,
+          "connection_generation": 3
+        }
+      ]
+    },
+    "roll_forward_final": {
+      "subject": "watch-01",
+      "incarnation": "1ae2a60d-1b29-4805-905d-9f6ee13bc1ef",
+      "executions": [
+        {
+          "id": "bbfc8e09-79f1-4f82-97cf-bd1c540d209f",
+          "procedure_id": "procedure-02",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 5,
+          "connection_generation": 5,
+          "native_root_result": null
+        },
+        {
+          "id": "c6adb84e-1487-412c-a7d1-55700ac929c3",
+          "procedure_id": "procedure-01",
+          "owner": "alice",
+          "lifecycle": "RECOVERY_REQUIRED",
+          "control_state": "RECOVERY_REQUIRED",
+          "epoch": 4,
+          "connection_generation": 4,
+          "native_root_result": null
+        }
+      ]
+    }
+  },
+  "verified_restore_cases": {
+    "original_receipt": {
+      "audit_events": 15,
+      "audit_sha256": "3605230a822836daa9bf3dedb0e4f6586ee360c1731115487038c671883d1f1f",
+      "context_id": "A",
+      "database_sha256": "af6bb390982d0a9a1ede12e4fc03dbce8c64fdbbb6d814d04b5164df802a7ddc",
+      "format": "openbexi.context-checkpoint/1",
+      "incarnation": "5a1ac3d2-020b-4dc8-8e3e-4a05432ec167",
+      "last_sequence": 15,
+      "manifest_sha256": "28e35893787aa5f585e5f013fd5c3c99038d34cdd7ec893b61c127fea92f4ec2",
+      "user_version": 23
+    },
+    "restored": {
+      "audit_events": 15,
+      "audit_sha256": "3605230a822836daa9bf3dedb0e4f6586ee360c1731115487038c671883d1f1f",
+      "context_id": "A",
+      "database_sha256": "af6bb390982d0a9a1ede12e4fc03dbce8c64fdbbb6d814d04b5164df802a7ddc",
+      "format": "openbexi.context-checkpoint/1",
+      "incarnation": "5a1ac3d2-020b-4dc8-8e3e-4a05432ec167",
+      "last_sequence": 15,
+      "manifest_sha256": "28e35893787aa5f585e5f013fd5c3c99038d34cdd7ec893b61c127fea92f4ec2",
+      "user_version": 23
+    },
+    "wrong_trusted_pin_rejected": {
+      "exit": 1,
+      "observed": "ValueError: Checkpoint manifest differs from the capture receipt"
+    },
+    "populated_destination_rejected": {
+      "exit": 1,
+      "observed": "FileExistsError: Restore target already exists"
+    },
+    "corrupt_database_rejected": {
+      "exit": 1,
+      "observed": "ValueError: Checkpoint database checksum mismatch"
+    },
+    "damaged_target_absent": true,
+    "two_concurrent_restore_codes": [
+      0,
+      1
+    ],
+    "concurrent_winner_audit_verified": true
+  },
+  "independent_offline_verification": {
+    "passed": true,
+    "retained_volume_verification": {
+      "sqlite_integrity": "ok",
+      "byte_identical_original_audit_rows": 15,
+      "last_sequence": 15,
+      "audit": {
+        "2026-11-23_013025_Executor_procedure-01#1.ASRUN": {
+          "bytes": 232,
+          "sha256": "0d5a2c328e72a01e49d0864ba898311189801a38fb351816ab1a14db8d85416c"
+        }
+      },
+      "manifest_sha256": "28e35893787aa5f585e5f013fd5c3c99038d34cdd7ec893b61c127fea92f4ec2"
+    },
+    "enospc_on_operator_storage": [
+      {
+        "operation": "capture",
+        "error": "OperationalError",
+        "kind": "ENOSPC",
+        "target_absent": true,
+        "temporary_files_remaining": 0
+      },
+      {
+        "operation": "restore",
+        "error": "OSError",
+        "kind": "ENOSPC",
+        "target_absent": true,
+        "temporary_files_remaining": 0
+      }
+    ],
+    "scope": "Online and restored Context events, retained native ASRUN and operator backup/restore behavior on a real full filesystem."
+  },
+  "retained_volumes": [
+    "obx-qual-recovery-r02-fixture",
+    "obx-qual-recovery-r02-original",
+    "obx-qual-recovery-r02-replacement",
+    "obx-qual-recovery-r02-archive"
+  ],
+  "local_evidence": {
+    "fixture": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery02\\deployment.json",
+      "sha256": "590d445362e69ba7ae7cfdf05caebb1fcaab0100667521e5303d28719c263dba"
+    },
+    "run": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery02\\probe\\result.json",
+      "sha256": "dcb4be387430cd0fb194293cedd0a00be0591de350226202529260e75d3e00e0"
+    },
+    "offline_readback": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery02\\probe\\storage.json",
+      "sha256": "8969fd7e51d2849897dc8a66aa4b4bf135a72ee0536360c56b3522a10b4c3713"
+    },
+    "original_worker_log": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery02\\probe\\old-worker.log",
+      "sha256": "2584569bcdef0d520cf94de640180a26c42c0be5df91af3c25048d07e3f1959e"
+    }
+  },
+  "earlier_attempt": {
+    "receipt": {
+      "path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery01\\probe\\result.json",
+      "sha256": "afea742346b15b160031b32d36b3548fbbf298d998e35ecc2dc600d1fcff27bf"
+    },
+    "finding": "First pass used an earlier checkpoint utility and the normal client discarded the retired controller proof before its attempted command. The final pass explicitly authenticated and transmitted the unchanged previously issued proof to the public endpoint."
+  },
+  "limitations": [
+    "The simulation uses Context audit binding and a locally fenced native worker. External DSS command-effect settlement, independent driver egress and failover onto another physical host or cluster require their own observations.",
+    "Observable post-restore execution stays RECOVERY_REQUIRED with the existing logical hold. Safe external-effect reconciliation and native continuation remain open.",
+    "The ENOSPC checks exercise the separate operator backup and restore volume. They do not establish how the running Context behaves on an exhausted state mount."
+  ]
+}

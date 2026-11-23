@@ -1,5 +1,11 @@
 # Current qualification status
 
+## November 22 joint execution
+
+**Hold the release.** IDE 1.2.2 and SPELL 0.8.0 run a real native procedure from the installed Windows client. On the matched tested pair, controller handoff grew by 259.07 MiB and the installed IDE by 308.17 MiB during their five-minute sanitizer tests. Both exceeded the approved 64 MiB limit with zero swap. [Current joint qualification](evidence/qualification-20261122/README.md) · [All gate decisions](evidence/qualification-20261122/qualification.json)
+
+## November 6 reference
+
 Updated November 6, 2026 UTC. **IDE v1.2.1 and SPELL v0.8-rc1 remain unqualified.** All eleven full-release groups are open. The reference Linux foundation passed **1,823 tests in 423.326 seconds**, with zero failures, errors or skips and the original 600-second limit. Matched concurrent requests and heartbeats pass under measured conditions; preserved storage-stall failures prevent an unconditional reliability claim.
 
 The complete **303.491-second** Context/bridge diagnostic captured all eight processes and zero swap, but growth was **304.76 MiB** against **64 MiB** allowed. No conforming memory correction is established. Both original one-hour scenarios remain pending; cleanup and branch consolidation do not qualify a release.

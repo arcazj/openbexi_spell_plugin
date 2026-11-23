@@ -1,0 +1,87 @@
+{
+  "workflow": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419944",
+  "source": "7afd6f95040871ebc6e33dc36926aee9c822fcee",
+  "artifact_sha256": "6bc09240aa8b3c1d248420dd253868744828e534f2d06538a3f1aa492285253c",
+  "verdict": "FAIL",
+  "failed": "2 second, three ten-command bursts with concurrent real heartbeat",
+  "other_checks": "3 second and 1.5 second cases passed",
+  "heartbeats": [
+    {
+      "check": "barrier",
+      "renewals": 4,
+      "failures": [],
+      "max_response_seconds": 0.029174709999999493
+    },
+    {
+      "check": "burst2",
+      "renewals": 31,
+      "failures": [],
+      "max_response_seconds": 0.4939687309999954
+    },
+    {
+      "check": "burst3",
+      "renewals": 11,
+      "failures": [],
+      "max_response_seconds": 0.02700523200000049
+    }
+  ],
+  "failure": "Commands returned uncertain or expired effects. This capture alone does not establish why the deadline was missed.",
+  "ide_linux": {
+    "workflow": "https://github.com/arcazj/openbexi_ide/actions/runs/45093674055",
+    "tests": 310,
+    "skipped": 1,
+    "reason": "Windows job-object child ownership",
+    "wheel_sha256": "397d46ae29e17814cceb27033f9f433367ac785c204cc890ec49af05017bace9"
+  },
+  "ide_windows_ownership": {
+    "suite": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.274",
+      "timestamp": "2026-11-22T20:27:27.113452-05:00",
+      "hostname": "ARCAZJ"
+    },
+    "sha256": "56240e5444ddeb36ed808797528566d45824e579114b651784538d5545798963",
+    "command": "python -m pytest tests/test_runtime.py::test_normal_worker_exit_reaps_detached_user_child_on_windows"
+  },
+  "traced_lanes": {
+    "matched-container": {
+      "run": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45094519387",
+      "trial_count": 18,
+      "pass_count": 18,
+      "archive_sha256": "317cb1c2408917d8c603acab3fe94623537aed163ff2f070b659a4e730ab1d93",
+      "failures": []
+    },
+    "reference-python": {
+      "run": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45094519387",
+      "trial_count": 18,
+      "pass_count": 17,
+      "archive_sha256": "b797d39845a257759829ad84fa9633f01b202b5c815b7128a477f91e467cc784",
+      "failures": [
+        {
+          "check": "burst3",
+          "mode": "profile",
+          "repeat": 0,
+          "exit_code": 1,
+          "outer_timeout": false,
+          "elapsed_seconds": 6.522798464999994
+        }
+      ]
+    }
+  },
+  "reference_failed_timing": [
+    {
+      "check": "burst3",
+      "trial": 0,
+      "mode": "profile",
+      "longest_ledger_wait": {
+        "duration_ms": 1214.516743,
+        "commit_union_ms": 1198.521769,
+        "durable_sync_union_ms": 1191.510342
+      }
+    }
+  ]
+}

@@ -4,13 +4,9 @@ Optional native SPELL integration for OpenBEXI IDE, IntelliJ IDEA and PyCharm, w
 
 ## Current status
 
-**November 22 qualification.** SPELL 0.8.0 and IDE 1.2.2 are the candidates for the public native launch. The published IDE 1.2.1 reaches reservation. The separate simulator SDK remains 0.1.0. The candidate has no stable release or production support claim. [Joint qualification record](docs/v0.8/CURRENT_STATUS.md)
+**November 22 release decision — HOLD.** IDE **1.2.2** and SPELL **0.8.0** are the candidate pairing (IDE `3ec9d4d9` and SPELL `99686362`). The simulator SDK uses **0.1.0**. The installed Windows client and authenticated Chromium workspace can launch a native procedure and display its result. Published IDE 1.2.1 passed ordinary Python Run/Debug and stopped at reservation in the paired SPELL test. [Tested artifacts and limitations](docs/v0.8/evidence/qualification-20261122/README.md)
 
-**IDE v1.2.1 and SPELL v0.8-rc1 remain unqualified.** All eleven full-release groups are open. The reference Linux foundation passed **1,823 tests in 423.326 seconds**, with zero failures, errors or skips and the original 600-second limit. Matched concurrent requests and heartbeats pass under measured conditions; preserved storage-stall failures prevent an unconditional reliability claim.
-
-The complete **303.491-second** Context/bridge diagnostic captured all eight processes and zero swap, but growth was **304.76 MiB** against **64 MiB** allowed. No conforming memory correction is established. Both original one-hour scenarios remain pending; cleanup and branch consolidation do not qualify a release.
-
-[Current status and next work](docs/v0.8/CURRENT_STATUS.md) · [roadmap](ROADMAP.md) · [deadline and memory evidence](docs/v0.8/CONTEXT_DSS_DEADLINES_20261105.md) · [cleanup and recovery](docs/REPOSITORY_MAINTENANCE.md)
+Both five-minute sanitizer workloads exceeded the approved 64 MiB growth limit. Controller handoff grew by **259.07 MiB** and the installed IDE by **308.17 MiB**, with zero swap. The original one-hour runs remain gated. Full native compatibility, supported deployments, JetBrains host acceptance and independent security review remain open. [Qualification status](docs/v0.8/CURRENT_STATUS.md) · [Roadmap](ROADMAP.md)
 
 ## Use and develop
 

@@ -1,0 +1,171 @@
+{
+  "schema": "openbexi.v08.public-native-launch/2",
+  "status": "PASS",
+  "scope": "Installed Windows Qt and packaged JetBrains Swing native launch and result.",
+  "pair": {
+    "ide": {
+      "commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+      "manifest_sha256": "d0dfd65584ffb09c0f125940091ad606343abef7fbc989148d6f03845918ea09"
+    },
+    "spell": {
+      "commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "manifest_sha256": "a3c6d72b7640df1d6a843c800216bc905088ec3ba45d5a739b409a4dfaa2ae98"
+    }
+  },
+  "wheels": {
+    "openbexi_ide-1.2.2-py3-none-any.whl": "397d46ae29e17814cceb27033f9f433367ac785c204cc890ec49af05017bace9",
+    "openbexi_spell_dss-0.8.0-py3-none-any.whl": "c885a7913031fe66a6d471e6b1f31090b948db34faecf95e71acf93ac4755f16",
+    "openbexi_spell_host-0.8.0-py3-none-any.whl": "28190022a6f0d962ec87e438e2a263324740a3c9520d03abc6a80eddb3f85194",
+    "openbexi_spell_server-0.8.0-py3-none-any.whl": "4b534dc7354bb51715a49e810c49030d3b833f00bac82c0321c5b103b09d35e7",
+    "openbexi_spell_shared-0.8.0-py3-none-any.whl": "ee20ebc95b81247ff877352e3de3ebc14e5d0bdbaab08d2ec9d6a084bf66d9a4"
+  },
+  "install_receipt": {
+    "archive": "windows/canonical-final/result.json",
+    "sha256": "7e15f3cfddd50dc1c647f01a3a031b4e8c041ad08832a321411d93174fa903ca"
+  },
+  "published_baseline_and_prior_c729_receipt": {
+    "file": "public-launch.json",
+    "sha256": "701962ff03f8b09e8668fd1adec3dcaabd5ee879b4d4fceff8167fa1bf4662a0"
+  },
+  "browser_receipt": {
+    "file": "public-browser.json",
+    "sha256": "6b7e6187abc1f9b10fce3a0003f4b3ff82f6cfa0a946c82d9de61708b56f304d"
+  },
+  "archive_root": "F:/openbexi-builds/qualification-20261122",
+  "surfaces": [
+    {
+      "surface": "OpenBEXI IDE Qt on native Windows",
+      "execution": "ae9af729-29d3-4f0e-abaa-93f567dc9cc5",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+      "source_commit": "8708496044323f1377cb233ce4011624cc427ef3",
+      "source_sha256": "5b985adabe12248f467f9fffa83847987c4f5cf3949cdeae39adb5d2ab3194c0",
+      "processes": [
+        {
+          "pid": 309,
+          "ppid": 7,
+          "executable": "SPELL-Listener"
+        },
+        {
+          "pid": 333,
+          "ppid": 309,
+          "executable": "SPELL-Context"
+        },
+        {
+          "pid": 398,
+          "ppid": 333,
+          "executable": "SPELL-Executor"
+        },
+        {
+          "pid": 7,
+          "ppid": 1,
+          "executable": "python3.13"
+        }
+      ],
+      "native_states": [
+        "PAUSED",
+        "native-running",
+        "FINISHED"
+      ],
+      "visible_result": {
+        "owner": "FINISHED",
+        "observer": "FINISHED"
+      },
+      "terminal_controls_disabled": true,
+      "retained_authority_hold": true,
+      "spent_worker_count": 1,
+      "driver_events": 2,
+      "original_asrun": [
+        {
+          "name": "2026-11-23_012434_Executor_main#1.ASRUN",
+          "bytes": 483,
+          "sha256": "bae455549379d77f7b442d0f549e629e4ba7f91f6433b4aa8c89c5377b610288"
+        }
+      ],
+      "worker_exit": 0,
+      "receipts": [
+        {
+          "archive": "windows/native-996-qt/result.json",
+          "sha256": "c9af5cd2a4e29a6582b1473e642a693f26468b8d8ca7037e0a055d0a743b0dc7"
+        },
+        {
+          "archive": "public-launch/qt996/public-result.json",
+          "sha256": "e49d6934dbfae7ce39936659e7c80eabf6bd9f9ff4e0d1b38ce48d5ca7e5b680"
+        }
+      ]
+    },
+    {
+      "surface": "Packaged JetBrains tool window on the IntelliJ SDK",
+      "execution": "707f183a-f7b3-4050-acf2-6071cda87b91",
+      "server_image": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+      "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+      "source_commit": "8708496044323f1377cb233ce4011624cc427ef3",
+      "source_sha256": "5b985adabe12248f467f9fffa83847987c4f5cf3949cdeae39adb5d2ab3194c0",
+      "processes": [
+        {
+          "pid": 307,
+          "ppid": 7,
+          "executable": "SPELL-Listener"
+        },
+        {
+          "pid": 324,
+          "ppid": 307,
+          "executable": "SPELL-Context"
+        },
+        {
+          "pid": 387,
+          "ppid": 324,
+          "executable": "SPELL-Executor"
+        },
+        {
+          "pid": 7,
+          "ppid": 1,
+          "executable": "python3.13"
+        }
+      ],
+      "native_states": [
+        "PAUSED",
+        "native-running",
+        "FINISHED"
+      ],
+      "visible_result": {
+        "owner": "FINISHED",
+        "observer": "FINISHED"
+      },
+      "terminal_controls_disabled": true,
+      "retained_authority_hold": true,
+      "spent_worker_count": 1,
+      "driver_events": 2,
+      "original_asrun": [
+        {
+          "name": "2026-11-23_012433_Executor_main#1.ASRUN",
+          "bytes": 444,
+          "sha256": "cf932053d1e725b47d4463caa7906f089c99ca41b6df82b95f9c1d9569077354"
+        }
+      ],
+      "worker_exit": 0,
+      "receipts": [
+        {
+          "archive": "windows/native-996-jb/result.json",
+          "sha256": "32411da63143886e02c2d484417a6cce2c132ec13d98320755e086a7af3c4a73"
+        },
+        {
+          "archive": "public-launch/jb996/public-result.json",
+          "sha256": "63d89a06a1e2151c86390c2eafd986cad4b1ab820d87e7f6545eb5dda709e6ac"
+        }
+      ],
+      "sdk": {
+        "name": "IntelliJ IDEA",
+        "version": "2026.2.5",
+        "buildNumber": "262.12573.28"
+      },
+      "jar_sha256": "78b341bf80367294536017a6c4414bd2851d1a1cdab3e56f298e86d436597d55",
+      "zip_sha256": "f9ba699a7b5a901753440757835094ceea714e5dae5b4eb061ce0f2a75e2f3dd",
+      "component_host": "IntelliJ SDK with a settings-only Project fixture."
+    }
+  ],
+  "boundary": [
+    "Native root observation retains the Context reservation for host settlement.",
+    "These procedures used the private Context audit-event driver. The independent GENERIC DSS and full IDE-host startup have their own qualification requirements."
+  ]
+}
