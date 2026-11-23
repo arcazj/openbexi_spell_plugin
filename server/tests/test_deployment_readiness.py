@@ -107,8 +107,18 @@ def test_single_use_native_job_mounts_its_private_audit_subdirectory():
     assert pod["restartPolicy"] == "Never" and record["spec"]["backoffLimit"] == 0
     pvc = next(v for v in pod["volumes"] if v["name"] == "persistent")
     assert pvc["persistentVolumeClaim"]["claimName"] == "audit-slot-01"
-    assert next(m for m in init["volumeMounts"] if m["name"] == "persistent")["mountPath"] == "/durable"
+    assert (
+        next(m for m in init["volumeMounts"] if m["name"] == "persistent")["mountPath"]
+        == "/durable"
+    )
     audit = next(m for m in worker["volumeMounts"] if m["mountPath"] == "/audit")
-    assert audit == {"name": "persistent", "mountPath": "/audit", "subPath": "records", "readOnly": False}
+    assert audit == {
+        "name": "persistent",
+        "mountPath": "/audit",
+        "subPath": "records",
+        "readOnly": False,
+    }
     with pytest.raises(ValueError, match="manifest digest"):
-        renderer["worker_job"]("qualification", "slot-01", "registry.example/worker:tag", ref, "b" * 64)
+        renderer["worker_job"](
+            "qualification", "slot-01", "registry.example/worker:tag", ref, "b" * 64
+        )
