@@ -84,7 +84,7 @@ class GatewayWorkspace:
             result = self.client.authority(context, "execution.reserve",
                                            dict(binding, connection_id=self.connections[context]), key=key())
             self.client.remember_controller(context, result)
-            selected = result["execution_id"]
+            selected = result["id"]
         else:
             selected = request["id"]
             row = next((item for item in self.snapshot["executions"] if item["id"] == selected), None)
