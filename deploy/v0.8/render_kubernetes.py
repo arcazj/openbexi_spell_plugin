@@ -45,7 +45,7 @@ def deployment(role, port):
         "image": image,
         "imagePullPolicy": "IfNotPresent",
         "args": (
-            ["--port", "8085", "--database", "/var/lib/dss/dss.sqlite"]
+            ["--http-listen", "0.0.0.0", "--port", "8085", "--database", "/var/lib/dss/dss.sqlite"]
             if is_dss else [("context" if is_context else role), "--config", "/run/private/config.json"]
         ),
         "ports": [{"name": "https" if not is_dss else "http", "containerPort": port}],

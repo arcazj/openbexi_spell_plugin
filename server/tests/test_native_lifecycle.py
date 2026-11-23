@@ -35,7 +35,8 @@ def test_delayed_original_finish_receipt_keeps_worker_and_relay_alive():
         assert not thread.is_alive()
 
 
-def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
+@pytest.mark.parametrize("assigned", [False, True])
+def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup(assigned):
     source = Path(__file__).resolve().parents[2] / "host_runtime/python/v08_worker.py"
     tree = ast.parse(source.read_text())
 
@@ -59,7 +60,17 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
     audit = module.NativeLifecycleReceipts()
     acknowledge(audit, "root#1", "started")
     waiting, announced = Event(), Event()
+    observations = []
+
+    def record(payload, *, path, schema):
+        observations.append((payload, path, schema))
+        return {"execution_id": "original-execution", "native_status": "FINISHED"}
+
     namespace = dict(
+        assigned=assigned,
+        request={"origin": "original-execution"},
+        session=SimpleNamespace(instance="root#1"),
+        route=SimpleNamespace(call=record),
         state="FINISHED",
         lifecycle=audit,
         child_gate=SimpleNamespace(started={"root#1": None}),
@@ -75,8 +86,24 @@ def test_actual_worker_completion_waits_before_announcing_finished_or_cleanup():
     try:
         assert waiting.wait(0.5)
         assert not announced.wait(0.05)
+        assert not observations
         acknowledge(audit, "root#1", "finished")
         assert announced.wait(0.5)
+        assert observations == (
+            [
+                (
+                    {
+                        "origin": "original-execution",
+                        "instance_id": "root#1",
+                        "native_status": "FINISHED",
+                    },
+                    "/v1/worker/root-result",
+                    "openbexi.worker/2",
+                )
+            ]
+            if assigned
+            else []
+        )
     finally:
         thread.join(timeout=6)
         assert not thread.is_alive()
