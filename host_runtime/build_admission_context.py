@@ -937,6 +937,47 @@ def bound_native_diagnostic_logs(source):
     path.write_text(text.replace(old, new))
 
 
+def reuse_executor_info_log_line(text):
+    """Reuse one locally owned string for Context's executor-info diagnostics."""
+    start = text.index("void SPELLexecutorManager::buildExecutorInfo(")
+    end = text.index("\n}", start) + 2
+    method = text[start:end]
+    if hashlib.sha256(method.encode()).hexdigest() != (
+        "b8af60cf1a3bef3a92e738c4bfae17ff72c43ffab0c7890ce3d9bf23f2e0ff08"
+    ):
+        raise ValueError("Native executor-info logging preimage differs")
+    # Keep the __LINE__ recorded by every LOG_INFO. Each active call gets its own
+    # string, including recursive calls from a logger. The lease drops large lines.
+    changed = method.replace(
+        "\n\n\n\ttry",
+        "\n\tV08LineStack infoLogStorage;\n\tstd::string& infoLogLine = infoLogStorage.value();\n\ttry",
+        1,
+    )
+    for label, value in (
+        ("Parent procedure  ", "exec->getModel().getParentInstanceId()"),
+        ("Status            ", "SPELLdataHelper::executorStatusToString(st)"),
+        ("ASRUN file        ", "exec->getModel().getAsRunFilename()"),
+        (
+            "Open mode       ",
+            "SPELLdataHelper::openModeToString(exec->getModel().getOpenMode())",
+        ),
+    ):
+        prefix = '"[EMGR] ' + label + ': "'
+        before = f"LOG_INFO({prefix} + {value});"
+        after = f"LOG_INFO(infoLogLine.assign({prefix}).append({value}));"
+        if changed.count(before) != 1:
+            raise ValueError("Native executor-info log record differs")
+        changed = changed.replace(before, after)
+    include = (
+        "// System includes ---------------------------------------------------------"
+    )
+    if text.count(include) != 1:
+        raise ValueError("Native executor-info include boundary differs")
+    return (text[:start] + changed + text[end:]).replace(
+        include, '#include "/candidate/line_stack.H"'
+    )
+
+
 def reuse_native_timestamp_and_asrun(source):
     """Format measured timestamp/ASRUN hot paths into exclusively owned buffers."""
     unit = source / "lib/SPELL_UTIL/src/SPELLutils.C"
@@ -1911,6 +1952,10 @@ def patch_native_tree(source, *, prompts=False, terminal=False):
     reuse_native_trace_filename(source)
     avoid_native_thread_label_copies(source)
     bound_native_diagnostic_logs(source)
+    executor_manager = source / "lib/SPELL_CTX/src/SPELLexecutorManager.C"
+    executor_manager.write_text(
+        reuse_executor_info_log_line(executor_manager.read_text())
+    )
     reuse_native_timestamp_and_asrun(source)
     durable_native_asrun(source)
     reuse_native_line_record(source)
