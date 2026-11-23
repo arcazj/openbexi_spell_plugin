@@ -1,6 +1,6 @@
 {
   "schema": "openbexi.joint-qualification/1",
-  "updated_utc": "2026-11-23T01:38:56+00:00",
+  "updated_utc": "2026-11-23T02:45:10+00:00",
   "approved_prompt_sha256": "ee2aa3b99558fe0d098f949829c53e45eeda8ee7c5e5f0491240f97438d2641d",
   "decision": "HOLD",
   "released": false,
@@ -11,15 +11,18 @@
     "windows_distribution": "Online installation is sufficient. A standalone offline installer is outside the selected support scope."
   },
   "subjects": {
-    "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-    "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
-    "ide_wheel_sha256": "397d46ae29e17814cceb27033f9f433367ac785c204cc890ec49af05017bace9",
-    "native_profile_image": "sha256:fe2f86854954f7255de07ccf85a347c78c58d739e46f61c9400f452d3db29e63",
-    "gateway_image": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
-    "worker_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
-    "worker_native_parent": "sha256:b971df8f0ea0fc1fa40ba04adbd735534d797463310d574b987c02c2070681a0",
-    "desktop_image": "sha256:5ad787f7227118597eb8f449e664fd16f9ef06def0b1199e29537f52fd1a2e70",
-    "jetbrains_zip_sha256": "f9ba699a7b5a901753440757835094ceea714e5dae5b4eb061ce0f2a75e2f3dd"
+    "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+    "ide_wheel_sha256": "1d68d0a13f85a9e64a084757c6be280cdc2feb77d97027df0d98bfc2ebffb58f",
+    "server_wheel_sha256": "d39f4c6cc0735fea0c1331724a520658d866faf4548ded7f01802fcab2f6f3e8",
+    "native_profile_image": "sha256:35631c613df80d0e1c3a51316a6da7597086f8a678697210d471a6db4bb84b8d",
+    "worker_image": "sha256:489ff81aaa52ecbf09b4281499ed00f22fdd8b19e51e133a0202f2bbb6a40413",
+    "gateway_image": "sha256:f500c700cb5714a2040064a1a9bc93e3e86ae086cdc28dc65d363161af3ba94e",
+    "core_image": "sha256:b1b46dcda1f8db45889f6a145d2125362bbc04c41ded6e956ea99ca1ea61f968",
+    "desktop_image": "sha256:9061407f337a593af187e66c55c5c014744891d8ad3dd4d7684139e52090dfcf",
+    "jetbrains_zip_sha256": "f9ba699a7b5a901753440757835094ceea714e5dae5b4eb061ce0f2a75e2f3dd",
+    "assigned_worker_before_runtime_update": "sha256:58418054f087f2cb36c27e9c1b11843474a6dcee2db6ffcc133cf2bedb26d4a1",
+    "patched_native_base": "sha256:774fdf79860fb4576ea89b4850f0d39c0a4326fb3c5846805ff772102a21528c"
   },
   "published_baseline": {
     "ide": "08c314fb6b802b407cbabe01777072884d2b7504",
@@ -47,8 +50,8 @@
   "gates": {
     "services": {
       "status": "NOT RUN",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "C",
         "D",
@@ -59,22 +62,24 @@
         "F7",
         "F10"
       ],
-      "observation": "Ten distinct procedures ran concurrently for 11.574798 s. Twenty certificate-scoped API observers saw all ten finish. One of 100 actual launch intents was admitted, 99 received conflict and the original execution spent one slot. These load cases used the identified c729 pair. The final 996 public path launched and observed the native family.",
-      "remaining": "Complete the remaining deployed isolation, partition and survival cases on the delivery topology.",
+      "observation": "The installed public client launched the native root on the current worker. In the three-node KinD cohort ten native Jobs overlapped for 11.715489 s and twenty authenticated observers saw every completion. One of 100 separate native starts won; 99 returned conflict. Individual receipts identify the cluster and source.",
+      "remaining": "Complete the outstanding Listener partition, multi-Context isolation and concurrent alias/version cases on the supported deployment.",
       "evidence": [
-        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/public-api-load.json",
-        "public-launch-final.json",
-        "kubernetes-network.json"
+        "public-live-final.json",
+        "kubernetes-native-jobs.json",
+        "kubernetes-network.json",
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/public-api-load.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45091507065",
-        "qualify_load.py and competing_native_start.py"
-      ]
+        "qualify_load.py, single.py and collect.py",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630961"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "native_family": {
       "status": "FAIL",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G2/E",
         "G3/F",
@@ -84,68 +89,76 @@
         "F4",
         "F8"
       ],
-      "observation": "Both 45-second original scenarios passed on a hosted reference pair. Both complete five-minute sanitizer workloads failed only the 64 MiB growth limit, measuring 259.07 and 308.17 MiB with zero swap. The later optimized native rebuild has identical product binaries.",
-      "remaining": "Establish a conforming sustained-memory correction, or obtain an explicitly approved evidence-backed amendment. Both original one-hour sanitizer cases depend on passing the five-minute cases. Verify deployed live family quiescence and transfer.",
+      "observation": "Short original sanitizer checks passed. The completed five-minute controller and installed-IDE runs grew 259.07 and 308.17 MiB against 64 MiB. The comparable optimized runs grew 3.46 and 3.36 MiB. The final single-host root and child completed after three witnessed control transfers or reconnections. Both original hours were skipped when their prerequisites failed.",
+      "remaining": "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply.",
       "evidence": [
         "native-memory.json",
-        "native-memory-writer-samples.json",
         "runtime-comparison.json",
-        "product-identities.json",
-        "public-advanced-996.json"
+        "public-live-final.json",
+        "terminal-close-child-4a28557a.json",
+        "hosted-runs.json"
       ],
       "command_or_ci_run": [
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727",
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419521",
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176"
-      ]
+        "public-live-tools.zip"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "compatibility": {
-      "status": "NOT RUN",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "status": "FAIL",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G0/A",
         "G4/G",
         "F8"
       ],
-      "observation": "All 46 missing original captures were recovered. The native inventory currently records 174 of 763 requirements as meeting all four inherited dimensions.",
-      "remaining": "Finish the remaining native oracles and manual/source mappings for all 763 requirements. A migration check or an aggregate section alone cannot close a row.",
+      "observation": "318 of 763 inherited IDs passed all four dimensions across source-identified native runs. 27 have a reproduced failing mandatory positive dependency. 418 lack a complete native verdict. All recovered historical capture and source references remain independently verifiable.",
+      "remaining": "Correct the reproduced adapter behaviors and finish the four inherited dimensions for the remaining IDs. Rerun affected rows on the intended delivery pair.",
       "evidence": [
+        "compatibility-outcomes.json",
+        "compatibility-negative-rows.json",
+        "compatibility-user-dictionary.json",
+        "compatibility-additional-native.json",
+        "compatibility-generic.json",
         "compatibility-native-inventory.json",
-        "compatibility-domain-oracles.json",
         "compatibility-capture-recovery.json",
-        "compatibility-source-drift.json"
+        "compatibility-47e-continuity-captures.json"
       ],
       "command_or_ci_run": [
-        "compatibility-admitted-oracle.py",
-        "scripts/v08_deployed_compatibility_map.py"
-      ]
+        "python scripts/v08_summarize_native_qualification.py docs/v0.8/evidence/qualification-20261122 --output compatibility-outcomes.json",
+        "Original source cases and retained native roots in the three indexed compatibility archives"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "driver_faults": {
       "status": "FAIL",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G5/H",
         "F2",
         "F3",
         "F10"
       ],
-      "observation": "Hosted driver and independent DSS subsets passed. One 2-second concurrent command burst failed with uncertain outcomes. All sampled heartbeats succeeded on the same runner.",
+      "observation": "A causal before/after on independent GENERIC produced 80/80 original telemetry and 8/8 command assertions, including four commands with twenty ordered binary acknowledgments. An explicitly bounded native operation succeeded and the over-limit inputs remained denied. Hosted two- and three-second bursts still have retained failures; one measured 1,214.5 ms of ledger waiting overlapping 1,191.5 ms of durable sync.",
       "remaining": "Demonstrate reliable original deadlines and complete deployed TC/ack/TM, recovery, isolation and uncertain-outcome oracles on the delivered driver and independent DSS.",
       "evidence": [
         "deadline-results.json",
+        "compatibility-generic.json",
         "hosted-runs.json"
       ],
       "command_or_ci_run": [
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419944",
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45091507065"
-      ]
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "ide_browser": {
-      "status": "FAIL",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "status": "BLOCKED",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G3/F",
         "I",
@@ -155,48 +168,54 @@
         "F9",
         "F10"
       ],
-      "observation": "Twenty-three certificate-authenticated Chromium profiles exercised WSS, observer denials and reserved transfer. On the actual native family, step, run and pause succeeded. Live transfer produced RECOVERY_REQUIRED and fenced A and B. A real YES/NO prompt completed using the owner API. The 996 UI lacked a usable prompt widget. A same-file Git conflict was resolved with two installed IDEs and Git CLI transport.",
-      "remaining": "Qualify live-family handoff and supported user-facing prompts after fixes. Actual project Run/Debug in IDEA and PyCharm additionally needs the user to handle their initial vendor screens.",
+      "observation": "On the frozen delivery pair, the original native root and child remained paused across explicit A to B to A handoffs and reconnect. Twenty additional Chromium observers saw FINISHED. B answered the original question once and stale controller and observer commands returned 403. Both vendor-host processes loaded the verified JetBrains ZIP.",
+      "remaining": "The user must complete JetBrains onboarding in IntelliJ IDEA and PyCharm so the project-level Run and Debug checks can run. Remaining browser request/reject/expiry and multi-panel contracts need complete coverage.",
       "evidence": [
-        "public-browser.json",
-        "public-launch-final.json",
-        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/jetbrains.json",
-        "public-advanced-996.json",
-        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/git-conflict.json"
+        "public-live-final.json",
+        "public-native-controls-47e.json",
+        "public-live-4a28557a.json",
+        "public-prompt-655.json",
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/online-install-47e0cb37.json",
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/online-native-prompt-47e.json",
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/git-conflict-47e.json",
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/jetbrains.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_ide/actions/runs/45093674055",
-        "node scripts/qualify_v08_browser_workspace.cjs",
-        "qualify_jetbrains.py"
-      ]
+        "public-live-tools.zip",
+        "qualify_candidate.py --online",
+        "qualify_jetbrains.py and HostQualification.java"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "compose": {
       "status": "NOT RUN",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G6",
         "F4",
         "F6",
         "F9"
       ],
-      "observation": "Five-service public prelaunch, independent Context persistence, and service restart passed. The integrated Debian desktop uses the matched six wheels, digest-pinned native family and signed desktop updates. An isolated native Compose deployment also restored and rolled back a paused root, keeping the original audit and rejecting the prior authority.",
-      "remaining": "Complete the full managed-worker deployment, component loss, storage failure, restore and fencing in the supported Compose topology.",
+      "observation": "The real five-service deployment is covered by versioned hosted tests. Separate local Compose recovery preserved fifteen pre-checkpoint audit rows and the original ASRUN across upgrade, restoration into a fresh volume, rollback and re-upgrade. Authenticated stale worker and controller requests were rejected.",
+      "remaining": "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology.",
       "evidence": [
+        "compose-recovery.json",
+        "compose-active-storage-fault.json",
         "desktop-build.json",
         "product-identities.json",
-        "hosted-runs.json",
-        "compose-recovery.json"
+        "hosted-runs.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419476",
-        "docker compose -f compose.v08.qualification.yaml up -d --wait"
-      ]
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663",
+        "Exact Compose commands and revisions in compose-recovery.json and compose-active-storage-fault.json"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "kubernetes": {
       "status": "BLOCKED",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G7",
         "F1",
@@ -204,21 +223,22 @@
         "F6",
         "F9"
       ],
-      "observation": "Three real hosted Kubernetes nodes ran Calico. Context→DSS and Listener→Context connected before and after each denied Gateway test. The Gateway→Listener path worked, and a restarted Context recovered durable state with a fresh incarnation.",
-      "remaining": "Provide the representative cluster and operator. Native Jobs, admission, node and storage loss, old-authority fencing, upgrade and rollback remain required there.",
+      "observation": "The local enforcing three-node KinD cluster admitted one of 100 full native requests. Ten Jobs finished across two worker nodes. A new authority on the same PVC retained the paused root in RECOVERY_REQUIRED after the original authority and worker were independently fenced. Calico policy decisions and actual node-runtime observations are recorded.",
+      "remaining": "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment.",
       "evidence": [
-        "kubernetes-network.json",
-        "hosted-runs.json"
+        "kubernetes-native-jobs.json",
+        "kubernetes-network.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092140629",
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419863"
-      ]
+        "cluster.py, deploy.py, run.py, single.py, fence.py and verify_template.py",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "recovery": {
-      "status": "NOT RUN",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "status": "BLOCKED",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G3/F",
         "G5/H",
@@ -230,23 +250,24 @@
         "F6",
         "F7"
       ],
-      "observation": "A real paused native root survived as 15 original audit records plus original ASRUN in an online SQLite backup and fresh-volume restore. RC1 to 996, restored 996, rollback to published RC1 and upgrade to 996 kept independent authority incarnations. The public server rejected both stale credentials with HTTP 403. Damaged checkpoints, occupied targets, colliding restores and actual ENOSPC failed closed. Hosted audit and disk-full checks passed.",
-      "remaining": "Verify independent DSS effect settlement, multi-host failure, and representative cluster restore/upgrade/fencing.",
+      "observation": "Compose rollback and roll-forward retained all 15 original durable events and ASRUN. A running Context failed closed on disk exhaustion. KinD separately preserved all 11 pre-loss events for the original paused root and denied the superseded controller proof after fencing.",
+      "remaining": "Complete representative multi-node storage restoration, authority fencing and independent DSS uncertain-effect recovery on the target deployment.",
       "evidence": [
-        "public-launch-final.json",
-        "kubernetes-network.json",
-        "hosted-runs.json",
-        "compose-recovery.json"
+        "compose-recovery.json",
+        "compose-active-storage-fault.json",
+        "kubernetes-native-jobs.json",
+        "hosted-runs.json"
       ],
       "command_or_ci_run": [
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45092025727",
         "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419863"
-      ]
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "security": {
       "status": "BLOCKED",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G1/B",
         "G8/J",
@@ -257,63 +278,78 @@
         "F9",
         "F10"
       ],
-      "observation": "The candidate has authenticated user and observer isolation. Exact-image inventories and supplier license fields are recorded separately from the optional Gateway dependency audit.",
-      "remaining": "Obtain independent implemented-system assessment, disposition the image advisories and license gaps, and complete the authorization and resource-isolation matrix.",
+      "observation": "Exact runtime images each have a CycloneDX inventory, advisory/package matches and installed notices. Six package pairs have matching declared license bytes. The Debian desktop retains a scanner-critical libxml2 finding. Supplier versions, local evidence and outstanding review appear together.",
+      "remaining": "An independent reviewer must assess the implemented system and the exposure of outstanding advisories. The release owner must explicitly decide any proposed risk exceptions.",
       "evidence": [
-        "public-browser.json",
         "image-supply-chain.json",
-        "hosted-runs.json"
+        "image-notices-47e0cb37.json",
+        "image-inventories-47e0cb37.zip",
+        "package-licenses.json",
+        "advisory-dispositions.json",
+        "public-live-final.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674187",
-        "Trivy 0.76.2 image and CycloneDX scans"
-      ]
+        "Pinned Trivy image inventory and vulnerability scanner",
+        "verify_archive_licenses.py",
+        "image_license_probe.py"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "ci": {
       "status": "FAIL",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "K",
         "G0/A",
         "G9/L"
       ],
-      "observation": "On the identified 996 pair, the exact Windows installation, both original 45-second sanitizer cases and a 1,838-test hosted foundation passed. Foundation took 411.649 seconds with zero failures, errors or skips. Separate sustained sanitizer and concurrent driver jobs failed. Each launched run is recorded.",
+      "observation": "All discovered workflows are collected with individual job outcomes, native and test receipts, and GitHub artifact hashes. The original sanitizer and deadline failures remain mandatory inputs. The separate close-child terminal run on 4a recorded a kernel OOM at its 768 MiB fixture limit.",
       "remaining": "Require all mandatory jobs and supported integration surfaces on the identified delivery pair within their original limits.",
       "evidence": [
         "hosted-runs.json",
-        "deadline-results.json",
-        "runtime-comparison.json"
+        "runtime-comparison.json",
+        "terminal-close-child-4a28557a.json",
+        "deadline-results.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093419944",
-        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45093674176",
-        "https://github.com/arcazj/openbexi_ide/actions/runs/45093674055"
-      ]
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630961",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630921",
+        "https://github.com/arcazj/openbexi_ide/actions/runs/45100630795",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45094519387",
+        "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45099071545"
+      ],
+      "previous_qualification": "qualification-996.json"
     },
     "packaging": {
-      "status": "NOT RUN",
-      "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
-      "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "status": "BLOCKED",
+      "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+      "spell_commit": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
       "requirements": [
         "G9/L",
         "K",
         "F4",
         "F5"
       ],
-      "observation": "The final IDE 1.2.2 wheel was reproduced in hosted CI. Four SPELL wheels use 0.8.0 and the separate SDK uses 0.1.0. Package, native binary, desktop, ZIP and SHA-256 inventories identify each tested subject. The owner selected online Windows installation.",
-      "remaining": "Finish every supported online installation, license and advisory disposition. Stable publication and verification of downloads follow only after the complete release preflight passes.",
+      "observation": "Windows installed the exact IDE wheel, passed ordinary Run/Debug with SPELL absent, then installed the four 0.8.0 runtime wheels and the 0.1.0 simulator SDK. All six products matched their installed wheel bytes, seven third-party wheels were downloaded online, and the Debian desktop passed X11 Run/Debug and Chromium/noVNC.",
+      "remaining": "Independent risk review and the remaining mandatory gates must pass before tagging, publishing and verifying fresh stable downloads.",
       "evidence": [
+        "package-licenses.json",
         "product-identities.json",
-        "desktop-inputs.json",
         "desktop-build.json",
-        "image-supply-chain.json"
+        "https://github.com/arcazj/openbexi_ide/blob/qualification/ide-spell-20261122/docs/evidence/ide-1.2.1/qualification-20261122/windows/online-install-47e0cb37.json",
+        "image-notices-47e0cb37.json"
       ],
       "command_or_ci_run": [
-        "https://github.com/arcazj/openbexi_ide/actions/runs/45093674055",
-        "scripts/build_v08_qualification_desktop.py",
-        "scripts/check_v08_release.py"
-      ]
+        "qualify_candidate.py --online",
+        "verify_archive_licenses.py",
+        "build_v08_qualification_desktop.py",
+        "check_v08_release.py"
+      ],
+      "previous_qualification": "qualification-996.json"
     }
   },
   "underlying_requirements": {
@@ -334,7 +370,9 @@
       "gate_groups": [
         "services",
         "native_family"
-      ]
+      ],
+      "scope": "The ten native Jobs, unique process identities and 100 starts passed. Concurrent alias/version and stale-hold scenarios still need a full verdict.",
+      "evidence": "kubernetes-native-jobs.json"
     },
     "G3/F": {
       "status": "NOT RUN",
@@ -343,7 +381,9 @@
         "native_family",
         "ide_browser",
         "recovery"
-      ]
+      ],
+      "scope": "Explicit live handoff, same-owner reconnect, prompt and all twenty observers passed in the single-host profile. The complete multi-root ownership matrix is pending.",
+      "evidence": "public-live-final.json"
     },
     "F1": {
       "status": "NOT RUN",
@@ -405,7 +445,9 @@
         "native_family",
         "compatibility",
         "ide_browser"
-      ]
+      ],
+      "scope": "The original child survived control transfer and its pending prompt was answered once. The complete collision and teardown matrix is pending.",
+      "evidence": "public-live-final.json"
     },
     "G0/A": {
       "status": "PASS",
@@ -417,10 +459,12 @@
       "evidence": "../../BASELINE_V07.md"
     },
     "G4/G": {
-      "status": "NOT RUN",
+      "status": "FAIL",
       "gate_groups": [
         "compatibility"
-      ]
+      ],
+      "scope": "All 763 reviewed individually. See the 318 full passes, 27 known failures and 418 incomplete rows.",
+      "evidence": "compatibility-outcomes.json"
     },
     "G5/H": {
       "status": "FAIL",
@@ -452,13 +496,15 @@
       ]
     },
     "F6": {
-      "status": "NOT RUN",
+      "status": "BLOCKED",
       "gate_groups": [
         "compose",
         "kubernetes",
         "recovery",
         "security"
-      ]
+      ],
+      "scope": "Compose restore and local KinD authority replacement passed. The representative node and storage-failure run is pending.",
+      "evidence": "kubernetes-native-jobs.json"
     },
     "G7": {
       "status": "BLOCKED",
@@ -505,9 +551,9 @@
     }
   },
   "verdict_counts": {
-    "NOT RUN": 5,
+    "NOT RUN": 2,
     "FAIL": 4,
-    "BLOCKED": 2
+    "BLOCKED": 5
   },
   "historical_recovery": {
     "prior_missing": 46,
@@ -516,11 +562,55 @@
     "bytes": 28768374
   },
   "compatibility_counts": {
-    "NO_CURRENT_DEPLOYED_CHECK": 570,
-    "FRESH_INHERITED_DIMENSIONS_PASSED": 174,
-    "MIGRATION_ONLY": 3,
-    "BROADER_SECTION_OPEN": 14,
-    "ADDITIONAL_INHERITED_ORACLE_REQUIRED": 2
+    "NOT RUN": 418,
+    "PASS": 318,
+    "FAIL": 27
   },
-  "hosted_results": "hosted-runs.json"
+  "hosted_results": "hosted-runs.json",
+  "intermediate_history": [
+    "pair-4a28557a.json",
+    "pair-655f5b5a.json",
+    "qualification-996.json"
+  ],
+  "matched_ci": [
+    "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630663",
+    "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630899",
+    "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630894",
+    "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630961",
+    "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630921",
+    "https://github.com/arcazj/openbexi_ide/actions/runs/45100630795"
+  ],
+  "all_dispatched_workflows_collected": true,
+  "release_preflight_previous": "publication-preflight-996.json",
+  "exact_hosted_suites": [
+    {
+      "run": 45100630961,
+      "url": "https://github.com/arcazj/openbexi_spell_plugin/actions/runs/45100630961",
+      "artifact": "v08-fault-reproduction-47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
+      "sha256": "f52cd29947b5c0a3157f55d88a338ebc2e4869f5d15b27e8e0d10b817ce50c10",
+      "tests": "95",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "81.344"
+    },
+    {
+      "run": 45100630795,
+      "url": "https://github.com/arcazj/openbexi_ide/actions/runs/45100630795",
+      "artifact": "ide-v08-client-a36d74ca43c0cce1b413a874ef681b0054a0afb4",
+      "sha256": "53d86f48becf4f98fcd8298549d675df1b02ec17ddea8a08176bbd28a98a79f3",
+      "tests": "310",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "1",
+      "time": "322.580"
+    }
+  ],
+  "last_collection_utc": "2026-11-23T02:41:45.561887+00:00",
+  "archived_workflow_count": 38,
+  "archived_job_count": 111,
+  "historical_five_minute_subjects": {
+    "ide": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+    "spell": "c7292d39f6f40eb98d4edb5304f4a49a0dd50307"
+  }
 }

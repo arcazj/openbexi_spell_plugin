@@ -1,0 +1,6121 @@
+{
+  "scope": "Source-scoped union of original native runs. Each row cites its tested build and raw capture through the named evidence. NOT RUN indicates that one or more mandatory dimensions lack a complete native verdict.",
+  "status_counts": {
+    "NOT RUN": 418,
+    "PASS": 318,
+    "FAIL": 27
+  },
+  "total": 763,
+  "inputs_sha256": {
+    "compatibility-native-inventory.json": "b06628bc88cdbe27da23237e807eb392865ba225d25325583562620bcd595ee5",
+    "compatibility-additional-native.json": "c7b5605da8e9d0604c401656228839e5d6b2cca4c5018bb055f1d0175c34aa7e",
+    "compatibility-user-dictionary.json": "d326e757312cb78bc9b2e518961f857c973c4fbde0563cd8ba9ff3156f74058c",
+    "compatibility-negative-rows.json": "0ad6d021f6759e1e9432f3f1717665fba5126c1b5e8101bf20f760157afd01c4"
+  },
+  "rows": [
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-ABORT",
+      "package": "COMMON",
+      "manual_pages": "28-30, 38, 41, 43, 88, 110-111, 114, 116-117",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-CANCEL",
+      "package": "COMMON",
+      "manual_pages": "28-30, 41-43, 55, 70, 111-112, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-HANDLE",
+      "package": "COMMON",
+      "manual_pages": "116",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-NOACTION",
+      "package": "COMMON",
+      "manual_pages": "28-30, 41-42, 111, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-RECHECK",
+      "package": "COMMON",
+      "manual_pages": "28, 41, 43, 111, 116-117",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-REPEAT",
+      "package": "COMMON",
+      "manual_pages": "28, 30, 38, 110-111, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-RESEND",
+      "package": "COMMON",
+      "manual_pages": "28, 110-111, 116-117",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-RESUME",
+      "package": "COMMON",
+      "manual_pages": "116",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ACTION-SKIP",
+      "package": "COMMON",
+      "manual_pages": "28-30, 38, 41-43, 110-111, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-EXECUTION-STATE-ABORTED",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-EXECUTION-STATE-ERROR",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-EXECUTION-STATE-FINISHED",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-FILE-MODE-APPEND",
+      "package": "FILES",
+      "manual_pages": "90, 110",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-FILE-MODE-READ",
+      "package": "FILES",
+      "manual_pages": "90, 110",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-FILE-MODE-READ-WRITE",
+      "package": "FILES",
+      "manual_pages": "90, 110",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-FILE-MODE-WRITE",
+      "package": "FILES",
+      "manual_pages": "90, 110",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-PROGRESS",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-SUCCESS",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-SELECTION-ACTIVE",
+      "package": "LIMIT",
+      "manual_pages": "59, 62, 64-66",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-SELECTION-ALL",
+      "package": "OBS",
+      "manual_pages": "44, 59, 61, 65, 94, 109-111, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-TYPE-HARDSOFT",
+      "package": "LIMIT",
+      "manual_pages": "61-62, 66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-TYPE-SPIKE",
+      "package": "LIMIT",
+      "manual_pages": "61, 65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-TYPE-STATUS",
+      "package": "LIMIT",
+      "manual_pages": "61-63, 67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-LIMIT-TYPE-STEP",
+      "package": "LIMIT",
+      "manual_pages": "61, 66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PRINT-FORMAT-PS",
+      "package": "COMMON",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PRINT-FORMAT-VECTOR",
+      "package": "COMMON",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-ARGS",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-INPUT-DATA",
+      "package": "DATA",
+      "manual_pages": "81, 90",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-NAME",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-OUTPUT-DATA",
+      "package": "DATA",
+      "manual_pages": "81, 90",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-PARENT",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-PREV-STEP",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROC-KEY-STEP",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA",
+      "package": "UI",
+      "manual_pages": "70-71, 112",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL",
+      "package": "UI",
+      "manual_pages": "28-30, 41-43, 55, 70, 111-112, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE",
+      "package": "UI",
+      "manual_pages": "70, 84",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-LIST",
+      "package": "UI",
+      "manual_pages": "70-72, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO",
+      "package": "UI",
+      "manual_pages": "28-30, 33, 35, 38, 41-42, 45, 49-50, 62, 70, 111-112, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM",
+      "package": "UI",
+      "manual_pages": "70-71, 109-110, 112",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK",
+      "package": "UI",
+      "manual_pages": "38, 70, 112, 114",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL",
+      "package": "UI",
+      "manual_pages": "70, 112",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES",
+      "package": "UI",
+      "manual_pages": "33, 70, 112",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO",
+      "package": "UI",
+      "manual_pages": "70, 112",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-PYTHON-SENTINEL-NONE",
+      "package": "DATA",
+      "manual_pages": "85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RADIX-BIN",
+      "package": "CMD",
+      "manual_pages": "48, 85, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RADIX-DEC",
+      "package": "CMD",
+      "manual_pages": "48, 69, 80, 85, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RADIX-HEX",
+      "package": "CMD",
+      "manual_pages": "48, 55, 85, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RADIX-OCT",
+      "package": "CMD",
+      "manual_pages": "48, 85, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RANGING-STATE-CALIBRATING",
+      "package": "DATA",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RANGING-STATE-ERROR",
+      "package": "UI",
+      "manual_pages": "68-69, 88, 95, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RANGING-STATE-IDLE",
+      "package": "DATA",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-RANGING-STATE-RANGING",
+      "package": "DATA",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-SCOPE-GLOBAL",
+      "package": "DATA",
+      "manual_pages": "99",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-SEVERITY-ERROR",
+      "package": "UI",
+      "manual_pages": "68-69, 88, 95, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-SEVERITY-INFORMATION",
+      "package": "UI",
+      "manual_pages": "68, 111, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-SEVERITY-WARNING",
+      "package": "UI",
+      "manual_pages": "68-69, 77, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-HOUR",
+      "package": "TIME",
+      "manual_pages": "33, 35, 58-59, 73",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-MINUTE",
+      "package": "TIME",
+      "manual_pages": "33, 37, 43, 49-50, 53, 58-59, 72",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-NOW",
+      "package": "TIME",
+      "manual_pages": "33, 35, 49-50, 62",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-SECOND",
+      "package": "TIME",
+      "manual_pages": "33, 35, 55-56, 59",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-TODAY",
+      "package": "TIME",
+      "manual_pages": "33, 35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-TOMORROW",
+      "package": "TIME",
+      "manual_pages": "33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-TIME-YESTERDAY",
+      "package": "TIME",
+      "manual_pages": "33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-VALUE-FORMAT-ENG",
+      "package": "COMMON",
+      "manual_pages": "39, 48, 94, 102, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONSTANT-VALUE-FORMAT-RAW",
+      "package": "COMMON",
+      "manual_pages": "37, 39-40, 44-45, 48, 94, 102, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONTROL-WAITFOR-INTERRUPT",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONTROL-WAITFOR-SKIP",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-CONTROL-WAITFOR-STEP",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-DATA-CONTAINER-ARGS",
+      "package": "DATA",
+      "manual_pages": "86, 89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-DATA-CONTAINER-IVARS",
+      "package": "DATA",
+      "manual_pages": "86",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-DATABASE-GDB",
+      "package": "DATA",
+      "manual_pages": "69, 80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-DATABASE-PROC",
+      "package": "DATA",
+      "manual_pages": "81, 90",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-DATABASE-SCDB",
+      "package": "DATA",
+      "manual_pages": "78-79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-ADJUSTLIMITS-NAME",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT",
+      "package": "COMMON",
+      "manual_pages": "30, 114",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-LIMIT-KEY-LOHIGH",
+      "package": "LIMIT",
+      "manual_pages": "61",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS",
+      "package": "COMMON",
+      "manual_pages": "111, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-USER-ACTION-DISABLE",
+      "package": "FLOW",
+      "manual_pages": "77-78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-VERIFY-FALSE-ACTION-MODIFIER",
+      "package": "OBS",
+      "manual_pages": "42-43",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-ERRATUM-VERIFY-ONFALSE-DEFAULT",
+      "package": "OBS",
+      "manual_pages": "41, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-001",
+      "package": "PY",
+      "manual_pages": "14",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-002",
+      "package": "PY",
+      "manual_pages": "15",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-003",
+      "package": "PY",
+      "manual_pages": "15",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-004",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-005",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-006",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-007",
+      "package": "PY",
+      "manual_pages": "17",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-008",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-009",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-010",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-011",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-012",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-013",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-014",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-015",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-016",
+      "package": "PY",
+      "manual_pages": "24",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-017",
+      "package": "PY",
+      "manual_pages": "24",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-018",
+      "package": "PY",
+      "manual_pages": "25",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-019",
+      "package": "COMMON",
+      "manual_pages": "27",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-020",
+      "package": "COMMON",
+      "manual_pages": "27",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-021",
+      "package": "COMMON",
+      "manual_pages": "28",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-022",
+      "package": "COMMON",
+      "manual_pages": "28",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-023",
+      "package": "COMMON",
+      "manual_pages": "30",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-024",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-025",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-026",
+      "package": "TIME",
+      "manual_pages": "33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-027",
+      "package": "TIME",
+      "manual_pages": "33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-028",
+      "package": "TIME",
+      "manual_pages": "34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-029",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-030",
+      "package": "OBS",
+      "manual_pages": "36",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-031",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-032",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-033",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-034",
+      "package": "OBS",
+      "manual_pages": "38",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-035",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-036",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-037",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-038",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-039",
+      "package": "OBS",
+      "manual_pages": "41",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-040",
+      "package": "OBS",
+      "manual_pages": "41",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-041",
+      "package": "OBS",
+      "manual_pages": "41",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-042",
+      "package": "OBS",
+      "manual_pages": "42",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-043",
+      "package": "OBS",
+      "manual_pages": "42",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-044",
+      "package": "OBS",
+      "manual_pages": "42",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-045",
+      "package": "OBS",
+      "manual_pages": "43",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-046",
+      "package": "OBS",
+      "manual_pages": "43",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-047",
+      "package": "OBS",
+      "manual_pages": "44",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-048",
+      "package": "OBS",
+      "manual_pages": "44",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-049",
+      "package": "OBS",
+      "manual_pages": "44",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-050",
+      "package": "OBS",
+      "manual_pages": "45",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-051",
+      "package": "OBS",
+      "manual_pages": "45",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-052",
+      "package": "OBS",
+      "manual_pages": "45",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-053",
+      "package": "OBS",
+      "manual_pages": "46",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-054",
+      "package": "OBS",
+      "manual_pages": "46",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-055",
+      "package": "OBS",
+      "manual_pages": "47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-056",
+      "package": "OBS",
+      "manual_pages": "47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-057",
+      "package": "CMD",
+      "manual_pages": "47",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-058",
+      "package": "CMD",
+      "manual_pages": "48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-059",
+      "package": "CMD",
+      "manual_pages": "48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-060",
+      "package": "CMD",
+      "manual_pages": "49",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-061",
+      "package": "CMD",
+      "manual_pages": "49",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "scheduled-command / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-062",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-063",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-064",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-065",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-066",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-067",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-068",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-069",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-070",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-071",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-072",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-073",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-074",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-075",
+      "package": "CMD",
+      "manual_pages": "54",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-076",
+      "package": "CMD",
+      "manual_pages": "54",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-077",
+      "package": "CMD",
+      "manual_pages": "55",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-078",
+      "package": "OBS",
+      "manual_pages": "56",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-079",
+      "package": "OBS",
+      "manual_pages": "56",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-080",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-081",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-082",
+      "package": "OBS",
+      "manual_pages": "58",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-083",
+      "package": "OBS",
+      "manual_pages": "59",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-084",
+      "package": "LIMIT",
+      "manual_pages": "59",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-085",
+      "package": "LIMIT",
+      "manual_pages": "61",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-086",
+      "package": "LIMIT",
+      "manual_pages": "62",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-087",
+      "package": "LIMIT",
+      "manual_pages": "62",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-088",
+      "package": "LIMIT",
+      "manual_pages": "62",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-089",
+      "package": "LIMIT",
+      "manual_pages": "62",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-090",
+      "package": "LIMIT",
+      "manual_pages": "63",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-091",
+      "package": "LIMIT",
+      "manual_pages": "63",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-092",
+      "package": "LIMIT",
+      "manual_pages": "63",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-093",
+      "package": "LIMIT",
+      "manual_pages": "63",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-094",
+      "package": "LIMIT",
+      "manual_pages": "64",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-095",
+      "package": "LIMIT",
+      "manual_pages": "64",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-096",
+      "package": "LIMIT",
+      "manual_pages": "64",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-097",
+      "package": "LIMIT",
+      "manual_pages": "65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-098",
+      "package": "LIMIT",
+      "manual_pages": "65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-099",
+      "package": "LIMIT",
+      "manual_pages": "65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-100",
+      "package": "LIMIT",
+      "manual_pages": "65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-101",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-102",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-103",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-104",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-105",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-106",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-107",
+      "package": "LIMIT",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-108",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-109",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-110",
+      "package": "UI",
+      "manual_pages": "69",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-111",
+      "package": "FILES",
+      "manual_pages": "69",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-112",
+      "package": "FILES",
+      "manual_pages": "69",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-113",
+      "package": "FILES",
+      "manual_pages": "69",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-114",
+      "package": "UI",
+      "manual_pages": "70",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-115",
+      "package": "UI",
+      "manual_pages": "71",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-116",
+      "package": "UI",
+      "manual_pages": "71",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-117",
+      "package": "UI",
+      "manual_pages": "71",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-118",
+      "package": "UI",
+      "manual_pages": "72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-119",
+      "package": "UI",
+      "manual_pages": "72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-120",
+      "package": "UI",
+      "manual_pages": "73",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-121",
+      "package": "UI",
+      "manual_pages": "73",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-122",
+      "package": "UI",
+      "manual_pages": "73",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-123",
+      "package": "UI",
+      "manual_pages": "73",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-124",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-125",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-126",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-127",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-128",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-129",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-130",
+      "package": "FLOW",
+      "manual_pages": "76",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-131",
+      "package": "FLOW",
+      "manual_pages": "77",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-132",
+      "package": "FLOW",
+      "manual_pages": "77",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-133",
+      "package": "FLOW",
+      "manual_pages": "77",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-134",
+      "package": "FLOW",
+      "manual_pages": "78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-135",
+      "package": "DATA",
+      "manual_pages": "78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-136",
+      "package": "DATA",
+      "manual_pages": "78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-137",
+      "package": "DATA",
+      "manual_pages": "79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-138",
+      "package": "DATA",
+      "manual_pages": "79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-139",
+      "package": "DATA",
+      "manual_pages": "80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-140",
+      "package": "DATA",
+      "manual_pages": "80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-141",
+      "package": "DATA",
+      "manual_pages": "80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-142",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-143",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-144",
+      "package": "DATA",
+      "manual_pages": "82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-145",
+      "package": "DATA",
+      "manual_pages": "82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-146",
+      "package": "DATA",
+      "manual_pages": "83",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-147",
+      "package": "DATA",
+      "manual_pages": "83",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-148",
+      "package": "DATA",
+      "manual_pages": "84",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-149",
+      "package": "DATA",
+      "manual_pages": "85",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-150",
+      "package": "DATA",
+      "manual_pages": "85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-151",
+      "package": "FLOW",
+      "manual_pages": "86",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-152",
+      "package": "FLOW",
+      "manual_pages": "87",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-153",
+      "package": "FLOW",
+      "manual_pages": "87",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-154",
+      "package": "FLOW",
+      "manual_pages": "87",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-155",
+      "package": "FLOW",
+      "manual_pages": "87",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-156",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-157",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-158",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-159",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-160",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-161",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-162",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-163",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-164",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-165",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-166",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-167",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-168",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-169",
+      "package": "SPECIAL",
+      "manual_pages": "93",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-170",
+      "package": "SPECIAL",
+      "manual_pages": "94",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-171",
+      "package": "SPECIAL",
+      "manual_pages": "94",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-172",
+      "package": "SPECIAL",
+      "manual_pages": "94",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-173",
+      "package": "SPECIAL",
+      "manual_pages": "94",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-174",
+      "package": "SPECIAL",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-175",
+      "package": "SPECIAL",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-176",
+      "package": "SPECIAL",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-177",
+      "package": "DATA",
+      "manual_pages": "96",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-178",
+      "package": "DATA",
+      "manual_pages": "96",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-179",
+      "package": "DATA",
+      "manual_pages": "96",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-180",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-181",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-182",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-183",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-184",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-185",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-186",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-187",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-188",
+      "package": "DATA",
+      "manual_pages": "99",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-189",
+      "package": "DATA",
+      "manual_pages": "99",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-190",
+      "package": "DATA",
+      "manual_pages": "99",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-191",
+      "package": "SPECIAL",
+      "manual_pages": "100",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-192",
+      "package": "SPECIAL",
+      "manual_pages": "101",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-193",
+      "package": "SPECIAL",
+      "manual_pages": "101",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-194",
+      "package": "SPECIAL",
+      "manual_pages": "102",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-EXAMPLE-195",
+      "package": "SPECIAL",
+      "manual_pages": "103",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ABORT",
+      "package": "FLOW",
+      "manual_pages": "57, 76-77, 93-95, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ABORTRANGING",
+      "package": "SPECIAL",
+      "manual_pages": "93-95, 104",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ADDSHAREDDATASCOPE",
+      "package": "DATA",
+      "manual_pages": "97, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-BUILDTC",
+      "package": "CMD",
+      "manual_pages": "47-48, 51-52, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-ADJUSTLIMITS",
+      "package": "LIMIT",
+      "manual_pages": "66-67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-AND",
+      "package": "OBS",
+      "manual_pages": "46-47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-CLEARSHAREDDATASCOPE",
+      "package": "DATA",
+      "manual_pages": "99, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-COMPAREMEMORYIMAGES",
+      "package": "SPECIAL",
+      "manual_pages": "101, 104, 108-109, 111-112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-FILE",
+      "package": "FILES",
+      "manual_pages": "91-92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-OR",
+      "package": "OBS",
+      "manual_pages": "46-47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CANDIDATE-STEP",
+      "package": "FLOW",
+      "manual_pages": "75, 81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CHANGELANGUAGECONFIG",
+      "package": "COMMON",
+      "manual_pages": "27, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CLEARSHAREDDATA",
+      "package": "DATA",
+      "manual_pages": "98-99, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CLEARSHAREDDATASCOPES",
+      "package": "DATA",
+      "manual_pages": "99, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CLOSEDISPLAY",
+      "package": "UI",
+      "manual_pages": "74, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CLOSEFILE",
+      "package": "FILES",
+      "manual_pages": "90, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CLOSEWORKSPACE",
+      "package": "UI",
+      "manual_pages": "74, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-COMPAREMEMORYIMAGE",
+      "package": "SPECIAL",
+      "manual_pages": "101, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-CREATEDICTIONARY",
+      "package": "DATA",
+      "manual_pages": "82, 100, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DELETEFILE",
+      "package": "FILES",
+      "manual_pages": "92, 104",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISABLEALARM",
+      "package": "LIMIT",
+      "manual_pages": "59, 66, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISABLERANGING",
+      "package": "SPECIAL",
+      "manual_pages": "93, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISABLEUSERACTION",
+      "package": "FLOW",
+      "manual_pages": "77, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISMISSUSERACTION",
+      "package": "FLOW",
+      "manual_pages": "77-78, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISPLAY",
+      "package": "UI",
+      "manual_pages": "33, 41, 68, 72-74, 76, 78, 81, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-DISPLAYSTEP",
+      "package": "FLOW",
+      "manual_pages": "76, 81, 104",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ENABLEALARM",
+      "package": "LIMIT",
+      "manual_pages": "59, 66, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ENABLERANGING",
+      "package": "SPECIAL",
+      "manual_pages": "93, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ENABLEUSERACTION",
+      "package": "FLOW",
+      "manual_pages": "77, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-EVENT",
+      "package": "UI",
+      "manual_pages": "68-69, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-FINISH",
+      "package": "FLOW",
+      "manual_pages": "76-77, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GENERATEMEMORYREPORT",
+      "package": "SPECIAL",
+      "manual_pages": "100-101, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETANTENNANAMES",
+      "package": "SPECIAL",
+      "manual_pages": "95, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETBASEBANDCONFIG",
+      "package": "SPECIAL",
+      "manual_pages": "94-95, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETBASEBANDNAMES",
+      "package": "SPECIAL",
+      "manual_pages": "95, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETLIMITS",
+      "package": "LIMIT",
+      "manual_pages": "59, 61-65, 105",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETRANGINGSTATUS",
+      "package": "SPECIAL",
+      "manual_pages": "95, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETRESOURCE",
+      "package": "FILES",
+      "manual_pages": "69, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETSHAREDDATA",
+      "package": "DATA",
+      "manual_pages": "98, 105",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETSHAREDDATAKEYS",
+      "package": "DATA",
+      "manual_pages": "98, 105",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETSHAREDDATASCOPES",
+      "package": "DATA",
+      "manual_pages": "98, 105",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-GETTM",
+      "package": "OBS",
+      "manual_pages": "27, 36-39, 45-46, 59, 95, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-ISALARMED",
+      "package": "LIMIT",
+      "manual_pages": "59, 67-68, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-LOADDICTIONARY",
+      "package": "DATA",
+      "manual_pages": "79, 81-82, 100, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-LOADLIMITS",
+      "package": "LIMIT",
+      "manual_pages": "67, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-MEMORYLOOKUP",
+      "package": "SPECIAL",
+      "manual_pages": "101-102, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-NOTIFY",
+      "package": "UI",
+      "manual_pages": "31, 68, 105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-OPENDISPLAY",
+      "package": "UI",
+      "manual_pages": "72-74, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-OPENFILE",
+      "package": "FILES",
+      "manual_pages": "90, 106",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-OPENWORKSPACE",
+      "package": "UI",
+      "manual_pages": "72-73, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-PAUSE",
+      "package": "FLOW",
+      "manual_pages": "76-77, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-PRINTDISPLAY",
+      "package": "UI",
+      "manual_pages": "74, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-PROMPT",
+      "package": "UI",
+      "manual_pages": "28-30, 42, 55, 70-72, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-READDIRECTORY",
+      "package": "FILES",
+      "manual_pages": "91, 106",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-READFILE",
+      "package": "FILES",
+      "manual_pages": "91, 106",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-RESTORENORMALLIMITS",
+      "package": "LIMIT",
+      "manual_pages": "67, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SAVEDICTIONARY",
+      "package": "DATA",
+      "manual_pages": "82, 100, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SEND",
+      "package": "CMD",
+      "manual_pages": "48-55, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETBASEBANDCONFIG",
+      "package": "SPECIAL",
+      "manual_pages": "94-95, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETGROUNDPARAMETER",
+      "package": "LIMIT",
+      "manual_pages": "59, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETLIMITS",
+      "package": "LIMIT",
+      "manual_pages": "59, 64-67, 106",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETRESOURCE",
+      "package": "FILES",
+      "manual_pages": "69, 80, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETSHAREDDATA",
+      "package": "DATA",
+      "manual_pages": "96-97, 106",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-SETUSERACTION",
+      "package": "FLOW",
+      "manual_pages": "77, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-STARTPROC",
+      "package": "FLOW",
+      "manual_pages": "86-89, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-STARTRANGING",
+      "package": "SPECIAL",
+      "manual_pages": "93-95, 106",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-STARTRANGINGCALIBRATION",
+      "package": "SPECIAL",
+      "manual_pages": "95, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-TMTCLOOKUP",
+      "package": "SPECIAL",
+      "manual_pages": "102-103, 106",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-VERIFY",
+      "package": "OBS",
+      "manual_pages": "39-47, 54, 56-57, 66, 107",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-WAITFOR",
+      "package": "OBS",
+      "manual_pages": "55-59, 107",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-FUNCTION-WRITEFILE",
+      "package": "FILES",
+      "manual_pages": "90-91, 107",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-ADDINFO",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-ARGS",
+      "package": "CMD",
+      "manual_pages": "48, 51, 55, 89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-COMMAND",
+      "package": "CMD",
+      "manual_pages": "49-55",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-GROUP",
+      "package": "CMD",
+      "manual_pages": "51-53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-SEQUENCE",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-KEYWORD-ARGUMENT-VERIFY",
+      "package": "CMD",
+      "manual_pages": "54-55",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-BIN",
+      "package": "PY",
+      "manual_pages": "21, 28-30",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-HEX",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-OCT",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-RANGE",
+      "package": "PY",
+      "manual_pages": "22-23, 33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-REPR",
+      "package": "PY",
+      "manual_pages": "34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-CONVERSION-STR",
+      "package": "PY",
+      "manual_pages": "21-24, 26, 30, 32-34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-DICTIONARY-HAS-KEY",
+      "package": "PY",
+      "manual_pages": "79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "MIGRATION_ONLY"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-DICTIONARY-KEYS",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-BASENAME",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-CANREAD",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-CANWRITE",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-DIRNAME",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-EXISTS",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-FILENAME",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-ISDIR",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-ISFILE",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-FILE-ISOPEN",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-ABS",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-ACOS",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-ASIN",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-ATAN",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-CEIL",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-COS",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-DEGREES",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-EXP",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-FLOOR",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-LOG",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-LOG10",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-MAX",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-MIN",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-POW",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-RADIANS",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-ROUND",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-SIN",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-SQRT",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-MATH-TAN",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-CAPITALIZE",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-CENTER",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ENDSWITH",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-FIND",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ISALPHA",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ISDIGIT",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ISLOWER",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ISSPACE",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-ISUPPER",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-LOWER",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-REPLACE",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-STARTSWITH",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-STRING-UPPER",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-DESCRIPTION",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-ENG",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-FULLNAME",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-NAME",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-RAW",
+      "package": "OBS",
+      "manual_pages": "37-38",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-REFRESH",
+      "package": "OBS",
+      "manual_pages": "38",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-STATUS",
+      "package": "OBS",
+      "manual_pages": "38",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TELEMETRY-ITEM-TIME",
+      "package": "OBS",
+      "manual_pages": "37-38",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-ABS",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-FMT",
+      "package": "TIME",
+      "manual_pages": "34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-HOUR",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-ISREL",
+      "package": "TIME",
+      "manual_pages": "34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-JULIANDAY",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-MINUTE",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-MONTH",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-REL",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-SECOND",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-METHOD-TIME-YEAR",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ACTIVE",
+      "package": "LIMIT",
+      "manual_pages": "61-63",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ADJLIMITS",
+      "package": "CMD",
+      "manual_pages": "54, 108, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ALGORITHM",
+      "package": "LIMIT",
+      "manual_pages": "61-63",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-AUTOMATIC",
+      "package": "FLOW",
+      "manual_pages": "54, 86, 88-89, 108, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-BEGIN",
+      "package": "SPECIAL",
+      "manual_pages": "100-103, 108",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-BLOCK",
+      "package": "CMD",
+      "manual_pages": "52, 86, 88-89, 108, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-BLOCKING",
+      "package": "FLOW",
+      "manual_pages": "86, 88-89, 108, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-CONFIRM",
+      "package": "CMD",
+      "manual_pages": "50-51, 85, 108, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-CONFIRMCRITICAL",
+      "package": "CMD",
+      "manual_pages": "50-51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DEFAULT",
+      "package": "COMMON",
+      "manual_pages": "28, 71-72, 85, 108, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DEFINITION",
+      "package": "LIMIT",
+      "manual_pages": "64-65",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DELAY",
+      "package": "COMMON",
+      "manual_pages": "43, 53, 55, 57, 108-109, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DELTA",
+      "package": "LIMIT",
+      "manual_pages": "60, 63, 65-66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-DESTINATION",
+      "package": "SPECIAL",
+      "manual_pages": "100",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-END",
+      "package": "COMMON",
+      "manual_pages": "23, 76, 100-103, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ERROR",
+      "package": "COMMON",
+      "manual_pages": "30-31, 60-63, 65, 67, 92, 109, 114, 117",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-EXPECTED",
+      "package": "DATA",
+      "manual_pages": "85, 97, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-EXTENDED",
+      "package": "OBS",
+      "manual_pages": "37-38, 45-46, 109",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-FAILURECODE",
+      "package": "COMMON",
+      "manual_pages": "116",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-FORMAT",
+      "package": "COMMON",
+      "manual_pages": "37, 39-40, 44-45, 48, 57, 74, 85, 94-95, 102, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-GROUP",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HANDLEERROR",
+      "package": "COMMON",
+      "manual_pages": "30-31, 109, 114, 117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HIBOTH",
+      "package": "LIMIT",
+      "manual_pages": "109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HIRED",
+      "package": "LIMIT",
+      "manual_pages": "60-62, 64, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HIYEL",
+      "package": "LIMIT",
+      "manual_pages": "60-62, 64, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HOST",
+      "package": "UI",
+      "manual_pages": "73-74, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-HYSTERESIS",
+      "package": "LIMIT",
+      "manual_pages": "61-63",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-IGNORE",
+      "package": "COMMON",
+      "manual_pages": "43, 60-63, 65, 67, 109, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-IGNORECASE",
+      "package": "OBS",
+      "manual_pages": "43, 109, 114",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-IMAGE",
+      "package": "SPECIAL",
+      "manual_pages": "100-102, 104, 108-109, 111-112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-INTERVAL",
+      "package": "OBS",
+      "manual_pages": "58-59, 109",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-LIMITS",
+      "package": "LIMIT",
+      "manual_pages": "54, 59-67, 105-106, 108-110, 112, 114",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-LOADONLY",
+      "package": "CMD",
+      "manual_pages": "50, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-LOBOTH",
+      "package": "LIMIT",
+      "manual_pages": "110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-LORED",
+      "package": "LIMIT",
+      "manual_pages": "60-64, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-LOYEL",
+      "package": "LIMIT",
+      "manual_pages": "60-62, 64, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-MESSAGE",
+      "package": "COMMON",
+      "manual_pages": "58-59, 68-72, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-MIDPOINT",
+      "package": "LIMIT",
+      "manual_pages": "60, 63, 65-66, 110, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-MODE",
+      "package": "FILES",
+      "manual_pages": "90, 110",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-MONITOR",
+      "package": "UI",
+      "manual_pages": "73, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-NAME",
+      "package": "COMMON",
+      "manual_pages": "37, 61-63, 68, 79, 85, 95-97, 100, 102-103, 105, 110",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-NOMINAL",
+      "package": "LIMIT",
+      "manual_pages": "60-63, 65, 67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-NOTIFY",
+      "package": "COMMON",
+      "manual_pages": "31, 68, 105, 110, 114, 116",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ONFAILURE",
+      "package": "COMMON",
+      "manual_pages": "28, 30, 42-43, 55, 92, 110, 114, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ONFALSE",
+      "package": "COMMON",
+      "manual_pages": "28-30, 41-42, 111, 114, 117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-ONTRUE",
+      "package": "COMMON",
+      "manual_pages": "28-30, 111, 114, 117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-PRINTER",
+      "package": "UI",
+      "manual_pages": "74, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-PROMPTFAILURE",
+      "package": "COMMON",
+      "manual_pages": "28, 116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-PROMPTUSER",
+      "package": "COMMON",
+      "manual_pages": "28-30, 42, 55, 111, 114, 117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-RADIX",
+      "package": "CMD",
+      "manual_pages": "48, 55, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-RANGE",
+      "package": "DATA",
+      "manual_pages": "84-85, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-RELEASETIME",
+      "package": "CMD",
+      "manual_pages": "49-50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-RETRIES",
+      "package": "OBS",
+      "manual_pages": "42, 111, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-REUSE",
+      "package": "UI",
+      "manual_pages": "73",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-SCOPE",
+      "package": "DATA",
+      "manual_pages": "97-99, 104-105",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-SELECT",
+      "package": "LIMIT",
+      "manual_pages": "59, 61-66",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-SENDDELAY",
+      "package": "CMD",
+      "manual_pages": "53, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-SEVERITY",
+      "package": "UI",
+      "manual_pages": "68-69, 77, 111, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-SOURCE",
+      "package": "SPECIAL",
+      "manual_pages": "100-103, 111",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TIME",
+      "package": "COMMON",
+      "manual_pages": "32-33, 37-38, 40, 44, 49-50, 53, 55, 57, 71-73, 108, 111-112, 114-115",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TIMEOUT",
+      "package": "COMMON",
+      "manual_pages": "37, 40, 44, 53, 55, 57, 71-72, 108, 112, 114-115",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TOLERANCE",
+      "package": "COMMON",
+      "manual_pages": "40, 55, 60, 63, 65-66, 110, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-TYPE",
+      "package": "COMMON",
+      "manual_pages": "48, 60-63, 70-72, 85, 100-103, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-UNITS",
+      "package": "COMMON",
+      "manual_pages": "112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-UNTIL",
+      "package": "COMMON",
+      "manual_pages": "112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUE",
+      "package": "COMMON",
+      "manual_pages": "18, 20, 37, 39-40, 44-45, 48, 57, 63, 68-69, 85, 94-97, 102, 108-114, 116",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUEFORMAT",
+      "package": "COMMON",
+      "manual_pages": "37, 39-40, 44-45, 48, 57, 85, 94-95, 102, 112, 114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VALUETYPE",
+      "package": "COMMON",
+      "manual_pages": "48, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VERBOSITY",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-VISIBLE",
+      "package": "FLOW",
+      "manual_pages": "86, 88-89, 113-114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-WAIT",
+      "package": "COMMON",
+      "manual_pages": "27, 36-37, 40, 42, 55-59, 107, 109-110, 112-114",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-MODIFIER-WARNING",
+      "package": "LIMIT",
+      "manual_pages": "60-63, 65, 67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-FILE-PATH-APPEND",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-ADD",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-AND",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-BITWISE-AND",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-BITWISE-OR",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-DIVIDE",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-EQUAL",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-GREATER",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-GREATER-EQUAL",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-LEGACY-NOT-EQUAL",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "MIGRATION_ONLY"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-LESS",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-LESS-EQUAL",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-MODULUS",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-MULTIPLY",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-NOT",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-NOT-EQUAL",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-OR",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-POWER",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-PYTHON-SUBTRACT",
+      "package": "PY",
+      "manual_pages": "19",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-STRING-CONCAT",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-TIME-ADD",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-TIME-MULTIPLY",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-TIME-SUBTRACT",
+      "package": "TIME",
+      "manual_pages": "34-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-BW",
+      "package": "OBS",
+      "manual_pages": "39, 45",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-EQ",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-GE",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-GT",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-LE",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-LT",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-NBW",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OPERATOR-VERIFY-NEQ",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
+      "package": "COMMON",
+      "manual_pages": "17, 20, 28-30",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-BOOLEAN-TRUE",
+      "package": "COMMON",
+      "manual_pages": "17, 20, 28-30",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-OPERATION-FAILURE",
+      "package": "COMMON",
+      "manual_pages": "27-28, 30-31",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-OPERATION-SUCCESS",
+      "package": "COMMON",
+      "manual_pages": "28-30",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-PROMPT-TIMEOUT",
+      "package": "UI",
+      "manual_pages": "71-72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-STARTPROC-TRUE",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-VERIFY-FAIL",
+      "package": "OBS",
+      "manual_pages": "40-44",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-VERIFY-PASS",
+      "package": "OBS",
+      "manual_pages": "43-44",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-OUTCOME-WAIT-ABORT",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-1-2-106",
+      "package": "DATA",
+      "manual_pages": "84",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-001",
+      "package": "PY",
+      "manual_pages": "14",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-1-002",
+      "package": "PY",
+      "manual_pages": "14",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-10-011",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-11-012",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-12-013",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-13-014",
+      "package": "PY",
+      "manual_pages": "25",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-2-003",
+      "package": "PY",
+      "manual_pages": "14",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-3-004",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-4-005",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-5-006",
+      "package": "PY",
+      "manual_pages": "17",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-6-007",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-7-008",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-8-009",
+      "package": "PY",
+      "manual_pages": "20",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-2-1-9-010",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "BROADER_SECTION_OPEN"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-1-015",
+      "package": "COMMON",
+      "manual_pages": "26",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-2-016",
+      "package": "COMMON",
+      "manual_pages": "26",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-2-1-017",
+      "package": "COMMON",
+      "manual_pages": "27",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-3-018",
+      "package": "COMMON",
+      "manual_pages": "27",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-4-019",
+      "package": "COMMON",
+      "manual_pages": "28",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-5-020",
+      "package": "COMMON",
+      "manual_pages": "30",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-3-6-021",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-1-022",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-1-1-023",
+      "package": "TIME",
+      "manual_pages": "34",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-10-083",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-11-084",
+      "package": "UI",
+      "manual_pages": "69",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-12-085",
+      "package": "UI",
+      "manual_pages": "70",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-13-086",
+      "package": "UI",
+      "manual_pages": "72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-13-1-087",
+      "package": "UI",
+      "manual_pages": "72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-13-2-088",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-13-3-089",
+      "package": "UI",
+      "manual_pages": "74",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-14-090",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-14-1-091",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-14-2-092",
+      "package": "FLOW",
+      "manual_pages": "75",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-14-3-093",
+      "package": "FLOW",
+      "manual_pages": "76",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-14-4-094",
+      "package": "FLOW",
+      "manual_pages": "77",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-095",
+      "package": "DATA",
+      "manual_pages": "78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-1-096",
+      "package": "DATA",
+      "manual_pages": "78",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-2-097",
+      "package": "DATA",
+      "manual_pages": "79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-3-098",
+      "package": "DATA",
+      "manual_pages": "80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-4-099",
+      "package": "DATA",
+      "manual_pages": "80",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-5-1-101",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-5-100",
+      "package": "DATA",
+      "manual_pages": "81",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-5-2-102",
+      "package": "DATA",
+      "manual_pages": "82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-5-3-103",
+      "package": "DATA",
+      "manual_pages": "82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-5-4-104",
+      "package": "DATA",
+      "manual_pages": "82",
+      "verdict": "PASS",
+      "evidence": "compatibility-user-dictionary.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-15-6-105",
+      "package": "DATA",
+      "manual_pages": "83",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-1-109",
+      "package": "FLOW",
+      "manual_pages": "86",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-108",
+      "package": "FLOW",
+      "manual_pages": "86",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-2-110",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-3-111",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-4-112",
+      "package": "FLOW",
+      "manual_pages": "88",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-5-113",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-1-6-114",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-16-107",
+      "package": "FLOW",
+      "manual_pages": "86",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-1-116",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-115",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-2-117",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-3-118",
+      "package": "FILES",
+      "manual_pages": "90",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-4-119",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-5-120",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-6-121",
+      "package": "FILES",
+      "manual_pages": "91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-7-122",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-17-8-123",
+      "package": "FILES",
+      "manual_pages": "92",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-18-1-125",
+      "package": "SPECIAL",
+      "manual_pages": "93",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-18-124",
+      "package": "SPECIAL",
+      "manual_pages": "93",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-18-2-126",
+      "package": "SPECIAL",
+      "manual_pages": "93",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "ranging / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-18-3-127",
+      "package": "SPECIAL",
+      "manual_pages": "94",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-18-4-128",
+      "package": "DATA",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-1-130",
+      "package": "DATA",
+      "manual_pages": "96",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-129",
+      "package": "DATA",
+      "manual_pages": "95",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-2-131",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "ADDITIONAL_INHERITED_ORACLE_REQUIRED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-3-132",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-4-133",
+      "package": "DATA",
+      "manual_pages": "98",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-19-5-134",
+      "package": "DATA",
+      "manual_pages": "99",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-024",
+      "package": "OBS",
+      "manual_pages": "36",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-1-025",
+      "package": "OBS",
+      "manual_pages": "36",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-2-026",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-3-027",
+      "package": "OBS",
+      "manual_pages": "37",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-4-028",
+      "package": "OBS",
+      "manual_pages": "38",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-2-5-029",
+      "package": "OBS",
+      "manual_pages": "38",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-20-1-136",
+      "package": "SPECIAL",
+      "manual_pages": "100",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-20-135",
+      "package": "SPECIAL",
+      "manual_pages": "100",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-20-2-137",
+      "package": "SPECIAL",
+      "manual_pages": "101",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-20-3-138",
+      "package": "SPECIAL",
+      "manual_pages": "101",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-21-1-140",
+      "package": "SPECIAL",
+      "manual_pages": "102",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-21-139",
+      "package": "SPECIAL",
+      "manual_pages": "102",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-030",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-1-031",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-10-040",
+      "package": "OBS",
+      "manual_pages": "44",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-11-041",
+      "package": "OBS",
+      "manual_pages": "45",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-12-042",
+      "package": "OBS",
+      "manual_pages": "45",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-13-043",
+      "package": "OBS",
+      "manual_pages": "46",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-2-032",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-3-033",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-4-034",
+      "package": "OBS",
+      "manual_pages": "40",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-5-035",
+      "package": "OBS",
+      "manual_pages": "41",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-6-036",
+      "package": "OBS",
+      "manual_pages": "42",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-7-037",
+      "package": "OBS",
+      "manual_pages": "43",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-8-038",
+      "package": "OBS",
+      "manual_pages": "43",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-3-9-039",
+      "package": "OBS",
+      "manual_pages": "43",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-4-044",
+      "package": "CMD",
+      "manual_pages": "47",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-4-1-045",
+      "package": "CMD",
+      "manual_pages": "48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-046",
+      "package": "CMD",
+      "manual_pages": "48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-1-047",
+      "package": "CMD",
+      "manual_pages": "49",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-10-056",
+      "package": "CMD",
+      "manual_pages": "52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-11-057",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-12-058",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-13-059",
+      "package": "CMD",
+      "manual_pages": "53",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-14-060",
+      "package": "CMD",
+      "manual_pages": "54",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-15-061",
+      "package": "CMD",
+      "manual_pages": "54",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-16-062",
+      "package": "CMD",
+      "manual_pages": "55",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-17-063",
+      "package": "CMD",
+      "manual_pages": "55",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-2-048",
+      "package": "CMD",
+      "manual_pages": "49",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "scheduled-command / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-3-049",
+      "package": "CMD",
+      "manual_pages": "49",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-4-050",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-5-051",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-6-052",
+      "package": "CMD",
+      "manual_pages": "50",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-7-053",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-8-054",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-5-9-055",
+      "package": "CMD",
+      "manual_pages": "51",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-064",
+      "package": "CMD",
+      "manual_pages": "55",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-1-065",
+      "package": "OBS",
+      "manual_pages": "56",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-2-066",
+      "package": "OBS",
+      "manual_pages": "56",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-3-067",
+      "package": "OBS",
+      "manual_pages": "56",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-4-068",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-6-5-069",
+      "package": "OBS",
+      "manual_pages": "58",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-7-070",
+      "package": "LIMIT",
+      "manual_pages": "59",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-071",
+      "package": "LIMIT",
+      "manual_pages": "59",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-1-072",
+      "package": "LIMIT",
+      "manual_pages": "59",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-10-081",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-2-073",
+      "package": "LIMIT",
+      "manual_pages": "60",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-3-074",
+      "package": "LIMIT",
+      "manual_pages": "60",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-4-075",
+      "package": "LIMIT",
+      "manual_pages": "61",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-5-076",
+      "package": "LIMIT",
+      "manual_pages": "64",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-6-077",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-7-078",
+      "package": "LIMIT",
+      "manual_pages": "66",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-8-079",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-8-9-080",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SECTION-4-9-082",
+      "package": "UI",
+      "manual_pages": "68",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-STATE-WAITFOR-INTERRUPTED",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-STATE-WAITFOR-PAUSE",
+      "package": "OBS",
+      "manual_pages": "57",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-STATE-WAITFOR-WAITING",
+      "package": "OBS",
+      "manual_pages": "58",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-DMY",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-SLASH",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-COLON-YMD",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-DMY",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-SLASH",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ABSOLUTE-TIME-YMD",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-ACTION-COMBINATION",
+      "package": "COMMON",
+      "manual_pages": "28-30",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-BREAK",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-CASE-SENSITIVE-NAMES",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-COMMAND-ARGUMENT",
+      "package": "CMD",
+      "manual_pages": "48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-COMMAND-SEQUENCE",
+      "package": "CMD",
+      "manual_pages": "51-52",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-CONTINUE",
+      "package": "PY",
+      "manual_pages": "23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-DATA-CONTAINER-VAR",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-DICTIONARY-LITERAL",
+      "package": "PY",
+      "manual_pages": "17-18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-DICTIONARY-LOOKUP",
+      "package": "PY",
+      "manual_pages": "18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-DOCSTRING-COMMENT",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-DYNAMIC-ASSIGNMENT",
+      "package": "PY",
+      "manual_pages": "16-17",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-FOR-IN",
+      "package": "PY",
+      "manual_pages": "22-23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-FUNCTION-DEFINITION",
+      "package": "PY",
+      "manual_pages": "23-24",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-IF-ELIF-ELSE",
+      "package": "PY",
+      "manual_pages": "22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-IMPORT",
+      "package": "PY",
+      "manual_pages": "25",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-INDENTED-BLOCK",
+      "package": "PY",
+      "manual_pages": "14",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-INDEX",
+      "package": "PY",
+      "manual_pages": "18, 21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-INTEGER-BINARY",
+      "package": "PY",
+      "manual_pages": "83-84",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-INTEGER-HEXADECIMAL",
+      "package": "PY",
+      "manual_pages": "83",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-INTEGER-OCTAL",
+      "package": "PY",
+      "manual_pages": "83",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "MIGRATION_ONLY"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-KEYWORD-MODIFIER",
+      "package": "COMMON",
+      "manual_pages": "27",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-LINE-COMMENT",
+      "package": "PY",
+      "manual_pages": "16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-LIST-LITERAL",
+      "package": "PY",
+      "manual_pages": "17-18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-MULTILINE-BACKSLASH",
+      "package": "PY",
+      "manual_pages": "14, 16",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-MULTILINE-COMMA",
+      "package": "PY",
+      "manual_pages": "15",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-MULTILINE-STRING-PLUS",
+      "package": "PY",
+      "manual_pages": "14-15",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-MULTIPLE-ASSIGNMENT",
+      "package": "PY",
+      "manual_pages": "24",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-PROCEDURE-ARGUMENT",
+      "package": "FLOW",
+      "manual_pages": "89",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-PROMPT-LIST-ALPHA",
+      "package": "UI",
+      "manual_pages": "70, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-PROMPT-LIST-NUM",
+      "package": "UI",
+      "manual_pages": "70, 112",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-QUALIFIED-ACCESS",
+      "package": "PY",
+      "manual_pages": "25",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-RELATIVE-TIME-DAYS",
+      "package": "TIME",
+      "manual_pages": "32-33",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-RELATIVE-TIME-SECONDS",
+      "package": "TIME",
+      "manual_pages": "32",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-SHARED-TEST-AND-SET",
+      "package": "DATA",
+      "manual_pages": "97",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "ADDITIONAL_INHERITED_ORACLE_REQUIRED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-SLICE",
+      "package": "PY",
+      "manual_pages": "21",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-DAY",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-HOUR",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MINUTE",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-ABBREVIATED",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-MONTH-NUMERIC",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-SECOND",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TIME-OUTPUT-YEAR",
+      "package": "TIME",
+      "manual_pages": "35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TM-DESCRIBED-MNEMONIC",
+      "package": "OBS",
+      "manual_pages": "36",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TM-MNEMONIC",
+      "package": "OBS",
+      "manual_pages": "36",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-URI-LIMITS",
+      "package": "LIMIT",
+      "manual_pages": "67",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-URI-MEM",
+      "package": "SPECIAL",
+      "manual_pages": "100",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-URI-MMD",
+      "package": "DATA",
+      "manual_pages": "79",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-URI-USR",
+      "package": "DATA",
+      "manual_pages": "81-82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-VERIFY-BETWEEN",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-VERIFY-BOOLEAN-TREE",
+      "package": "OBS",
+      "manual_pages": "46-47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-VERIFY-CONDITION",
+      "package": "OBS",
+      "manual_pages": "39",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-VERIFY-CONDITION-LIST",
+      "package": "OBS",
+      "manual_pages": "44-45",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-SYNTAX-WHILE",
+      "package": "PY",
+      "manual_pages": "22-23",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-BOOLEAN",
+      "package": "PY",
+      "manual_pages": "17, 20",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-BOOLEAN",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-DATETIME",
+      "package": "DATA",
+      "manual_pages": "84",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-FLOAT",
+      "package": "DATA",
+      "manual_pages": "84",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-LONG",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-RELTIME",
+      "package": "DATA",
+      "manual_pages": "84",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATA-CONTAINER-STRING",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATABASEDICTIONARY",
+      "package": "DATA",
+      "manual_pages": "78-79, 81-82",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DATACONTAINER",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DICTIONARY",
+      "package": "PY",
+      "manual_pages": "17-18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-DRIVEREXCEPTION",
+      "package": "COMMON",
+      "manual_pages": "31",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-FILE",
+      "package": "FILES",
+      "manual_pages": "91-92",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-FILEHANDLE",
+      "package": "FILES",
+      "manual_pages": "90-91",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-FLOAT",
+      "package": "PY",
+      "manual_pages": "17",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-HANDLEEXCEPTION",
+      "package": "COMMON",
+      "manual_pages": "116-117",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-INTEGER",
+      "package": "PY",
+      "manual_pages": "17",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-LIMITDEFINITION",
+      "package": "LIMIT",
+      "manual_pages": "59-65",
+      "verdict": "FAIL",
+      "evidence": "compatibility-negative-rows.json",
+      "detail": "named-limit / positive"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-LIST",
+      "package": "PY",
+      "manual_pages": "17-18",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-PRIMITIVESHAREDVALUE",
+      "package": "DATA",
+      "manual_pages": "95-96",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-PROMPTRESULT",
+      "package": "UI",
+      "manual_pages": "70-72",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-STRING",
+      "package": "PY",
+      "manual_pages": "17, 21-22",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-TELECOMMANDITEM",
+      "package": "CMD",
+      "manual_pages": "47-48",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-TELEMETRY-EXPRESSION",
+      "package": "OBS",
+      "manual_pages": "46-47",
+      "verdict": "PASS",
+      "evidence": "compatibility-additional-native.json",
+      "detail": "All four inherited dimensions passed"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-TELEMETRYITEM",
+      "package": "OBS",
+      "manual_pages": "37-38",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-TIME",
+      "package": "TIME",
+      "manual_pages": "32-35",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-VAR",
+      "package": "DATA",
+      "manual_pages": "84-85",
+      "verdict": "NOT RUN",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "NO_CURRENT_DEPLOYED_CHECK"
+    },
+    {
+      "id": "CMP-LRM244-TYPE-VERIFYRESULT",
+      "package": "OBS",
+      "manual_pages": "43-44",
+      "verdict": "PASS",
+      "evidence": "compatibility-native-inventory.json",
+      "detail": "FRESH_INHERITED_DIMENSIONS_PASSED"
+    }
+  ]
+}

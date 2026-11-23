@@ -4,6 +4,7 @@ from importlib import metadata
 import json
 from pathlib import Path
 import subprocess
+from zipfile import ZipFile
 
 
 def checksum(path):
@@ -43,5 +44,50 @@ def python_notices():
     return sorted(packages, key=lambda item: (item['name'].lower(), item['version']))
 
 
+def vendor_notices():
+    roots = [str(p) for p in (Path('/usr/lib'), Path('/usr/local/lib'), Path('/opt')) if p.is_dir()]
+    listing = subprocess.check_output(
+        ['find', *roots, '-type', 'f', '(', '-path', '*/pip/_vendor/vendor.txt',
+         '-o', '-path', '*/ensurepip/_bundled/pip-*.whl', ')'], text=True
+    ).splitlines()
+    result = []
+    for file in sorted(map(Path, listing)):
+        if file.suffix == '.whl':
+            with ZipFile(file) as archive:
+                prefix = 'pip/_vendor/'
+                run = vendor_records(archive.read(prefix + 'vendor.txt'), (
+                    (n[len(prefix):], archive.read(n)) for n in archive.namelist()
+                    if n.startswith(prefix) and is_notice(Path(n).name)
+                ))
+        else:
+            directory = file.parent
+            run = vendor_records(file.read_bytes(), (
+                (str(p.relative_to(directory)), p.read_bytes()) for p in directory.rglob('*')
+                if p.is_file() and is_notice(p.name)
+            ))
+        result.append({'source': str(file), 'source_sha256': checksum(file), 'packages': run})
+    return result
+
+
+def is_notice(name):
+    return name.lower().startswith(('license', 'licence', 'copying', 'notice', 'copyright'))
+
+
+def vendor_records(manifest, files):
+    notices = {}
+    for name, value in files:
+        notices.setdefault(name.split('/')[0], {})[name] = hashlib.sha256(value).hexdigest()
+    packages = []
+    for line in manifest.decode().splitlines():
+        if '==' not in line or line.lstrip().startswith('#'):
+            continue
+        package, version = line.strip().split('==', 1)
+        directory = 'pkg_resources' if package.lower() == 'setuptools' else package.lower().replace('-', '_')
+        packages.append({'name': package, 'version': version, 'directory': directory,
+                         'notice_files': notices.get(directory, {})})
+    return packages
+
+
 if __name__ == '__main__':
-    print(json.dumps({'debian': debian_notices(), 'python': python_notices()}, sort_keys=True))
+    print(json.dumps({'debian': debian_notices(), 'python': python_notices(),
+                      'pip_vendors': vendor_notices()}, sort_keys=True))

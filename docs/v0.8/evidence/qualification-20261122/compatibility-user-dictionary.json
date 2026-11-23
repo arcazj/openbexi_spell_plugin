@@ -1,0 +1,277 @@
+{
+  "schema": "openbexi.v08.user-dictionary-compatibility/1",
+  "spell": "655f5b5a2de31bd4f8cba44794a1798342986512",
+  "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+  "original_oracle_sha256": "fd690b7a31819dfd3618df4c100cbcac052bef044ed8c753d9a8b18d2f677c12",
+  "previous_direct": 312,
+  "additional_rows": {
+    "CMP-LRM244-EXAMPLE-143": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:recovery"
+      }
+    },
+    "CMP-LRM244-EXAMPLE-146": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:recovery"
+      }
+    },
+    "CMP-LRM244-EXAMPLE-147": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:recovery"
+      }
+    },
+    "CMP-LRM244-EXAMPLE-148": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "formats:recovery"
+      }
+    },
+    "CMP-LRM244-SECTION-4-15-5-1-101": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "load:recovery"
+      }
+    },
+    "CMP-LRM244-SECTION-4-15-5-4-104": {
+      "positive": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:positive"
+      },
+      "boundary": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:boundary"
+      },
+      "failure": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:failure"
+      },
+      "recovery": {
+        "report": "conformance/evidence/user_database.json",
+        "check": "revert:recovery"
+      }
+    }
+  },
+  "new_direct_requirements": 6,
+  "fresh_requirements_across_captures": 318,
+  "inherited_requirements": 763,
+  "worker": "sha256:a545c9617133bfc8034f385ef0ffb71c5eb2cfc9a74fd078838ee33bdf6753d4",
+  "simulation_effects": 0,
+  "scope": "Twelve separate single-use native roots ran unmodified historical regular-file load, format and revert assertions in their own new user data directory.",
+  "cases": {
+    "load:positive": {
+      "execution_id": "3fba6649-86cf-4784-b308-2e9a8a895c58",
+      "snapshot_sha256": "f05a13f6431b5a8915785654ad0157fd2b7546122a4ea103e6ce582a2498249c",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538583]",
+      "source_sha256": "de6ff84e5e08ac4f53d475e4ba01a78d104ed4fa6f57668a0b755f541b2c9a72",
+      "native_result_sha256": "5c1ff10a9ea65972dfed9d6b7d06118eb214ab6a11db7e08d003a9220091f25b",
+      "resulting_file_sha256": "b4ca1e23388a0f1f7acc3ea762d1bd1e48cbfe273366d4dfca9b2ad7b90c45fe",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "04c8ec71a8d49c96d4d380dd912007f43ea32ec116a86b5e19d76ad035916606"
+    },
+    "load:boundary": {
+      "execution_id": "b9704025-9e75-4e41-abfd-34a32232c907",
+      "snapshot_sha256": "28c80fe1cf10ed76f2c27528dee65c612ade6d0f0daed93589ad7c5c9a50a879",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538998]",
+      "source_sha256": "f894ae1ae71a5bfd1b264b60ea4d890795a4743048dacb2dffd1d36e5821403c",
+      "native_result_sha256": "10233e799b71c2186acde87a56cc9a19ab8ed931e839a11211bdc579c8147ac9",
+      "resulting_file_sha256": "0aaadaf8dc1d2ca7c704c86fab60f28191f36e3a6e3d091a2db203ddec93ed58",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "4b35b16baa197de9da8da57d07d8c060b69c9413b397b6d9227dd47802f69fcd"
+    },
+    "load:failure": {
+      "execution_id": "b8573272-1e5a-41e0-a482-ae5fb49cf153",
+      "snapshot_sha256": "5e8cfd50e4362d84775c70c2414b520e0e12516c969ff384dfaa1df340651837",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538864]",
+      "source_sha256": "28b602ed57d19995e9b1bf6986e221d8a79a1d9ed5b8d3ab0574537c85495490",
+      "native_result_sha256": "228a73d82c78813e86bf9cf066ad6deed5317b801d480a71299a315d4e7a9822",
+      "resulting_file_sha256": null,
+      "resulting_directory": [],
+      "authority_sha256": "4f6b4570f7c0f7bdcb256ca75d24fe3c44b5446ce3d68c022a14294b00cf685f"
+    },
+    "load:recovery": {
+      "execution_id": "114c3590-a877-4085-b4e8-2343d9c48a9f",
+      "snapshot_sha256": "0a44b1f47f7ebcf93c440ef2e41e4d0a407bcb94488239b5802c6f5510d12b03",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026539004]",
+      "source_sha256": "02c25e000df4ad4640e6cb8cb02c7fde5d76924a5dd67731de568f79fce34dfa",
+      "native_result_sha256": "f11f791e3efaf776e2b21c923614f984a0acb156666b5b4d4a4b0bc5c95740cf",
+      "resulting_file_sha256": "fc8848a4dc7e2732f341fce4668de3742ca4c31f5bf183ca25df99b2c71cf992",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "e44b7e9863b7acb3d16adb2fbf5f76e141c1b46b05ea755d4d2eb3ac28f714b2"
+    },
+    "formats:positive": {
+      "execution_id": "cf79d554-500f-4d0d-bf26-3fd8dae5b2e6",
+      "snapshot_sha256": "c21d956a64842d25f5fdfaa68bc3c047770d4c3185114e2f07069cf076a421ed",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538870]",
+      "source_sha256": "5f075b45dff39324958cff7524e210edbaf36d38b95be421f459b75c07d840d5",
+      "native_result_sha256": "bbad1fed241d7cad19dc04143faebb0f9fd5b82dca14b447ff5c9dd9fe5fd74f",
+      "resulting_file_sha256": "0f05151762bbf1f88d8891875b4d6e6f669ab8405c68cb973272f1edef275260",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "4f5725ad5620266a4ba331a2a7909b6a231b10e7f02e2fa4174d255b8fce0497"
+    },
+    "formats:boundary": {
+      "execution_id": "902740e6-3acf-4627-b8ca-6899d70c5df6",
+      "snapshot_sha256": "f1d72258839c2217bd328b68e69e17440e37eec19f39f83332507dca18de26a5",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538874]",
+      "source_sha256": "a1b409a3eb58674f53b73b5d1cc5dd6b6678746c962db46183b9f3c3a04d5ba5",
+      "native_result_sha256": "b3fdf5ac64b2b44ce7569794023bafda542dd781606780509231db7a85552974",
+      "resulting_file_sha256": "911f0401a605e41ca7776dd3f56f9d93c767c2e118c0549cf02b99fbf74f7656",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "daa45984e73ddbd339ce0c56ac8423696bcc28dc08d4718198efd1b4814001c4"
+    },
+    "formats:failure": {
+      "execution_id": "ea8c34b6-9dc5-4b0d-80ec-234cdf80cc0e",
+      "snapshot_sha256": "26d8247ee3ab4b5fb39a9e714e5b76bea3054dbbb0e4770903c54783ed510527",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026539012]",
+      "source_sha256": "fa2a42715987174f145edf20c7a2a45a164aba6b658d9d67e099a8cd3394c75b",
+      "native_result_sha256": "76bdd28758b5a3dcb11720c8331c7e4237c97db4660ede7471aeddfb658b93d9",
+      "resulting_file_sha256": "09fac1d487a0ca9d54974e14ad6180a561c1cfac2dcfb7fc17a7157eb3acb209",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "5c5530c2afe7e464bb2ca28cffe5f4be1e4f36049a4609ec92e4d42b3079286c"
+    },
+    "formats:recovery": {
+      "execution_id": "3200dde8-d061-4912-ba4b-51bd8a3c14aa",
+      "snapshot_sha256": "24e7a812501a1f75b4f66c7f05819326fffe4e35e5c11a19ae13e6a59dbda3ee",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026539018]",
+      "source_sha256": "3c3ad65ad10597bda0af1e2e6fdf4090fb67bef0085b35bd530a64e2ae393ec3",
+      "native_result_sha256": "e92a8a8777bd774bf3a2e1ab5f34bc142ee569d0e0f093163dfe79c77dc891bf",
+      "resulting_file_sha256": "5b6824d8f33f92b75aeb5b90c897c4abec3b89a7acfe2224f6ff300da1702010",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "b457d5ed9ea3dd1e5abf564bb0b6f89d422fcb7ab777a6b9cc44b40d74efc729"
+    },
+    "revert:positive": {
+      "execution_id": "a165a53c-4eeb-4a9d-b7a0-b8aa3964762a",
+      "snapshot_sha256": "c6034b532307309012e8dbe1980894cf330080c47ae2d1fb848551898f9b9f49",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538882]",
+      "source_sha256": "b4c12f7915b80ea60579f787cad7842be700d2988714cb82fb6be144528f6481",
+      "native_result_sha256": "9602f2ce84f3580c82bcac940674a1d548687c2d97ad101db90dda33ce5dfd7f",
+      "resulting_file_sha256": "a11ce1abd12c2f952c1686200754e73f9477425fae2462fd67518b1a426c26a3",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "78a6673ed37a576f131ff62b0037ec1980c72c6168814ea06615f3efaa33c73a"
+    },
+    "revert:boundary": {
+      "execution_id": "98f79aaf-7206-4747-a33d-0ebbaa74715b",
+      "snapshot_sha256": "7552d54223993a89d2d5227ef2d060c83da34bc6930414f27ed2d1f0a304768f",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538338]",
+      "source_sha256": "afc870e98af686f37bae7fce395d861483109f9a76b67f5972d4882580fbb618",
+      "native_result_sha256": "0be79c579d0701de85cc6fb4537fa300473f0decd4a64beaac3fc60bf2f90008",
+      "resulting_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "de9ab3cf682d4dd17a75ed07bdbc7734a7e409c94ba7cd2a2ff85ed269a4c8e7"
+    },
+    "revert:failure": {
+      "execution_id": "d8fc9507-2921-4b59-8548-1022005cc921",
+      "snapshot_sha256": "409652ba7b719eed95b482ae47d8a779b58589968a0b8a13fc6f191bde746fad",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026539024]",
+      "source_sha256": "ed1d616f6c3a7ac441850ea08a9ac1acad40529761218ff2e034f50612075410",
+      "native_result_sha256": "baef953e291c34e0ff782175a35e988e12f6e53a4934b6f0aaad264539eb0856",
+      "resulting_file_sha256": null,
+      "resulting_directory": [],
+      "authority_sha256": "4f913561bf17026509ea9fe887bf11a455e07d21f8a5aa47967bd1e79738893c"
+    },
+    "revert:recovery": {
+      "execution_id": "e163f029-273c-47d9-9405-50ff38e737dd",
+      "snapshot_sha256": "c93c8bfd8574b0a43ffb6e62038908bec4830087a07a03df1df5d86c78c1dad3",
+      "native_status": "FINISHED",
+      "pid_namespace": "pid:[4026538747]",
+      "source_sha256": "7f62b10c0b9994f6a30f1f58e9b7be60c23254ec7761994d372450ba08e6f28d",
+      "native_result_sha256": "c7898cd967fc16134af85092b70269958de560936478ac661b0ae28c246ddfd9",
+      "resulting_file_sha256": "fc8848a4dc7e2732f341fce4668de3742ca4c31f5bf183ca25df99b2c71cf992",
+      "resulting_directory": [
+        "data.IMP"
+      ],
+      "authority_sha256": "3f7498dc9d6556c0e4565372a3ecbd594229296e016906552bb1416f44caaf4f"
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 ## November 22 joint execution
 
-**Hold the release.** IDE 1.2.2 and SPELL 0.8.0 run a real native procedure from the installed Windows client. On the matched tested pair, controller handoff grew by 259.07 MiB and the installed IDE by 308.17 MiB during their five-minute sanitizer tests. Both exceeded the approved 64 MiB limit with zero swap. [Current joint qualification](evidence/qualification-20261122/README.md) · [All gate decisions](evidence/qualification-20261122/qualification.json)
+**Hold the release.** The tested candidate is IDE 1.2.2 (`fadac70d`) and SPELL 0.8.0 (`47e0cb37`). The installed Windows owner and observer saw native completion, and the browser retained the original root and child through explicit handoff and reconnect. The original five-minute sanitizer runs exceeded 64 MiB. Complete native evidence covers 318/763 inherited requirements across the dated builds. [Exact tests and remaining gates](evidence/qualification-20261122/README.md)
 
 ## November 6 reference
 
