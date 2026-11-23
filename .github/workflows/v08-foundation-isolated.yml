@@ -57,7 +57,7 @@ jobs:
       - name: Install test tools and pinned IDE client
         run: |
           python -m pip install -r server/requirements-test.lock
-          python -m pip install --no-deps ./.qualification/companion-ide
+          python scripts/install_paired_ide.py
           python -m pip install PySide6-Essentials==6.10.3
 
       - name: Qualify services, source inventories and worker preflight

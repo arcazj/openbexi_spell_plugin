@@ -33,7 +33,7 @@ jobs:
           path: .qualification/companion-ide
       - name: Install exact companion client
         if: matrix.profile == 'native-listener-survival'
-        run: python -m pip install --no-deps ./.qualification/companion-ide
+        run: python scripts/install_paired_ide.py
       - name: Execute fresh native lifecycle attempt with unchanged deadlines
         run: python scripts/qualify_v08_native_launch.py --${{ matrix.profile }}
       - name: Preserve every attempt and failure
