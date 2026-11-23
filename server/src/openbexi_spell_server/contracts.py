@@ -11,6 +11,9 @@ from dataclasses import dataclass
 MAX_BODY = 65536
 MAX_DEPTH = 16
 OWNER_COMMANDS = frozenset({"CMD_RUN", "CMD_STEP", "CMD_PAUSE", "CMD_ABORT", "CMD_CLOSE"})
+PUBLIC_LAUNCH_METHODS = frozenset(
+    {"execution.prepare", "execution.launch_status", "execution.launch"}
+)
 PERMISSIONS = frozenset(
     {
         "context:read",
@@ -155,7 +158,14 @@ def envelope(context, subject, method, payload, key=None):
 
 
 def validate_envelope(
-    value, context, *, now=None, allow_launch=False, allow_commands=False, allow_prompts=False
+    value,
+    context,
+    *,
+    now=None,
+    allow_launch=False,
+    allow_commands=False,
+    allow_prompts=False,
+    allow_assigned_launch=False,
 ):
     exact(
         value,
@@ -199,6 +209,7 @@ def validate_envelope(
     if not isinstance(method, str) or (
         method not in METHODS
         and not (allow_launch and method == "execution.start")
+        and not (allow_assigned_launch and method in PUBLIC_LAUNCH_METHODS)
         and not (allow_commands and method == "execution.command")
         and not (allow_prompts and method == "execution.prompt.reply")
     ):
@@ -229,6 +240,9 @@ def validate_envelope(
     elif allow_commands and method == "execution.command":
         identifier(value["idempotency_key"])
         validate_owner_command_payload(value["payload"])
+    elif allow_assigned_launch and method in PUBLIC_LAUNCH_METHODS:
+        identifier(value["idempotency_key"])
+        validate_authority_payload("execution.start", value["payload"])
     elif method in AUTHORITY_MUTATIONS or (allow_launch and method == "execution.start"):
         identifier(value["idempotency_key"])
         validate_authority_payload(method, value["payload"])

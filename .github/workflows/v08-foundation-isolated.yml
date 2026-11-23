@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           repository: arcazj/openbexi_ide
-          ref: 08c314fb6b802b407cbabe01777072884d2b7504
+          ref: 79247e630204e4100fe9a612a0d19ee1e8d6252b
           path: .qualification/companion-ide
       - name: Record immutable qualification inputs
         run: |
@@ -40,7 +40,7 @@ jobs:
           head = git("rev-parse", "HEAD")
           assert head == os.environ["GITHUB_SHA"]
           ide = git("-C", ".qualification/companion-ide", "rev-parse", "HEAD")
-          assert ide == "08c314fb6b802b407cbabe01777072884d2b7504"
+          assert ide == "79247e630204e4100fe9a612a0d19ee1e8d6252b"
           output = pathlib.Path(".qualification/v08-server")
           output.mkdir(parents=True, exist_ok=True)
           runner = pathlib.Path("scripts/qualify_v08_server.py")

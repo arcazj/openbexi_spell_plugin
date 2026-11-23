@@ -46,6 +46,8 @@ class Route:
             ("/v1/rpc", "openbexi.context/1"),
             ("/v1/worker/challenge", "openbexi.worker/1"),
             ("/v1/worker/verify", "openbexi.worker/1"),
+            ("/v1/worker/assignment", "openbexi.worker-assignment/1"),
+            ("/v1/worker/start-delivery", "openbexi.worker-assignment/1"),
             ("/v1/worker/consume", "openbexi.worker/2"),
             ("/v1/worker/check", "openbexi.worker/2"),
             ("/v1/worker/event", "openbexi.worker/2"),

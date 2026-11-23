@@ -4,6 +4,8 @@ Optional native SPELL integration for OpenBEXI IDE, IntelliJ IDEA and PyCharm, w
 
 ## Current status
 
+**November 22 qualification.** SPELL 0.8.0 and IDE 1.2.2 are the candidates for the public native launch. The published IDE 1.2.1 reaches reservation. The separate simulator SDK remains 0.1.0. The candidate has no stable release or production support claim. [Joint qualification record](docs/v0.8/CURRENT_STATUS.md)
+
 **IDE v1.2.1 and SPELL v0.8-rc1 remain unqualified.** All eleven full-release groups are open. The reference Linux foundation passed **1,823 tests in 423.326 seconds**, with zero failures, errors or skips and the original 600-second limit. Matched concurrent requests and heartbeats pass under measured conditions; preserved storage-stall failures prevent an unconditional reliability claim.
 
 The complete **303.491-second** Context/bridge diagnostic captured all eight processes and zero swap, but growth was **304.76 MiB** against **64 MiB** allowed. No conforming memory correction is established. Both original one-hour scenarios remain pending; cleanup and branch consolidation do not qualify a release.

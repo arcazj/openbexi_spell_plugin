@@ -34,7 +34,7 @@ from openbexi_spell_server.contracts import Fault, canonical, decode, exact, fin
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.snapshots import verify_directory
 from openbexi_spell_server.transport import Route, tls_context
-from openbexi_spell_server.worker import preflight, protect_runtime
+from openbexi_spell_server.worker import preflight, protect_runtime, wait_for_assignment
 
 
 def readonly_tree(directory):
@@ -524,7 +524,26 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
 
 
 def run(config):
-    fields = {"preflight", "grant", "start_barrier"}
+    assigned = type(config) is dict and "assigned" in config
+    verified = None
+    if assigned:
+        exact(config, {"assigned", "native_prompts"})
+        if type(config["native_prompts"]) is not bool:
+            raise ValueError("Invalid native prompt option")
+        if not os.statvfs("/").f_flag & os.ST_RDONLY:
+            raise RuntimeError("Worker image root must be read-only")
+        worker, grant_data, verified = wait_for_assignment(
+            config["assigned"], readonly_tree
+        )
+        config = {
+            "preflight": worker,
+            "grant": grant_data,
+            "native_child_gate": True,
+            **({"native_prompt_gate": True} if config["native_prompts"] else {}),
+        }
+    fields = {"preflight", "grant"}
+    if not assigned:
+        fields.add("start_barrier")
     probe_enabled = type(config) is dict and "pause_probe" in config
     thread_probe = type(config) is dict and "thread_barrier_probe" in config
     child_profile = type(config) is dict and "native_child_gate" in config
@@ -610,7 +629,7 @@ def run(config):
     root = readonly_tree(worker["snapshot_directory"])
     if not os.statvfs("/").f_flag & os.ST_RDONLY:
         raise RuntimeError("Worker image root must be read-only")
-    receipt, challenge = preflight(worker, details=True)
+    receipt, challenge = verified if assigned else preflight(worker, details=True)
     if (
         grant.execution_id != worker["execution_id"]
         or grant.worker_slot != worker["worker_slot"]
@@ -906,7 +925,7 @@ def run(config):
         session.pump = pump
         if child_gate is not None and session.instance not in child_gate.started:
             raise RuntimeError("Native before-spawn root hook was bypassed")
-        if child_gate is not None:
+        if child_gate is not None and not assigned:
             # Deliberately bypass the Python wrapper with an unregistered ID.
             # Only an actual native Context callback/denial satisfies this probe.
             controls.original(
@@ -928,11 +947,12 @@ def run(config):
             quiescence_proven=False,
         )
         deadline = time.monotonic() + 180
-        barrier = Path(config["start_barrier"])
-        while not barrier.is_file():
-            if time.monotonic() >= deadline:
-                raise TimeoutError("Native start barrier expired")
-            time.sleep(0.05)
+        if not assigned:
+            barrier = Path(config["start_barrier"])
+            while not barrier.is_file():
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("Native start barrier expired")
+                time.sleep(0.05)
         rpc("check")
         if consumption_probe:
             # Docker must provision this probe's tmpfs for the actual worker
@@ -980,7 +1000,8 @@ def run(config):
                 emit,
             )
             return
-        session.request("CMD_RUN", send=True)
+        if not assigned:
+            session.request("CMD_RUN", send=True)
         if consumption_probe:
             until = time.monotonic() + 10
             while not Path("/workspace/consume-awaiting").is_file():
@@ -1033,12 +1054,16 @@ def run(config):
         pause_channel_failed = False
         next_poll = 0
         next_prompt_poll = 0
+        next_owner_poll = 0
         child_running = set()
         previous_state = None
         next_position = 0
         position_count = 0
-        while time.monotonic() < deadline:
+        while assigned or time.monotonic() < deadline:
             pump()
+            if assigned and time.monotonic() >= next_owner_poll:
+                next_owner_poll = time.monotonic() + 0.2
+                controls.poll_owner()
             if prompts is not None and time.monotonic() >= next_prompt_poll:
                 # A bounded read cadence avoids ten idle workers saturating
                 # the authority while actual native prompt callbacks commit.

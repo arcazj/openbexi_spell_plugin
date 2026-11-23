@@ -3,6 +3,7 @@
 from dataclasses import asdict
 
 from .authority import ExecutionAuthority
+from .assigned_launch import AssignedLaunch
 from .launch import WorkerLaunch
 from .preflight import WorkerPeer, WorkerPreflight
 from .snapshots import SnapshotCatalog
@@ -10,6 +11,7 @@ from .settlement import SettlementHost, TerminalSettlement
 from .contracts import (
     AUTHORITY_MUTATIONS,
     METHODS,
+    PUBLIC_LAUNCH_METHODS,
     Fault,
     envelope,
     exact,
@@ -70,10 +72,19 @@ class Context:
             self.preflight = WorkerPreflight(
                 self.authority, self.catalog, worker_credentials, self.listener_fingerprint
             )
-        if worker_launch not in (None, "retained-single-use"):
+        if worker_launch not in (None, "retained-single-use", "assigned-single-use"):
             raise ValueError("Unsupported worker launch profile")
         if worker_launch is not None and self.preflight is None:
             raise ValueError("Worker launch requires source preflight and unique identities")
+        if worker_launch == "assigned-single-use" and (
+            native_children != "admission-only"
+            or native_controls != "run-journal"
+            or native_commands not in ("owner-queue", "owner-terminal-candidate")
+        ):
+            raise ValueError("Assigned launch requires native child admission and owner commands")
+        self.assigned_launch = (
+            AssignedLaunch(self.preflight) if worker_launch == "assigned-single-use" else None
+        )
         if native_driver_factory is not None and worker_launch is None:
             raise ValueError("Native driver requires the explicit retained launch profile")
         self.native_driver = (
@@ -179,6 +190,14 @@ class Context:
         if isinstance(identity, WorkerPeer):
             if method != "POST" or self.preflight is None:
                 raise Fault(404, "route_not_available")
+            if (
+                path in ("/v1/worker/assignment", "/v1/worker/start-delivery")
+                and self.assigned_launch is not None
+            ):
+                return {
+                    "schema": self.assigned_launch.SCHEMA,
+                    "result": self.assigned_launch.worker(identity, path, body),
+                }
             handler = (
                 self.launch
                 if path
@@ -225,7 +244,8 @@ class Context:
         request = validate_envelope(
             body,
             self.store.context_id,
-            allow_launch=self.launch is not None,
+            allow_launch=self.launch is not None and self.assigned_launch is None,
+            allow_assigned_launch=self.assigned_launch is not None,
             allow_commands=self.authority.native_commands is not None,
             allow_prompts=self.authority.native_prompts is not None,
         )
@@ -236,7 +256,7 @@ class Context:
         # This always precedes replay lookup, including for an identical request.
         actor.require(
             "execution:start"
-            if action == "execution.start"
+            if action == "execution.start" or action in PUBLIC_LAUNCH_METHODS
             else "execution:control"
             if action in ("execution.command", "execution.prompt.reply")
             else METHODS[action]
@@ -247,6 +267,11 @@ class Context:
             result["status"] = "ready"
             result["subject"] = actor.subject
             result["permissions"] = sorted(actor.permissions)
+            if self.assigned_launch is not None:
+                result["native_launch"] = {
+                    "execution:start",
+                    "execution:control",
+                } <= actor.permissions
             # Existing-execution commands do not grant public launch authority.
             # The Listener further restricts this list to enabled Contexts.
             result["native_commands"] = []
@@ -270,10 +295,16 @@ class Context:
                 raise Fault(404, "source_catalog_unconfigured")
             result = self.catalog.metadata()
         elif action == "execution.list":
-            result = self.authority.list_executions(actor.subject)
+            result = self.authority.list_executions(
+                actor.subject, assigned_launch=self.assigned_launch is not None
+            )
         elif action == "execution.events":
             result = self.store.execution_events(
                 request["payload"]["after_sequence"], request["payload"]["limit"]
+            )
+        elif action in PUBLIC_LAUNCH_METHODS and self.assigned_launch is not None:
+            result = self.assigned_launch.controller(
+                actor.subject, action, request["idempotency_key"], request["payload"]
             )
         elif action == "execution.start":
             # Explicit retained profile only; the normal Listener/gateway still
@@ -305,7 +336,14 @@ class Context:
 
 class Listener:
     def __init__(
-        self, edge_fingerprint, identities, scopes, contexts, *, native_command_contexts=None
+        self,
+        edge_fingerprint,
+        identities,
+        scopes,
+        contexts,
+        *,
+        native_command_contexts=None,
+        native_launch_contexts=None,
     ):
         self.edge_fingerprint = fingerprint(edge_fingerprint)
         self.identities = {
@@ -325,6 +363,16 @@ class Listener:
         ):
             raise ValueError("Native commands require explicitly configured Context names")
         self.native_command_contexts = frozenset(native_command_contexts)
+        if native_launch_contexts is None:
+            native_launch_contexts = []
+        if type(native_launch_contexts) is not list or any(
+            type(name) is not str or name not in self.native_command_contexts
+            for name in native_launch_contexts
+        ):
+            raise ValueError(
+                "Assigned launch requires an explicitly enabled native command Context"
+            )
+        self.native_launch_contexts = frozenset(native_launch_contexts)
 
     def authenticate(self, peer, headers):
         if peer != self.edge_fingerprint:
@@ -365,6 +413,10 @@ class Listener:
             if not isinstance(body["method"], str) or (
                 body["method"] not in AUTHORITY_MUTATIONS
                 and not (
+                    body["method"] in PUBLIC_LAUNCH_METHODS
+                    and context_id in self.native_launch_contexts
+                )
+                and not (
                     body["method"] == "execution.prompt.reply"
                     and context_id in self.native_command_contexts
                 )
@@ -393,9 +445,16 @@ class Listener:
             request,
             context_id,
             allow_commands=context_id in self.native_command_contexts,
+            allow_assigned_launch=context_id in self.native_launch_contexts,
             allow_prompts=context_id in self.native_command_contexts,
         )
         result = self.contexts[context_id].call(request)
         if action == "health" and context_id not in self.native_command_contexts:
             result = dict(result, native_commands=[], native_rebind=False)
+        if (
+            action == "health"
+            and context_id not in self.native_launch_contexts
+            and "native_launch" in result
+        ):
+            result = dict(result, native_launch=False)
         return {"schema": "openbexi.listener/1", "result": result}

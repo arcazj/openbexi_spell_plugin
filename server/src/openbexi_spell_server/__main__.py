@@ -44,7 +44,7 @@ def main(*, driver_factory=None):
             "host_settlement",
         }
         if args.role == "context"
-        else {"native_command_contexts"}
+        else {"native_command_contexts", "native_launch_contexts"}
         if args.role == "listener"
         else set()
     )
@@ -110,6 +110,7 @@ def main(*, driver_factory=None):
                 config["scopes"],
                 routes,
                 native_command_contexts=config.get("native_command_contexts"),
+                native_launch_contexts=config.get("native_launch_contexts"),
             )
         server = Server(
             (config["bind"], config["port"]),

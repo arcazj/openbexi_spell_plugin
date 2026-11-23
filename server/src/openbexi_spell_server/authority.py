@@ -274,14 +274,24 @@ class ExecutionAuthority:
                 "CONTROL_CLAIM_EXPIRED", {"claim_id": row[0], "execution_id": execution_id}
             )
 
-    def list_executions(self, subject):
+    def list_executions(self, subject, *, assigned_launch=False):
         self._require(subject, "execution:read")
         if self.native_pause is not None:
             self.native_pause.expire()
         with self.store.transaction(write=False):
             executions = []
-            for row in self.store.db.execute("SELECT * FROM executions ORDER BY id"):
+            query = "SELECT * FROM executions ORDER BY id"
+            if assigned_launch:
+                query = (
+                    "SELECT e.*, EXISTS(SELECT 1 FROM native_members m WHERE "
+                    "m.execution_id=e.id AND m.target_id='' AND m.state='REGISTERED_UNPROVEN') "
+                    "AS root_registered FROM executions e ORDER BY e.id"
+                )
+            for row in self.store.db.execute(query):
                 item = self._public(row)
+                if assigned_launch:
+                    item["native_start_admitted"] = bool(row["start_hash"])
+                    item["native_root_registered"] = bool(row["root_registered"])
                 claim = self.store.db.execute(
                     "SELECT id,requester,expires_at FROM claims WHERE execution_id=? AND state='PENDING'",
                     (row["id"],),
