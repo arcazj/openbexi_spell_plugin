@@ -1,4 +1,10 @@
 <!-- CURRENT QUALIFICATION -->
+
+The private service image includes Git so an enabled Context can verify its configured catalog revision. To build from the exact staged package set, provide a JSON manifest with `base_image`, `debian` and `wheels`. The latter two map each filename to its SHA-256. Include the SPELL server wheel, the Debian Git packages and their dependencies. The browser profile also needs both wheels from `server/requirements-browser.lock`.
+
+```sh
+python scripts/build_v08_service_image.py --manifest service-inputs.json --debs ./debs --wheels ./wheels --tag openbexi-spell-service:qualification --receipt ./evidence/service-build.json
+```
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](../../docs/v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 
