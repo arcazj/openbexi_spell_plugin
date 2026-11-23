@@ -4,6 +4,17 @@
 
 # v0.8 prelaunch multi-service Compose qualification
 
+## Context checkpoints
+
+Run the operator helper on Linux with the Context state volume readable and an independent backup volume writable. Capture accepts an active Context and records SQLite integrity, the Context identity, the audit sequence and the audit digest. Keep the returned manifest SHA-256 in a separate trusted location.
+
+```sh
+python context_checkpoint.py capture --context A --state /state --archive /backup/checkpoint-A
+python context_checkpoint.py restore --context A --archive /backup/checkpoint-A --target /replacement/state --manifest-sha256 "$CAPTURE_MANIFEST_SHA256"
+```
+
+Restore verifies the copied database and audit before atomically creating the named destination on a Linux filesystem that supports no-replace rename. A checkpoint covers the Context database at capture time. Preserve any subsequent Context events and separately archive the worker's native audit files. Before starting the restored authority, stop the old authority and Executor, fence their driver access, and rotate their private service and worker credentials. Startup retains the logical reservation and marks interrupted executions `RECOVERY_REQUIRED`. Reconcile outstanding driver effects before authorizing any further execution.
+
 **This is an executable, security-isolated prelaunch staging profile, not a
 native SPELL v0.8 runtime, Kubernetes release, user-facing web service or
 production migration.** It leaves `runtime_enabled=false` everywhere. All
