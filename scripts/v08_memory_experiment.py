@@ -15,7 +15,7 @@ PREIMAGES = {
     "host_runtime/build_native_profile.py": "f3b84111e2d0c3f2f4e465b8eae2c4d7c59554259e2bc3804aab89d07a32b757",
     # Includes the Context's bounded executor-info log storage and the frozen helper.
     "host_runtime/build_admission_context.py": "fa51be188d92765bdf041a5e72c6bfd27ba5312762bba8c35d88ad3e3f0bdb7d",
-    "host_runtime/python/native.py": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
+    "host_runtime/python/native.py": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
     "scripts/qualify_v08_native_launch.py": "4e0da32eb52e114bbf7ed8322f7eb44cd98a4067a06047ffb1ee81fdd58d77b9",
     "scripts/v08_native_consumption.py": "1d1cac580885d181c7e86bd3d7dc81926f18e193c38b607048194ed6b5482ec8",
     "scripts/v08_resource_probe.py": "9c22753ab4e638ef0658c4286fd32c6a79a83f269253ef6df91162528a23aea8",
