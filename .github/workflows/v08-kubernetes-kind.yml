@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           go install sigs.k8s.io/kind@v0.27.0
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-          "$(go env GOPATH)/bin/kind" create cluster --name v08prelaunch --image kindest/node:v1.32.2 --wait 120s
+          bash deploy/v0.8/create_policy_kind.sh "$(go env GOPATH)/bin/kind"
           kubectl get nodes
       - name: Build isolated authority and independently packaged DSS images
         run: |
@@ -63,6 +63,8 @@ jobs:
           for role in context-a context-b listener gateway dss; do
             kubectl -n openbexi-v08 rollout status "deployment/$role" --timeout=180s
           done
+      - name: Verify reachability and denied traffic with the installed NetworkPolicies
+        run: python deploy/v0.8/qualify_network_policy.py --output .qualification/v08-kind/network-policy.json
       - name: Execute pinned-TLS multi-user and persistent-volume probes inside kind
         run: |
           set -euo pipefail
