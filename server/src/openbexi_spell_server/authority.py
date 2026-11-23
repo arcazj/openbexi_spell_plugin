@@ -296,6 +296,15 @@ class ExecutionAuthority:
                     item["native_start_admitted"] = bool(row["start_hash"])
                     item["native_root_registered"] = bool(row["root_registered"])
                     item["native_root_result"] = row["native_status"]
+                    if (
+                        self.native_prompts is not None
+                        and row["owner"] == subject
+                        and row["control_state"] == "OWNED"
+                        and {"execution:start", "execution:control"}
+                        <= self.subjects[subject].permissions
+                        and self.native_prompts.pending_display(row["id"]) is not None
+                    ):
+                        item["native_prompt_pending"] = True
                 claim = self.store.db.execute(
                     "SELECT id,requester,expires_at FROM claims WHERE execution_id=? AND state='PENDING'",
                     (row["id"],),

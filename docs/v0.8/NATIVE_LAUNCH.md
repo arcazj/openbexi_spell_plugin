@@ -52,6 +52,16 @@ Mount its role-specific private configuration at `/credentials/config.json`.
 }
 ```
 
+An assigned prompt-enabled worker sends the original question and its ordered
+options privately to Context. Context retains them in memory while that prompt
+is open. The current controller can choose **View prompt** in the browser
+workspace or the installed Qt panel, then send an answer or explicitly cancel
+the native prompt. **Dismiss** closes the dialog without responding. Context
+rechecks the controller, original member, definition digest, current generation
+and delivery state. A queued reply removes that answer opportunity. Restart or
+an uncertain delivery requires operator reconciliation. Audit and replay contain
+identifiers and outcomes. The question, choices and answer remain private.
+
 When native prompts are enabled, provision the prompt-enabled native build and
 configure Context with `native_prompts: "owner-reply-candidate"`. Each worker
 accepts a configured source digest and independently checks the read-only tree.

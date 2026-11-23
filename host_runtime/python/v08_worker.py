@@ -826,7 +826,7 @@ def run(config):
         if prompt_profile:
             from prompt_replies import NativePromptAgent
 
-            prompts = NativePromptAgent(controls)
+            prompts = NativePromptAgent(controls, display=assigned)
         if consumption_probe or owner_probe:
             final_consume = controls.consume
             consume_fenced = threading.Event()

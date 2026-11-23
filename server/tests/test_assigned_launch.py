@@ -43,6 +43,7 @@ def assigned_cluster(tmp_path, pki, source):
             native_children="admission-only",
             native_controls="run-journal",
             native_commands="owner-queue",
+            native_prompts="owner-reply-candidate",
         )
         stack.callback(context.close)
         cs = stack.enter_context(serving(context, pki["context-a"]["server"]))
@@ -148,6 +149,39 @@ def test_public_launch_uses_a_private_one_shot_delivery_and_original_worker_proo
     assert private("root-result", {**consume, **terminal})[0] == 403
     assert private("root-result", {**session, **terminal})[0] == 403
     assert private("member-bind", {**session, **member()})[0] == 200
+    prompt = dict(
+        prompt_id=str(uuid.uuid4()),
+        instance_id="main#1",
+        target_admission_id=None,
+        definition_sha256="9" * 64,
+        display={"text": "Choose the nonce <script>2026", "choices": ["yes", "no"]},
+    )
+    assert private("prompt-open", {**session, **prompt})[0] == 200
+    assert alice.read("A", "executions")["executions"][0]["native_prompt_pending"] is True
+    assert "native_prompt_pending" not in observer.read("A", "executions")["executions"][0]
+    with pytest.raises(SpellServerError) as denied:
+        observer.authority("A", "execution.prompt.view", proof(execution), key=str(uuid.uuid4()))
+    assert denied.value.status == 403
+    view = alice.prompt("A", eid, key=str(uuid.uuid4()))
+    assert view["text"] == prompt["display"]["text"] and view["choices"] == ["yes", "no"]
+    assert view["prompt_id"] == prompt["prompt_id"]
+    assert prompt["display"]["text"] not in "\n".join(context.store.db.iterdump())
+    with pytest.raises(SpellServerError) as changed:
+        alice.authority(
+            "A",
+            "execution.prompt.view",
+            {**proof(execution), "expected_epoch": 8},
+            key=str(uuid.uuid4()),
+        )
+    assert changed.value.status == 403
+    reply = {k: view[k] for k in ("prompt_id", "target_admission_id", "definition_sha256")}
+    assert (
+        alice.prompt(
+            "A", eid, key=str(uuid.uuid4()), reply=dict(reply, action="ANSWER", answer="1")
+        )["state"]
+        == "QUEUED"
+    )
+    assert alice.prompt("A", eid, key=str(uuid.uuid4())) is None
     assert private("root-result", {**session, **terminal, "instance_id": "other#1"})[0] == 403
     assert private("root-result", {**session, **terminal})[0] == 200
     assert private("root-result", {**session, **terminal})[0] == 200

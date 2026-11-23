@@ -42,6 +42,7 @@ METHODS = {
     "execution.decide": "execution:control",
     "execution.cancel": "execution:request_control",
 }
+PROMPT_METHODS = frozenset({"execution.prompt.view", "execution.prompt.reply"})
 
 
 class Fault(Exception):
@@ -211,7 +212,7 @@ def validate_envelope(
         and not (allow_launch and method == "execution.start")
         and not (allow_assigned_launch and method in PUBLIC_LAUNCH_METHODS)
         and not (allow_commands and method == "execution.command")
-        and not (allow_prompts and method == "execution.prompt.reply")
+        and not (allow_prompts and method in PROMPT_METHODS)
     ):
         raise Fault(404, "method_not_available")
     if value["payload_sha256"] != digest(value["payload"]):
@@ -232,6 +233,9 @@ def validate_envelope(
             raise Fault(400, "invalid_event_cursor")
         if type(payload["limit"]) is not int or not 1 <= payload["limit"] <= 32:
             raise Fault(400, "invalid_event_page_size")
+    elif allow_prompts and method == "execution.prompt.view":
+        identifier(value["idempotency_key"])
+        validate_authority_payload("execution.start", value["payload"])
     elif allow_prompts and method == "execution.prompt.reply":
         from .prompts import validate_reply_payload
 

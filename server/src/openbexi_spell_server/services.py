@@ -11,6 +11,7 @@ from .settlement import SettlementHost, TerminalSettlement
 from .contracts import (
     AUTHORITY_MUTATIONS,
     METHODS,
+    PROMPT_METHODS,
     PUBLIC_LAUNCH_METHODS,
     Fault,
     envelope,
@@ -259,7 +260,7 @@ class Context:
             "execution:start"
             if action == "execution.start" or action in PUBLIC_LAUNCH_METHODS
             else "execution:control"
-            if action in ("execution.command", "execution.prompt.reply")
+            if action == "execution.command" or action in PROMPT_METHODS
             else METHODS[action]
         )
         if action == "health":
@@ -316,11 +317,18 @@ class Context:
                 "hold_retained": True,
                 "runtime_enabled": False,
             }
-        elif action == "execution.prompt.reply":
+        elif action in PROMPT_METHODS:
             prompts = self.authority.native_prompts
             if prompts is None:
                 raise Fault(404, "prompt_profile_unconfigured")
-            result = prompts.enqueue(actor.subject, request["idempotency_key"], request["payload"])
+            if action == "execution.prompt.view":
+                if self.assigned_launch is None:
+                    raise Fault(404, "prompt_display_unavailable")
+                result = prompts.view(actor.subject, request["payload"])
+            else:
+                result = prompts.enqueue(
+                    actor.subject, request["idempotency_key"], request["payload"]
+                )
         elif action == "execution.command":
             commands = self.authority.native_commands
             if commands is None:
@@ -418,8 +426,7 @@ class Listener:
                     and context_id in self.native_launch_contexts
                 )
                 and not (
-                    body["method"] == "execution.prompt.reply"
-                    and context_id in self.native_command_contexts
+                    body["method"] in PROMPT_METHODS and context_id in self.native_command_contexts
                 )
             ):
                 raise Fault(404, "method_not_available")

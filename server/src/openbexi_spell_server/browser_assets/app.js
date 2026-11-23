@@ -18,6 +18,7 @@ let health = {},
   catalog = [],
   executions = [],
   selected = "";
+let promptView = null;
 const current = () => byId("context").value;
 const identity = (context, id) => JSON.stringify([context, id]);
 const selectedRow = () => executions.find((row) => row.id === selected);
@@ -134,6 +135,7 @@ function buttons() {
           ["OWNED", "CONTROLLER_DISCONNECTED"].includes(row?.control_state))),
     accept: control && own && ownerProof && claim,
     reject: control && own && ownerProof && claim,
+    viewprompt: start && own && ownerProof && row.native_prompt_pending === true && row.control_state === "OWNED",
     start:
       start &&
       health.native_launch &&
@@ -157,10 +159,34 @@ function buttons() {
   }
   for (const [id, enabledNow] of Object.entries(enabled))
     byId(id).disabled = !enabledNow;
+  byId("viewprompt").hidden = !row?.native_prompt_pending;
+  if (promptView && (!ownerProof || promptView.context !== context || promptView.id !== row.id || row.control_state !== "OWNED" || !row.native_prompt_pending)) clearPrompt();
   byId("context").disabled = busy || !connected;
   byId("refresh").disabled = busy || !connected;
   byId("connection").disabled = busy;
   byId("connection").textContent = connected ? "Disconnect" : "Connect";
+}
+function clearPrompt() {
+  promptView = null;
+  const dialog = byId("nativeprompt");
+  if (dialog.open) dialog.close();
+  byId("prompttext").textContent = "";
+  byId("promptchoices").replaceChildren();
+  byId("promptvalue").value = "";
+}
+function showPrompt(context, row, value) {
+  if (!value) throw new Error("The native prompt is no longer available");
+  if (typeof value.text !== "string" || !Array.isArray(value.choices)) throw new Error("Invalid native prompt");
+  clearPrompt();
+  promptView = { context, id: row.id, prompt_id: value.prompt_id, target_admission_id: value.target_admission_id, definition_sha256: value.definition_sha256 };
+  byId("prompttext").textContent = value.text;
+  const choices = byId("promptchoices"), input = byId("promptvalue");
+  choices.hidden = !value.choices.length;
+  input.hidden = !!value.choices.length;
+  choices.replaceChildren(...value.choices.map((text, index) => new Option(text, String(index))));
+  choices.selectedIndex = -1;
+  byId("answer").disabled = !!value.choices.length;
+  byId("nativeprompt").showModal();
 }
 function render() {
   byId("identity").textContent = health.subject || "";
@@ -411,6 +437,19 @@ async function act(action) {
       controllers.delete(identity(context, row.id));
   } else if (action === "start") {
     await launch(context, row, proof);
+  } else if (action === "viewprompt") {
+    const result = await authority(context, "execution.prompt.view", proof);
+    showPrompt(context, row, result.prompt);
+  } else if (action === "answer" || action === "cancelprompt") {
+    if (!promptView || promptView.context !== context || promptView.id !== row.id || !proof)
+      throw new Error("A current native prompt and controller are required");
+    const { prompt_id, target_admission_id, definition_sha256 } = promptView;
+    const answer = action === "answer" ? (byId("promptchoices").hidden ? byId("promptvalue").value : byId("promptchoices").value) : null;
+    clearPrompt();
+    await authority(context, "execution.prompt.reply", {
+      ...proof, prompt_id, target_admission_id, definition_sha256,
+      action: action === "answer" ? "ANSWER" : "CANCEL", answer,
+    });
   } else if (commands[action]) {
     await api(
       endpoint(context, "commands"),
@@ -435,7 +474,13 @@ async function invoke(action) {
     buttons();
   }
 }
+byId("dismissprompt").onclick = clearPrompt;
+byId("nativeprompt").oncancel = clearPrompt;
+byId("promptchoices").onchange = () => { byId("answer").disabled = byId("promptchoices").selectedIndex < 0; };
 for (const id of [
+  "viewprompt",
+  "answer",
+  "cancelprompt",
   "connection",
   "refresh",
   "reserve",

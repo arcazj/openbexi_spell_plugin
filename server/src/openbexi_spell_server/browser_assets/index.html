@@ -55,6 +55,7 @@
           ><button id="step">Step</button><button id="pause">Pause</button
           ><button id="abort">Abort</button
           ><button id="close">Close execution</button>
+          <button id="viewprompt" hidden>View prompt</button>
         </div>
       </section>
       <section>
@@ -62,5 +63,14 @@
         <ol id="activity"></ol>
       </section>
     </main>
+    <dialog id="nativeprompt" aria-labelledby="prompttext">
+      <h2 id="prompttext"></h2>
+      <label>Response <select id="promptchoices"></select><input id="promptvalue" maxlength="4096" /></label>
+      <div class="controls">
+        <button id="answer">Send answer</button>
+        <button id="cancelprompt">Cancel native prompt</button>
+        <button id="dismissprompt">Dismiss</button>
+      </div>
+    </dialog>
   </body>
 </html>
