@@ -1,5 +1,5 @@
 {
-  "clean_checkout": "e65f538fb39313562b192d099db289e1b177db3b",
+  "clean_checkout": "09abf369fcc0a592858cb1663889bdab97690480",
   "runtime_subject": "47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d",
   "phase": "qualification hold",
   "results": [
@@ -7,7 +7,7 @@
       "name": "executable",
       "exit_code": 1,
       "command": "python scripts/check_v08_release.py --candidate 47e0cb376dac1e49e1f6745318c0eb3e43b2ec4d --output executable.json",
-      "sha256": "791d02cafb4ec458668cb2d276551a73d37c0d8c9c5cc6c5ed314ee3e98de46f",
+      "sha256": "6327af5ba73cd6a99ddffb1c3f704c808bbbf04a7978250efe046f49a48f8d04",
       "result": {
         "schema": "openbexi.v08.publication-preflight/1",
         "version": "0.8.0",
@@ -29,7 +29,7 @@
           "native_family": {
             "qualified": false,
             "errors": [
-              "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply."
+              "Correct sustained growth on the original instrumented workload and verify both five-minute scenarios. Run both original one-hour scenarios when their five-minute prerequisites pass."
             ]
           },
           "compatibility": {
@@ -53,13 +53,13 @@
           "compose": {
             "qualified": false,
             "errors": [
-              "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology."
+              "Complete deployment-wide worker and Listener loss, egress isolation, and uncertain command-effect settlement on the delivered Compose topology. The local independent-simulator read outage has a separate scope."
             ]
           },
           "kubernetes": {
             "qualified": false,
             "errors": [
-              "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment."
+              "Provide a representative cluster and operator. Complete multi-host partitions and drains, admission, storage recovery, upgrade and rollback there. The observed node-off, fence and return used a single workstation."
             ]
           },
           "recovery": {
@@ -87,18 +87,18 @@
             ]
           }
         },
-        "qualification_checkout_commit": "e65f538fb39313562b192d099db289e1b177db3b"
+        "qualification_checkout_commit": "09abf369fcc0a592858cb1663889bdab97690480"
       }
     },
     {
       "name": "qualification-head",
       "exit_code": 1,
-      "command": "python scripts/check_v08_release.py --candidate e65f538fb39313562b192d099db289e1b177db3b --output qualification-head.json",
-      "sha256": "f460d73c71a25778a605aabfc244ff12709b5d09f6461043b1db7ea22bb492db",
+      "command": "python scripts/check_v08_release.py --candidate 09abf369fcc0a592858cb1663889bdab97690480 --output qualification-head.json",
+      "sha256": "4fb0174190116b6738e01ff489f6c893918b93702bd3c66a8eaabda6a4bec4a8",
       "result": {
         "schema": "openbexi.v08.publication-preflight/1",
         "version": "0.8.0",
-        "candidate_commit": "e65f538fb39313562b192d099db289e1b177db3b",
+        "candidate_commit": "09abf369fcc0a592858cb1663889bdab97690480",
         "ide_commit": "fadac70d574760cbe21c5e5512a384dddfa36e80",
         "full_v08_qualified": false,
         "eligible_for_publication": false,
@@ -114,7 +114,7 @@
           "native_family": {
             "qualified": false,
             "errors": [
-              "Correct the original five-minute memory failures, then run both mandatory one-hour scenarios. The original growth, peak, cgroup and swap limits still apply."
+              "Correct sustained growth on the original instrumented workload and verify both five-minute scenarios. Run both original one-hour scenarios when their five-minute prerequisites pass."
             ]
           },
           "compatibility": {
@@ -138,13 +138,13 @@
           "compose": {
             "qualified": false,
             "errors": [
-              "Finish the independent DSS and worker-loss, egress and survival matrix on the delivered Compose topology."
+              "Complete deployment-wide worker and Listener loss, egress isolation, and uncertain command-effect settlement on the delivered Compose topology. The local independent-simulator read outage has a separate scope."
             ]
           },
           "kubernetes": {
             "qualified": false,
             "errors": [
-              "Provide the representative cluster and its operator. Complete node partition/drain, admission, storage recovery, upgrade and rollback against that deployment."
+              "Provide a representative cluster and operator. Complete multi-host partitions and drains, admission, storage recovery, upgrade and rollback there. The observed node-off, fence and return used a single workstation."
             ]
           },
           "recovery": {
@@ -172,7 +172,7 @@
             ]
           }
         },
-        "qualification_checkout_commit": "e65f538fb39313562b192d099db289e1b177db3b"
+        "qualification_checkout_commit": "09abf369fcc0a592858cb1663889bdab97690480"
       }
     }
   ]
