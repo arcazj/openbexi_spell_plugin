@@ -13,6 +13,7 @@ from openbexi_spell_server.contracts import canonical
 from openbexi_spell_server.gateway import Gateway
 from openbexi_spell_server.launch import start_grant
 from openbexi_spell_server.services import Context, Listener
+from openbexi_spell_server.settlement import TerminalSettlement
 from openbexi_spell_server.store import ContextStore
 from openbexi_spell_server.transport import Route
 from openbexi_spell_server.worker import preflight, wait_for_assignment
@@ -243,3 +244,48 @@ def test_listener_must_enable_launch_separately(assigned_cluster):
     with pytest.raises(SpellServerError) as error:
         alice.authority("A", "execution.prepare", proof(execution), key=str(uuid.uuid4()))
     assert error.value.status == 404
+
+
+def test_assigned_host_profile_waits_for_private_original_container_binding(assigned_cluster, pki):
+    alice, _, _, context, server, execution, worker = assigned_cluster
+    context.settlement = TerminalSettlement(
+        context.authority,
+        {"profile": "single-host-terminal-candidate", "fingerprint": pki["host"]["pin"]},
+        excluded_pins={pki["worker"]["pin"], pki["listener"]["pin"]},
+    )
+    controller = proof(execution)
+    key = str(uuid.uuid4())
+    alice.authority("A", "execution.prepare", controller, key=key)
+    check = {k: v for k, v in worker.items() if k not in ("runtime_image", "snapshots")}
+    preflight(
+        {
+            **check,
+            "execution_id": execution["id"],
+            "snapshot_directory": next(iter(worker["snapshots"].values())),
+        }
+    )
+    assert alice.authority("A", "execution.launch_status", controller, key=key)["ready"] is False
+    with pytest.raises(SpellServerError):
+        alice.authority("A", "execution.launch", controller, key=key)
+    assert context.store.db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 0
+    body = {
+        "schema": TerminalSettlement.SCHEMA,
+        "context_id": "A",
+        "execution_id": execution["id"],
+        "authority_incarnation": context.store.incarnation,
+        "container_id": "d" * 64,
+        "image": worker["runtime_image"],
+    }
+    assert (
+        request(
+            server, pki["worker"]["client"], "/v1/host/terminal/bind", subject=None, payload=body
+        )[0]
+        == 404
+    )
+    assert (
+        request(
+            server, pki["host"]["client"], "/v1/host/terminal/bind", subject=None, payload=body
+        )[0]
+        == 200
+    )
+    assert alice.authority("A", "execution.launch_status", controller, key=key)["ready"] is True

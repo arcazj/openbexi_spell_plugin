@@ -120,8 +120,13 @@ class AssignedLaunch:
                 elif method == "execution.launch_status":
                     try:
                         self.preflight.require_ready(row)
+                        if self.authority.terminal_settlement is not None:
+                            self.authority.terminal_settlement.require_bound(row)
                     except Fault as error:
-                        if error.code != "worker_preflight_required":
+                        if error.code not in {
+                            "worker_preflight_required",
+                            "terminal_container_unbound",
+                        }:
                             raise
                         return {"preparation_id": key, "ready": False}
                     return {"preparation_id": key, "ready": True}

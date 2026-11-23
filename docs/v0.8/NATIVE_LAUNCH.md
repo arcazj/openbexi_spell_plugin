@@ -62,6 +62,34 @@ and delivery state. A queued reply removes that answer opportunity. Restart or
 an uncertain delivery requires operator reconciliation. Audit and replay contain
 identifiers and outcomes. The question, choices and answer remain private.
 
+### Live controller transfer on one Linux host
+
+Set the assigned worker's `native_handoff` to `host-freeze-epoch` alongside
+`native_prompts: true` to enable live transfer. Configure Context with
+`native_pause: "host-freeze-candidate"`, the independently pinned
+`single-host-terminal-candidate` settlement host, and the native child, command
+and prompt journals. Mount a separate operator-controlled directory read-only at
+`/control` in the worker. The Gateway and worker have no Docker management
+socket or operator credentials.
+
+The operator binds the immutable, originally created container ID and image to
+the exact Context incarnation and reservation before the assigned start. It
+writes the admitted start request UUID to `/control/handoff-epoch`. When the
+controller accepts a claim, the operator atomically writes the same current UUID
+to `handoff-prepare` and verifies that the worker drained its outstanding RPCs.
+The operator then independently freezes the original cgroup. Its private
+handoff completion requires the kernel's completed freeze, the matching sealed
+member roster and original living process handles. The new controller explicitly
+rebinds and requests **Run / Continue**. Only after a matching private resume
+receipt does the operator atomically install the new runtime epoch and unfreeze
+that original worker. A lost one-shot activation keeps authority fenced.
+
+The operator can witness a single Docker Desktop worker in a separate
+capability-free, read-only container using the bound worker's PID namespace and
+read-only cgroup-v2 observations. It holds original pidfds across every transfer
+and verifies Executor executable hashes and kernel birth ticks. The authority
+retains ownership and capacity for recovery if any required proof is absent.
+
 When native prompts are enabled, provision the prompt-enabled native build and
 configure Context with `native_prompts: "owner-reply-candidate"`. Each worker
 accepts a configured source digest and independently checks the read-only tree.

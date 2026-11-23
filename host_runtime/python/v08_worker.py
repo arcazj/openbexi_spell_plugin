@@ -526,8 +526,27 @@ def owner_step_probe(session, controls, admission, consume_fenced, pump):
 def run(config):
     assigned = type(config) is dict and "assigned" in config
     verified = None
+    assigned_handoff = False
     if assigned:
-        exact(config, {"assigned", "native_prompts"})
+        allowed = {"assigned", "native_prompts"}
+        if "native_handoff" in config:
+            allowed.add("native_handoff")
+            if (
+                config["native_handoff"] != "host-freeze-epoch"
+                or config["native_prompts"] is not True
+            ):
+                raise ValueError(
+                    "Host handoff requires the assigned prompt-enabled profile"
+                )
+            if (
+                not os.path.ismount("/control")
+                or not os.statvfs("/control").f_flag & os.ST_RDONLY
+            ):
+                raise ValueError(
+                    "Host handoff requires a separate read-only operator mount"
+                )
+            assigned_handoff = True
+        exact(config, allowed)
         if type(config["native_prompts"]) is not bool:
             raise ValueError("Invalid native prompt option")
         if not os.statvfs("/").f_flag & os.ST_RDONLY:
@@ -650,8 +669,10 @@ def run(config):
     )
 
     def rpc(action):
+        sent_request = dict(request)
+        sent_grant = start_grant(sent_request["grant"])
         reply = route.call(
-            request, path="/v1/worker/" + action, schema="openbexi.worker/2"
+            sent_request, path="/v1/worker/" + action, schema="openbexi.worker/2"
         )
         capability = None
         if action == "consume":
@@ -659,9 +680,9 @@ def run(config):
         expected = dict(
             consumed=action == "consume",
             checked=action == "check",
-            execution_id=grant.execution_id,
-            request_id=grant.request_id,
-            authority_incarnation=grant.authority_incarnation,
+            execution_id=sent_grant.execution_id,
+            request_id=sent_grant.request_id,
+            authority_incarnation=sent_grant.authority_incarnation,
             hold_retained=True,
             runtime_enabled=False,
         )
@@ -675,13 +696,23 @@ def run(config):
     # Exactly ONE consumption attempt. A lost reply must prevent native launch.
     rpc("consume")
     runtime = None
-    if handoff_profile:
+    if handoff_profile or assigned_handoff:
         # python -I excludes the script directory. Only the read-only operator
         # modules participate; source snapshots never enter this lookup path.
         sys.path.insert(0, "/v08")
         from handoff_runtime import HandoffRuntime
 
         os.environ["OPENBEXI_V08_RUNTIME_EPOCH"] = "/control/handoff-epoch"
+        if assigned_handoff:
+            # The independent host owns the read-only epoch mount and the
+            # original container binding. Never create or repair its proof.
+            until = time.monotonic() + 15
+            while not Path("/control/handoff-epoch").is_file():
+                if time.monotonic() >= until:
+                    raise TimeoutError(
+                        "The operator has not provisioned the original native epoch"
+                    )
+                time.sleep(0.05)
         runtime = HandoffRuntime(request, route, "/control/handoff-epoch")
         route = runtime.guarded_route()
     # Force the real proxy. All event categories remain execution-bound in
@@ -763,7 +794,7 @@ def run(config):
             )
             relay.reply({"id": body["id"], "error": "native_driver_request_denied"})
 
-    if handoff_profile:
+    if handoff_profile or assigned_handoff:
         from epoch_relay import EpochRelay
 
         relay = EpochRelay(dispatch)
@@ -1059,7 +1090,18 @@ def run(config):
         previous_state = None
         next_position = 0
         position_count = 0
+        observed_rotations = 0
         while assigned or time.monotonic() < deadline:
+            if assigned_handoff:
+                runtime.checkpoint(emit)
+                runtime.ensure()
+                if runtime.rotations != observed_rotations:
+                    observed_rotations = runtime.rotations
+                    emit(
+                        "native-handoff-activated",
+                        runtime_identity_rotated=True,
+                        rotation=observed_rotations,
+                    )
             pump()
             if assigned and time.monotonic() >= next_owner_poll:
                 next_owner_poll = time.monotonic() + 0.2

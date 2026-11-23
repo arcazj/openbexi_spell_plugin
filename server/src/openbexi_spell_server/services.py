@@ -161,7 +161,7 @@ class Context:
         if self.preflight is None:
             raise Fault(403, "worker_preflight_required")
         self.preflight.require_ready(row)
-        if self.settlement is not None and row["start_hash"]:
+        if self.settlement is not None and (row["start_hash"] or self.assigned_launch is not None):
             self.settlement.require_bound(row)
 
     def authenticate(self, peer, headers):

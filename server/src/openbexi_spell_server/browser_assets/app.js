@@ -135,7 +135,12 @@ function buttons() {
           ["OWNED", "CONTROLLER_DISCONNECTED"].includes(row?.control_state))),
     accept: control && own && ownerProof && claim,
     reject: control && own && ownerProof && claim,
-    viewprompt: start && own && ownerProof && row.native_prompt_pending === true && row.control_state === "OWNED",
+    viewprompt:
+      start &&
+      own &&
+      ownerProof &&
+      row.native_prompt_pending === true &&
+      row.control_state === "OWNED",
     start:
       start &&
       health.native_launch &&
@@ -160,7 +165,21 @@ function buttons() {
   for (const [id, enabledNow] of Object.entries(enabled))
     byId(id).disabled = !enabledNow;
   byId("viewprompt").hidden = !row?.native_prompt_pending;
-  if (promptView && (!ownerProof || promptView.context !== context || promptView.id !== row.id || row.control_state !== "OWNED" || !row.native_prompt_pending)) clearPrompt();
+  if (
+    promptView &&
+    (!ownerProof ||
+      promptView.context !== context ||
+      promptView.id !== row.id ||
+      row.control_state !== "OWNED" ||
+      !row.native_prompt_pending)
+  )
+    clearPrompt();
+  if (promptView) {
+    const choices = byId("promptchoices");
+    byId("answer").disabled =
+      busy || (!choices.hidden && choices.selectedIndex < 0);
+    byId("cancelprompt").disabled = busy;
+  }
   byId("context").disabled = busy || !connected;
   byId("refresh").disabled = busy || !connected;
   byId("connection").disabled = busy;
@@ -176,14 +195,24 @@ function clearPrompt() {
 }
 function showPrompt(context, row, value) {
   if (!value) throw new Error("The native prompt is no longer available");
-  if (typeof value.text !== "string" || !Array.isArray(value.choices)) throw new Error("Invalid native prompt");
+  if (typeof value.text !== "string" || !Array.isArray(value.choices))
+    throw new Error("Invalid native prompt");
   clearPrompt();
-  promptView = { context, id: row.id, prompt_id: value.prompt_id, target_admission_id: value.target_admission_id, definition_sha256: value.definition_sha256 };
+  promptView = {
+    context,
+    id: row.id,
+    prompt_id: value.prompt_id,
+    target_admission_id: value.target_admission_id,
+    definition_sha256: value.definition_sha256,
+  };
   byId("prompttext").textContent = value.text;
-  const choices = byId("promptchoices"), input = byId("promptvalue");
+  const choices = byId("promptchoices"),
+    input = byId("promptvalue");
   choices.hidden = !value.choices.length;
   input.hidden = !!value.choices.length;
-  choices.replaceChildren(...value.choices.map((text, index) => new Option(text, String(index))));
+  choices.replaceChildren(
+    ...value.choices.map((text, index) => new Option(text, String(index))),
+  );
   choices.selectedIndex = -1;
   byId("answer").disabled = !!value.choices.length;
   byId("nativeprompt").showModal();
@@ -426,7 +455,12 @@ async function act(action) {
       expected_epoch: row.epoch,
       connection_id: await session(context),
     });
-    if (action === "rebind") remember(context, reply);
+    if (action === "rebind") {
+      if (reply.rebind_pending)
+        byId("notice").textContent =
+          "The host is verifying the paused native family.";
+      else remember(context, reply);
+    }
   } else if (action === "accept" || action === "reject") {
     const reply = await authority(context, "execution.decide", {
       ...proof,
@@ -440,15 +474,30 @@ async function act(action) {
   } else if (action === "viewprompt") {
     const result = await authority(context, "execution.prompt.view", proof);
     showPrompt(context, row, result.prompt);
+    return;
   } else if (action === "answer" || action === "cancelprompt") {
-    if (!promptView || promptView.context !== context || promptView.id !== row.id || !proof)
+    if (
+      !promptView ||
+      promptView.context !== context ||
+      promptView.id !== row.id ||
+      !proof
+    )
       throw new Error("A current native prompt and controller are required");
     const { prompt_id, target_admission_id, definition_sha256 } = promptView;
-    const answer = action === "answer" ? (byId("promptchoices").hidden ? byId("promptvalue").value : byId("promptchoices").value) : null;
+    const answer =
+      action === "answer"
+        ? byId("promptchoices").hidden
+          ? byId("promptvalue").value
+          : byId("promptchoices").value
+        : null;
     clearPrompt();
     await authority(context, "execution.prompt.reply", {
-      ...proof, prompt_id, target_admission_id, definition_sha256,
-      action: action === "answer" ? "ANSWER" : "CANCEL", answer,
+      ...proof,
+      prompt_id,
+      target_admission_id,
+      definition_sha256,
+      action: action === "answer" ? "ANSWER" : "CANCEL",
+      answer,
     });
   } else if (commands[action]) {
     await api(
@@ -476,7 +525,7 @@ async function invoke(action) {
 }
 byId("dismissprompt").onclick = clearPrompt;
 byId("nativeprompt").oncancel = clearPrompt;
-byId("promptchoices").onchange = () => { byId("answer").disabled = byId("promptchoices").selectedIndex < 0; };
+byId("promptchoices").onchange = buttons;
 for (const id of [
   "viewprompt",
   "answer",

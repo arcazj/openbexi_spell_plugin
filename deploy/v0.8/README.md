@@ -5,6 +5,8 @@ The private service image includes Git so an enabled Context can verify its conf
 ```sh
 python scripts/build_v08_service_image.py --manifest service-inputs.json --debs ./debs --wheels ./wheels --tag openbexi-spell-service:qualification --receipt ./evidence/service-build.json
 ```
+
+For an assigned worker, `scripts/build_v08_worker_runtime.py` consumes the optimized native image digest plus the signed package and wheel hashes in a worker manifest. It verifies the native build record and all five runtime binaries before and after the dependency update. Pass the resulting image digest to `scripts/build_v08_assigned_worker.py` as `--native-image`. [Joint build and test receipts](../../docs/v0.8/evidence/qualification-20261122/README.md)
 > **Current qualification — November 5, 2026:** IDE v1.2.1 and full SPELL v0.8 remain unqualified; all eleven release groups are open. See [current status, verified results and next work](../../docs/v0.8/CURRENT_STATUS.md). Earlier candidate IDs and bounded acceptance below apply to their recorded subjects.
 <!-- END CURRENT QUALIFICATION -->
 

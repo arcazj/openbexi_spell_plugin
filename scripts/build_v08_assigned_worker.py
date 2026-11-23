@@ -43,6 +43,8 @@ def main():
             ("child_gate", "child_gate"),
             ("control_journal", "control_journal"),
             ("prompt_replies", "prompt_replies"),
+            ("handoff_runtime", "handoff_runtime"),
+            ("epoch_relay", "epoch_relay"),
             ("startup_diagnostics", "startup_diagnostics"),
         ):
             target = modules / (installed + ".py")
