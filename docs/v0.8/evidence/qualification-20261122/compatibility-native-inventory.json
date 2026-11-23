@@ -1,11 +1,37 @@
 {
   "schema": "openbexi.v08.deployed-compatibility-inventory/1",
   "spell_product_commit": "c7292d39f6f40eb98d4edb5304f4a49a0dd50307",
+  "generic_product_base_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+  "generic_assigned_native_session_source_sha256": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
+  "generic_profile_preimage_sha256": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
   "native_base": "sha256:b971df8f0ea0fc1fa40ba04adbd735534d797463310d574b987c02c2070681a0",
   "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
   "run_storage": "F:/openbexi-builds/qualification-20261122/native-compatibility",
   "archived_adapter_source": "9080cde64b87a43758255d94fd43a9c7c602da4a:scripts/v08_native_language_batch.py",
   "archived_adapter_sha256": "c59f7551abca31f105299241af24ac6d5084104e7f297526f5bc415ecbab8bd8",
+  "extended_dispatch_source_sha256": "22ac247cb074f963e13c1613bc29f808ba2ddf7eee2890ce4d6a0fb53b890988",
+  "extended_oracle_sources": {
+    "files": {
+      "sha256": "91353511346c878064f7506b11a9022ef607581ee34ef6011a327ad6ba1accd3",
+      "cases": [
+        "modes",
+        "close",
+        "write",
+        "read",
+        "directory",
+        "paths",
+        "delete"
+      ]
+    },
+    "common": {
+      "sha256": "345be8cfe4a0c9dc3a9d340dc6f5430e4585e9d0f7d5805e37426f2a9c55c37e",
+      "cases": [
+        "noaction",
+        "configuration",
+        "operation-success"
+      ]
+    }
+  },
   "frozen_oracle_inputs": {
     "conformance/inventory.json": "18a022c53f36064d05f934adb1d1e2e2944eb6ce6560ae3973b5bacf3b4b62fa",
     "conformance/time_contracts.py": "3e0c5f543593b5d7c5ef6a452583cec19196c9eb2c190f31ce5c278c20f53f96",
@@ -69,8 +95,8 @@
     "conformance/evidence/database_values_composed.json": "d98b3b2701530c02983674a0ab675fc90b741c8aa44864b33e311655f08a187f"
   },
   "historical_binding_counts": {
-    "MATCH": 544,
-    "SOURCE_DRIFT": 11
+    "MATCH": 543,
+    "SOURCE_DRIFT": 12
   },
   "historical_bindings_with_drift": [
     {
@@ -98,6 +124,12 @@
       "status": "SOURCE_DRIFT"
     },
     {
+      "path": "src/dss/local.py",
+      "expected": "3eb718d4ab6839577769c964c76623dcc0083d24ef2c9844fd90cadf25635e6c",
+      "actual": "67296ae3d64c5df9bb2c620cd3b0cfeacf1a7e07ba76224d5053dbe0a94536ce",
+      "status": "SOURCE_DRIFT"
+    },
+    {
       "path": "src/dss/server.py",
       "expected": "a136d929c27d7934cb72562b3be0849a19681040c42e2e959a139e055e7b3383",
       "actual": "0b649b3bd9880843524dbdac650725ef5f6df668373e02cb448f333f1139bba5",
@@ -106,7 +138,7 @@
     {
       "path": "host_runtime/python/native.py",
       "expected": "dea0e1e9bc6b443923533df83c18455b69027b0ae2b1f9c7246d54a9807afedf",
-      "actual": "5a7742dc8b08d56a84616a81ae1dce7cbb23e0004e46a9e0e3dea216e8e2d82b",
+      "actual": "90bbfa4c2e3ee135a5b0afe94d71246427c88bbd41b69231ea000c5c06f829a6",
       "status": "SOURCE_DRIFT"
     },
     {
@@ -250,14 +282,179 @@
       "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
       "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
       "restrictions": {}
+    },
+    "files": {
+      "case": "filesa",
+      "suite": "files",
+      "started": "2026-11-23T01:11:14.248141+00:00",
+      "finished": "2026-11-23T01:11:45.772249+00:00",
+      "execution_id": "a2ce644c-f3c4-4d66-9d72-201eda8ec3c5",
+      "snapshot_git": "d9d6dd046e4e4682e8dfbaa7710964c6ba20648c",
+      "snapshot_sha256": "cdc4852e6f4e757b1e889ad94d928426b42c1cbdd721b4d55b76fc0c6552fdc2",
+      "worker_image": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+      "server_image": "sha256:6189fc60d20bcfd14ae40f10010fcd2cc0c79a9ac70da3118c05c8e2c5dd6583",
+      "ide_version": "1.2.2",
+      "ide_client_sha256": "1ed509d14d0f30d92c40f3aa5cec3ed4979c8a009919621b93cc83bb989c989d",
+      "authoritative_native_status": "FINISHED",
+      "error": null,
+      "collection_error": null,
+      "attempt_sha256": "8618d32c41376ddc6ced6857a8909d8c3cc05c51138cab1414322185c42c2876",
+      "observed_checks": 28,
+      "passing_checks": 28,
+      "status": "PASSED",
+      "output_sha256": "90377199f0c7d6a573c737ff264ce1510d783a78e388c92a9a8deb480a7b2347",
+      "identity_sha256": "7f4fe68a19a8fd928d68f6465c39da894e0d36b6987ec40a29b4e8e8297c519a",
+      "build_sha256": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74",
+      "namespace": "pid:[4026533783]",
+      "start_ticks": 314813,
+      "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "restrictions": {}
+    },
+    "common": {
+      "case": "commona",
+      "suite": "common",
+      "started": "2026-11-23T01:11:49.928133+00:00",
+      "finished": "2026-11-23T01:12:11.075445+00:00",
+      "execution_id": "7cc1772b-a7a1-402d-a0ad-2b9cfe451cb6",
+      "snapshot_git": "bb09c428c4d2e2604bbe308653d81ff01f5fb953",
+      "snapshot_sha256": "8ee86069086a08608ed4fb8d62d61b005cdec3c4661a9c93de9e50ddc4049eb2",
+      "worker_image": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+      "server_image": "sha256:6189fc60d20bcfd14ae40f10010fcd2cc0c79a9ac70da3118c05c8e2c5dd6583",
+      "ide_version": "1.2.2",
+      "ide_client_sha256": "1ed509d14d0f30d92c40f3aa5cec3ed4979c8a009919621b93cc83bb989c989d",
+      "authoritative_native_status": "FINISHED",
+      "error": null,
+      "collection_error": null,
+      "attempt_sha256": "075e0e23a0a27311accd496a6f7a2b3409e91a97a4fcf8068865f609e31e1255",
+      "observed_checks": 12,
+      "passing_checks": 12,
+      "status": "PASSED",
+      "output_sha256": "496ad6168b318a6edbbe1b9131f710d85e38d29e17b3f235d5478c8b20e353b9",
+      "identity_sha256": "19c1fbe3ceb6a0bc31572eaeebcdcc9a532e08d7c749d121ae5a214a3be38a91",
+      "build_sha256": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74",
+      "namespace": "pid:[4026533508]",
+      "start_ticks": 318375,
+      "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "restrictions": {}
+    },
+    "dta": {
+      "case": "dtaa",
+      "suite": "dta",
+      "started": "2026-11-23T01:16:33.276561+00:00",
+      "finished": "2026-11-23T01:16:46.081875+00:00",
+      "execution_id": "64e0a45f-f41b-493d-b9f1-e2d46f8df61a",
+      "snapshot_git": "c8582798d3afff901f9b90aac57c2477604087ed",
+      "snapshot_sha256": "5d50a57da54b068c45ac0900ebfd5b68b14604b3ad02c75e4beeb0d2aaa64ee2",
+      "worker_image": "sha256:de617ca4c3e0d2550bd639c201182f3f36ee21de6d7fd232e17fead8a47e47f3",
+      "server_image": "sha256:6189fc60d20bcfd14ae40f10010fcd2cc0c79a9ac70da3118c05c8e2c5dd6583",
+      "ide_version": "1.2.2",
+      "ide_client_sha256": "1ed509d14d0f30d92c40f3aa5cec3ed4979c8a009919621b93cc83bb989c989d",
+      "authoritative_native_status": "FINISHED",
+      "error": null,
+      "collection_error": null,
+      "attempt_sha256": "702559042af51054d53e7778546dc711638c59eac61b99aa9b8eaff7cb57f423",
+      "observed_checks": 4,
+      "passing_checks": 4,
+      "status": "PASSED",
+      "output_sha256": "d1728b7cd8f6b1d460f58e4eb0515c23356e188036d91002b2bae6c39df64d23",
+      "identity_sha256": "53232fcffe1231788abdcfe78c9e9c22af534beffe7fec223df53210b4065f60",
+      "build_sha256": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74",
+      "namespace": "pid:[4026532957]",
+      "start_ticks": 346733,
+      "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "restrictions": {}
+    },
+    "obs": {
+      "case": "obsf",
+      "suite": "obs",
+      "started": "2026-11-23T01:42:42.442709+00:00",
+      "finished": "2026-11-23T01:44:46.857108+00:00",
+      "execution_id": "96d051a6-987e-4037-a55a-29bcb2578ae3",
+      "snapshot_git": "5ced2a484614c70f36fe4b5e4dfefd2266f0ade0",
+      "snapshot_sha256": "11cefe6b530117db2b1f3ce2f4cc911e8c1ae64f0ee60e2d963ef923cec6a91e",
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "ide_version": "1.2.2",
+      "ide_client_sha256": "1ed509d14d0f30d92c40f3aa5cec3ed4979c8a009919621b93cc83bb989c989d",
+      "authoritative_native_status": "FINISHED",
+      "error": null,
+      "collection_error": null,
+      "attempt_sha256": "7873a6a38a291ba787c9944719233c224a609986529866a34c9160cba18b6f86",
+      "observed_checks": 80,
+      "passing_checks": 80,
+      "simulation": {
+        "context_driver_calls": {
+          "CreateTmItem": 6,
+          "RefreshItem": 112
+        },
+        "binary_packets": 224,
+        "ordered_stage_receipts": 0,
+        "commands": [],
+        "binary_capture_sha256": "cbb1f4bd803f6d2d24410504f952788f78c8ea32e30fe460f9d2748a346a844f"
+      },
+      "status": "PASSED",
+      "output_sha256": "158821025973a629071fc774df99589336ebebb9e718d06ae0aecfc8ff64ff90",
+      "identity_sha256": "768aedfbabc0be582d35903e072e0205d7f91c211eb9e5cff03eace94f2fff1d",
+      "build_sha256": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74",
+      "namespace": "pid:[4026533677]",
+      "start_ticks": 503642,
+      "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "restrictions": {}
+    },
+    "cmd": {
+      "case": "cmdb",
+      "suite": "cmd",
+      "started": "2026-11-23T01:39:30.866941+00:00",
+      "finished": "2026-11-23T01:40:14.196130+00:00",
+      "execution_id": "281ccb50-de5a-49c6-8030-2e43d554628e",
+      "snapshot_git": "e896e04923922bd8b1b1312b0a2ce2b7d6ae4ef8",
+      "snapshot_sha256": "3a0738a1573322a6c92bb6c4c3e22180a48058b4e9c2ebcd4a19d876cb16839b",
+      "worker_image": "sha256:deab534110c79036195aebe2cf30afb7f501bebe6dc6eac7fdc21c26c546e66b",
+      "server_image": "sha256:6324fa788e5b2a28e3f89e8e499a13b711c2d7b3232db10ea6302ddb08e84e16",
+      "ide_version": "1.2.2",
+      "ide_client_sha256": "1ed509d14d0f30d92c40f3aa5cec3ed4979c8a009919621b93cc83bb989c989d",
+      "authoritative_native_status": "FINISHED",
+      "error": null,
+      "collection_error": null,
+      "attempt_sha256": "99bcc1fb5514d2f8f7df67edacfc3cd8e5de016ca37de62ece654c1834c9b6fa",
+      "observed_checks": 8,
+      "passing_checks": 8,
+      "simulation": {
+        "context_driver_calls": {
+          "CreateTcItem": 7,
+          "SendCommand": 4
+        },
+        "binary_packets": 97,
+        "ordered_stage_receipts": 20,
+        "commands": [
+          "CMD1",
+          "CMD1",
+          "CMD2",
+          "CMD1"
+        ],
+        "binary_capture_sha256": "4782623ad0fa336c386b731375d0983a8ae942eb7820f37b696866e716dbb63d"
+      },
+      "status": "PASSED",
+      "output_sha256": "62cd5ea40517a9d676853243a7384316af9490e410a0f6623b54af7e4e926818",
+      "identity_sha256": "2951e49eb8546dc7c777410ea6e4601aa2f17c6ef0a0ec53266ef3a45f52b95d",
+      "build_sha256": "f44e79761c62cebb4446eec8e1215a25a735f6b221341f525e4ded8228027f74",
+      "namespace": "pid:[4026534237]",
+      "start_ticks": 484478,
+      "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f",
+      "shared_runtime_sha256": "a9c1d0930c53a097e1e5892c2125982c08a1781cfba69ec6688dfc97f9ddf9b5",
+      "restrictions": {}
     }
   },
-  "mapped_suite_ids": 193,
-  "scope": "Only a matched archived dimensional oracle with a fresh successful admitted native process receives direct credit. Legacy migration, broad Python sections, and separate composed or concurrent DATA checks retain an explicit gap.",
+  "mapped_suite_ids": 272,
+  "scope": "Direct credit requires four exact historical dimensional oracles with passing results on an admitted native process. The GENERIC tests used the deployed three-second profile, private synthetic TCP/HTTP services and independently decoded real packets. Legacy migration, broad Python sections and composed or concurrent DATA carry separate qualifications.",
   "total_inherited": 763,
   "status_counts": {
-    "NO_CURRENT_DEPLOYED_CHECK": 570,
-    "FRESH_INHERITED_DIMENSIONS_PASSED": 174,
+    "NO_CURRENT_DEPLOYED_CHECK": 491,
+    "FRESH_INHERITED_DIMENSIONS_PASSED": 253,
     "MIGRATION_ONLY": 3,
     "BROADER_SECTION_OPEN": 14,
     "ADDITIONAL_INHERITED_ORACLE_REQUIRED": 2
@@ -358,7 +555,20 @@
           "check": "noaction:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "noaction:positive",
+        "boundary": "noaction:boundary",
+        "failure": "noaction:failure",
+        "recovery": "noaction:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-CONSTANT-ACTION-RECHECK",
@@ -574,7 +784,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-CONSTANT-FILE-MODE-READ",
@@ -598,7 +821,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-CONSTANT-FILE-MODE-READ-WRITE",
@@ -622,7 +858,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-CONSTANT-FILE-MODE-WRITE",
@@ -646,7 +895,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-CONSTANT-ITEM-STATUS-ITEM-FAILED",
@@ -3000,7 +3262,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-020",
@@ -3024,7 +3299,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-021",
@@ -3316,7 +3604,20 @@
           "check": "acquire:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "acquire:positive",
+        "boundary": "acquire:boundary",
+        "failure": "acquire:failure",
+        "recovery": "acquire:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-031",
@@ -3388,7 +3689,20 @@
           "check": "raw:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "raw:positive",
+        "boundary": "raw:boundary",
+        "failure": "raw:failure",
+        "recovery": "raw:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-034",
@@ -3412,7 +3726,20 @@
           "check": "extended:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "extended:positive",
+        "boundary": "extended:boundary",
+        "failure": "extended:failure",
+        "recovery": "extended:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-035",
@@ -3436,7 +3763,20 @@
           "check": "single:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "single:positive",
+        "boundary": "single:boundary",
+        "failure": "single:failure",
+        "recovery": "single:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-036",
@@ -3460,7 +3800,20 @@
           "check": "verify-raw:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "verify-raw:positive",
+        "boundary": "verify-raw:boundary",
+        "failure": "verify-raw:failure",
+        "recovery": "verify-raw:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-037",
@@ -3508,7 +3861,20 @@
           "check": "tolerance:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "tolerance:positive",
+        "boundary": "tolerance:boundary",
+        "failure": "tolerance:failure",
+        "recovery": "tolerance:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-039",
@@ -3532,7 +3898,20 @@
           "check": "result:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "result:positive",
+        "boundary": "result:boundary",
+        "failure": "result:failure",
+        "recovery": "result:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-040",
@@ -3700,7 +4079,20 @@
           "check": "ignore-case:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "ignore-case:positive",
+        "boundary": "ignore-case:boundary",
+        "failure": "ignore-case:failure",
+        "recovery": "ignore-case:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-047",
@@ -3796,7 +4188,20 @@
           "check": "alternatives:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "alternatives:positive",
+        "boundary": "alternatives:boundary",
+        "failure": "alternatives:failure",
+        "recovery": "alternatives:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-051",
@@ -3820,7 +4225,20 @@
           "check": "item-comparison:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "item-comparison:positive",
+        "boundary": "item-comparison:boundary",
+        "failure": "item-comparison:failure",
+        "recovery": "item-comparison:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-052",
@@ -3844,7 +4262,20 @@
           "check": "literal-name:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "literal-name:positive",
+        "boundary": "literal-name:boundary",
+        "failure": "literal-name:failure",
+        "recovery": "literal-name:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-053",
@@ -3868,7 +4299,20 @@
           "check": "item-comparison:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "item-comparison:positive",
+        "boundary": "item-comparison:boundary",
+        "failure": "item-comparison:failure",
+        "recovery": "item-comparison:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-054",
@@ -3892,7 +4336,20 @@
           "check": "item-comparison:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "item-comparison:positive",
+        "boundary": "item-comparison:boundary",
+        "failure": "item-comparison:failure",
+        "recovery": "item-comparison:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-055",
@@ -3964,7 +4421,20 @@
           "check": "build-basic:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "cmd",
+      "current_dimensional_checks": {
+        "positive": "build-basic:positive",
+        "boundary": "build-basic:boundary",
+        "failure": "build-basic:failure",
+        "recovery": "build-basic:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-058",
@@ -4036,7 +4506,20 @@
           "check": "send-name:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "cmd",
+      "current_dimensional_checks": {
+        "positive": "send-name:positive",
+        "boundary": "send-name:boundary",
+        "failure": "send-name:failure",
+        "recovery": "send-name:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-061",
@@ -6172,7 +6655,20 @@
           "check": "mapping:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "dta",
+      "current_dimensional_checks": {
+        "positive": "mapping:positive",
+        "boundary": "mapping:boundary",
+        "failure": "mapping:failure",
+        "recovery": "mapping:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-150",
@@ -6484,7 +6980,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-163",
@@ -6508,7 +7017,20 @@
           "check": "close:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "close:positive",
+        "boundary": "close:boundary",
+        "failure": "close:failure",
+        "recovery": "close:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-164",
@@ -6532,7 +7054,20 @@
           "check": "write:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "write:positive",
+        "boundary": "write:boundary",
+        "failure": "write:failure",
+        "recovery": "write:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-165",
@@ -6556,7 +7091,20 @@
           "check": "read:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "read:positive",
+        "boundary": "read:boundary",
+        "failure": "read:failure",
+        "recovery": "read:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-166",
@@ -6580,7 +7128,20 @@
           "check": "directory:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "directory:positive",
+        "boundary": "directory:boundary",
+        "failure": "directory:failure",
+        "recovery": "directory:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-167",
@@ -6604,7 +7165,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-168",
@@ -6628,7 +7202,20 @@
           "check": "delete:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "delete:positive",
+        "boundary": "delete:boundary",
+        "failure": "delete:failure",
+        "recovery": "delete:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-EXAMPLE-169",
@@ -7687,7 +8274,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-CANDIDATE-GOTO",
@@ -7783,7 +8383,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-CLEARSHAREDDATA",
@@ -7905,7 +8518,20 @@
           "check": "close:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "close:positive",
+        "boundary": "close:boundary",
+        "failure": "close:failure",
+        "recovery": "close:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-CLOSEWORKSPACE",
@@ -8001,7 +8627,20 @@
           "check": "delete:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "delete:positive",
+        "boundary": "delete:boundary",
+        "failure": "delete:failure",
+        "recovery": "delete:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-DISABLEALARM",
@@ -8736,7 +9375,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-OPENWORKSPACE",
@@ -8856,7 +9508,20 @@
           "check": "directory:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "directory:positive",
+        "boundary": "directory:boundary",
+        "failure": "directory:failure",
+        "recovery": "directory:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-READFILE",
@@ -8880,7 +9545,20 @@
           "check": "read:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "read:positive",
+        "boundary": "read:boundary",
+        "failure": "read:failure",
+        "recovery": "read:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-FUNCTION-RESTORENORMALLIMITS",
@@ -9277,7 +9955,20 @@
           "check": "write:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "write:positive",
+        "boundary": "write:boundary",
+        "failure": "write:failure",
+        "recovery": "write:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-KEYWORD-ARGUMENT-ADDINFO",
@@ -9349,7 +10040,20 @@
           "check": "send-name:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "cmd",
+      "current_dimensional_checks": {
+        "positive": "send-name:positive",
+        "boundary": "send-name:boundary",
+        "failure": "send-name:failure",
+        "recovery": "send-name:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-KEYWORD-ARGUMENT-GROUP",
@@ -9742,7 +10446,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-CANREAD",
@@ -9766,7 +10483,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-CANWRITE",
@@ -9790,7 +10520,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-DIRNAME",
@@ -9814,7 +10557,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-EXISTS",
@@ -9838,7 +10594,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-FILENAME",
@@ -9862,7 +10631,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-ISDIR",
@@ -9886,7 +10668,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-ISFILE",
@@ -9910,7 +10705,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-FILE-ISOPEN",
@@ -9934,7 +10742,20 @@
           "check": "close:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "close:positive",
+        "boundary": "close:boundary",
+        "failure": "close:failure",
+        "recovery": "close:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-METHOD-MATH-ABS",
@@ -12112,7 +12933,20 @@
           "check": "extended:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "extended:positive",
+        "boundary": "extended:boundary",
+        "failure": "extended:failure",
+        "recovery": "extended:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-MODIFIER-FAILURECODE",
@@ -12376,7 +13210,20 @@
           "check": "ignore-case:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "ignore-case:positive",
+        "boundary": "ignore-case:boundary",
+        "failure": "ignore-case:failure",
+        "recovery": "ignore-case:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-MODIFIER-IMAGE",
@@ -12616,7 +13463,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-MODIFIER-MONITOR",
@@ -13432,7 +14292,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-PYTHON-ADD",
@@ -14271,7 +15144,20 @@
           "check": "operator-bw:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-bw:positive",
+        "boundary": "operator-bw:boundary",
+        "failure": "operator-bw:failure",
+        "recovery": "operator-bw:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-EQ",
@@ -14295,7 +15181,20 @@
           "check": "operator-eq:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-eq:positive",
+        "boundary": "operator-eq:boundary",
+        "failure": "operator-eq:failure",
+        "recovery": "operator-eq:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-GE",
@@ -14319,7 +15218,20 @@
           "check": "operator-ge:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-ge:positive",
+        "boundary": "operator-ge:boundary",
+        "failure": "operator-ge:failure",
+        "recovery": "operator-ge:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-GT",
@@ -14343,7 +15255,20 @@
           "check": "operator-gt:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-gt:positive",
+        "boundary": "operator-gt:boundary",
+        "failure": "operator-gt:failure",
+        "recovery": "operator-gt:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-LE",
@@ -14367,7 +15292,20 @@
           "check": "operator-le:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-le:positive",
+        "boundary": "operator-le:boundary",
+        "failure": "operator-le:failure",
+        "recovery": "operator-le:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-LT",
@@ -14391,7 +15329,20 @@
           "check": "operator-lt:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-lt:positive",
+        "boundary": "operator-lt:boundary",
+        "failure": "operator-lt:failure",
+        "recovery": "operator-lt:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-NBW",
@@ -14415,7 +15366,20 @@
           "check": "operator-nbw:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-nbw:positive",
+        "boundary": "operator-nbw:boundary",
+        "failure": "operator-nbw:failure",
+        "recovery": "operator-nbw:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OPERATOR-VERIFY-NEQ",
@@ -14439,7 +15403,20 @@
           "check": "operator-neq:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "operator-neq:positive",
+        "boundary": "operator-neq:boundary",
+        "failure": "operator-neq:failure",
+        "recovery": "operator-neq:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OUTCOME-BOOLEAN-FALSE",
@@ -14535,7 +15512,20 @@
           "check": "operation-success:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "operation-success:positive",
+        "boundary": "operation-success:boundary",
+        "failure": "operation-success:failure",
+        "recovery": "operation-success:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-OUTCOME-PROMPT-TIMEOUT",
@@ -15259,7 +16249,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-3-2-1-017",
@@ -15283,7 +16286,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-3-3-018",
@@ -16221,7 +17237,20 @@
           "check": "modes:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "modes:positive",
+        "boundary": "modes:boundary",
+        "failure": "modes:failure",
+        "recovery": "modes:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-115",
@@ -16269,7 +17298,20 @@
           "check": "close:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "close:positive",
+        "boundary": "close:boundary",
+        "failure": "close:failure",
+        "recovery": "close:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-3-118",
@@ -16293,7 +17335,20 @@
           "check": "write:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "write:positive",
+        "boundary": "write:boundary",
+        "failure": "write:failure",
+        "recovery": "write:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-4-119",
@@ -16317,7 +17372,20 @@
           "check": "read:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "read:positive",
+        "boundary": "read:boundary",
+        "failure": "read:failure",
+        "recovery": "read:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-5-120",
@@ -16341,7 +17409,20 @@
           "check": "directory:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "directory:positive",
+        "boundary": "directory:boundary",
+        "failure": "directory:failure",
+        "recovery": "directory:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-6-121",
@@ -16365,7 +17446,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-7-122",
@@ -16389,7 +17483,20 @@
           "check": "delete:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "delete:positive",
+        "boundary": "delete:boundary",
+        "failure": "delete:failure",
+        "recovery": "delete:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SECTION-4-17-8-123",
@@ -19309,7 +20416,20 @@
           "check": "configuration:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "common",
+      "current_dimensional_checks": {
+        "positive": "configuration:positive",
+        "boundary": "configuration:boundary",
+        "failure": "configuration:failure",
+        "recovery": "configuration:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SYNTAX-LINE-COMMENT",
@@ -20071,7 +21191,20 @@
           "check": "described:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "described:positive",
+        "boundary": "described:boundary",
+        "failure": "described:failure",
+        "recovery": "described:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SYNTAX-TM-MNEMONIC",
@@ -20095,7 +21228,20 @@
           "check": "acquire:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "acquire:positive",
+        "boundary": "acquire:boundary",
+        "failure": "acquire:failure",
+        "recovery": "acquire:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER",
@@ -20287,7 +21433,20 @@
           "check": "single:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "single:positive",
+        "boundary": "single:boundary",
+        "failure": "single:failure",
+        "recovery": "single:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-SYNTAX-VERIFY-CONDITION-LIST",
@@ -20577,7 +21736,20 @@
           "check": "mapping:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "dta",
+      "current_dimensional_checks": {
+        "positive": "mapping:positive",
+        "boundary": "mapping:boundary",
+        "failure": "mapping:failure",
+        "recovery": "mapping:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-TYPE-DICTIONARY",
@@ -20662,7 +21834,20 @@
           "check": "paths:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "paths:positive",
+        "boundary": "paths:boundary",
+        "failure": "paths:failure",
+        "recovery": "paths:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-TYPE-FILEHANDLE",
@@ -20686,7 +21871,20 @@
           "check": "close:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "files",
+      "current_dimensional_checks": {
+        "positive": "close:positive",
+        "boundary": "close:boundary",
+        "failure": "close:failure",
+        "recovery": "close:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-TYPE-FLOAT",
@@ -21015,7 +22213,20 @@
           "check": "extended:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "extended:positive",
+        "boundary": "extended:boundary",
+        "failure": "extended:failure",
+        "recovery": "extended:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     },
     {
       "id": "CMP-LRM244-TYPE-TIME",
@@ -21100,7 +22311,20 @@
           "check": "result:recovery"
         }
       },
-      "status": "NO_CURRENT_DEPLOYED_CHECK"
+      "current_suite": "obs",
+      "current_dimensional_checks": {
+        "positive": "result:positive",
+        "boundary": "result:boundary",
+        "failure": "result:failure",
+        "recovery": "result:recovery"
+      },
+      "observed_dimensions": {
+        "positive": true,
+        "boundary": true,
+        "failure": true,
+        "recovery": true
+      },
+      "status": "FRESH_INHERITED_DIMENSIONS_PASSED"
     }
   ]
 }

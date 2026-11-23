@@ -1,0 +1,333 @@
+{
+  "schema": "openbexi.v08.live-family-browser/1",
+  "status": "PASS",
+  "subject": {
+    "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell": "4a28557a4fe4dd21d09d85284f7aa014427086aa",
+    "artifact_scope": "local source-staged test wheels and development service image",
+    "gateway": "sha256:0e7d002086ca5f94ed74bbec18cf30cf063b6a07e438a582fd0fa03bc031e30e",
+    "core": "sha256:0e7d002086ca5f94ed74bbec18cf30cf063b6a07e438a582fd0fa03bc031e30e",
+    "worker": "sha256:d403795a6074ac2ada74496977578e838632de5dbdc9ba7a30326382acffe03a",
+    "public_service_uid": 10003,
+    "worker_uid": 10003,
+    "server_wheel_sha256": "799008f60304753f1f3e413afc9a08995c3ba4615f1eb80bbbe98881f55e46ba",
+    "native_image": "sha256:c2e3a540225ffec2404a086f62d3669391e1baf6378a9a620c0ecc3b2ecf3886"
+  },
+  "scope": "An opt-in single-host Docker worker transferred the original live native family, open untimed question and controller generation through the authenticated browser workspace.",
+  "execution": "d3f21ed3-6b09-43cb-b820-9c13496f78d4",
+  "source": {
+    "revision": "59f6861923b3a9b9f6e49d8915db001b528b597e",
+    "manifest_sha256": "3d52676104f4954d4789af27f90c3d7b76fd434482941dd29195cac5cce96c0d",
+    "entrypoint_sha256": "6a301fa2fab8bf576d6add3cbad0c0077c4852ae80502414b0d78618a462c700",
+    "driver": "context-audit"
+  },
+  "browser": {
+    "platform": "Windows",
+    "version": "158.0.8127.18",
+    "executable_sha256": "dafaf388c1194eb610fc5706ba986eb38e5ebedb1fae44f39569e20940a3bae2",
+    "playwright": "1.65.0",
+    "user_roles": [
+      "alice",
+      "bob",
+      "observer"
+    ],
+    "additional_observers": 20,
+    "least_observer_wss_frames": 29,
+    "observer_mutation_http_status": 403
+  },
+  "observations": [
+    {
+      "name": "Twenty separately authenticated observers established actual WSS and received 403 for a controller mutation",
+      "time": "2026-11-23T02:10:50.795Z"
+    },
+    {
+      "name": "Original root, native child and background are running",
+      "time": "2026-11-23T02:11:02.380Z"
+    },
+    {
+      "name": "Independently proven live A to B transfer",
+      "time": "2026-11-23T02:11:12.984Z",
+      "owner": "bob",
+      "epoch": 2,
+      "generation": 2,
+      "denied_stale_command_status": 403,
+      "barrier": "369e04ff-ac76-44a9-8548-39b62c8ff037"
+    },
+    {
+      "name": "B answered A's original native question through the visible widget",
+      "time": "2026-11-23T02:11:15.641Z",
+      "prompt_id": "956db0fe-644c-48c0-ac2c-424c925c2e94",
+      "definition_sha256": "df41dd9264e09473dde8b4cd93c29fe9e6af81981cf88b43fa4178b3e4f6009b"
+    },
+    {
+      "name": "Independently proven live B to A transfer",
+      "time": "2026-11-23T02:11:25.305Z",
+      "owner": "alice",
+      "epoch": 3,
+      "generation": 3,
+      "denied_stale_command_status": 403,
+      "barrier": "ffb8296c-5b21-4725-8de1-16accb976001"
+    },
+    {
+      "name": "Disconnected owner reconnected with read-only observation",
+      "time": "2026-11-23T02:11:26.095Z"
+    },
+    {
+      "name": "Independently proven live same-owner reconnect",
+      "time": "2026-11-23T02:11:33.595Z",
+      "owner": "alice",
+      "epoch": 3,
+      "generation": 4,
+      "denied_stale_command_status": 403,
+      "barrier": "a9d3902d-dba2-48b1-be85-2e4cd18d3899"
+    },
+    {
+      "name": "Twenty observers saw original native procedure finish after two transfers and a reconnect",
+      "time": "2026-11-23T02:11:39.031Z"
+    }
+  ],
+  "kernel": {
+    "original_pids": [
+      1,
+      7,
+      29,
+      48,
+      55,
+      105,
+      123,
+      178
+    ],
+    "rounds": [
+      {
+        "rotation": 1,
+        "controller_operation": "transfer",
+        "barrier": "369e04ff-ac76-44a9-8548-39b62c8ff037",
+        "stopped": {
+          "root": 17,
+          "child": 50,
+          "background": 105
+        },
+        "still_stopped": {
+          "root": 17,
+          "child": 50,
+          "background": 105
+        },
+        "continued": {
+          "root": 17,
+          "child": 51,
+          "background": 110
+        },
+        "frozen": true,
+        "alive_original_pidfds": 8,
+        "frozen_sample_seconds": 3
+      },
+      {
+        "rotation": 2,
+        "controller_operation": "transfer",
+        "barrier": "ffb8296c-5b21-4725-8de1-16accb976001",
+        "stopped": {
+          "root": 44,
+          "child": 113,
+          "background": 210
+        },
+        "still_stopped": {
+          "root": 44,
+          "child": 113,
+          "background": 210
+        },
+        "continued": {
+          "root": 46,
+          "child": 114,
+          "background": 213
+        },
+        "frozen": true,
+        "alive_original_pidfds": 8,
+        "frozen_sample_seconds": 3
+      },
+      {
+        "rotation": 3,
+        "controller_operation": "rebind",
+        "barrier": "a9d3902d-dba2-48b1-be85-2e4cd18d3899",
+        "stopped": {
+          "root": 69,
+          "child": 141,
+          "background": 256
+        },
+        "still_stopped": {
+          "root": 69,
+          "child": 141,
+          "background": 256
+        },
+        "continued": {
+          "root": 71,
+          "child": 143,
+          "background": 259
+        },
+        "frozen": true,
+        "alive_original_pidfds": 8,
+        "frozen_sample_seconds": 3
+      }
+    ]
+  },
+  "durable": {
+    "members": [
+      {
+        "target_id": "",
+        "instance_id": "main#1",
+        "pid": 123,
+        "parent_pid": 55,
+        "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f"
+      },
+      {
+        "target_id": "2755da89-4427-4b04-9c5c-a87ed615fc47",
+        "instance_id": "handoff_child#0",
+        "pid": 178,
+        "parent_pid": 55,
+        "executable_sha256": "237070cdab561537bac91de82b324723ce9b4e970ce5f4716a023b8f2a9a986f"
+      }
+    ],
+    "prompts": [
+      {
+        "prompt_id": "956db0fe-644c-48c0-ac2c-424c925c2e94",
+        "state": "CLOSED",
+        "outcome": "ANSWER_SELECTED",
+        "definition_hash": "df41dd9264e09473dde8b4cd93c29fe9e6af81981cf88b43fa4178b3e4f6009b"
+      }
+    ],
+    "replies": [
+      {
+        "owner": "bob",
+        "epoch": 2,
+        "connection_generation": 2,
+        "action": "ANSWER",
+        "state": "CONSUMED_UNPROVEN"
+      }
+    ],
+    "root_result": [
+      {
+        "execution_id": "d3f21ed3-6b09-43cb-b820-9c13496f78d4",
+        "native_status": "FINISHED"
+      }
+    ],
+    "control": [
+      {
+        "owner": "alice",
+        "epoch": 3,
+        "connection_generation": 4,
+        "control_state": "OWNED"
+      }
+    ],
+    "worker_spent": [
+      {
+        "spent": 1
+      }
+    ]
+  },
+  "prompt_delivery_diagnostic": "IPC_SEND_ACKNOWLEDGED",
+  "asrun": [
+    {
+      "name": "2026-11-23_021055_Executor_main#1.ASRUN",
+      "bytes": 37951,
+      "sha256": "50e491a2c291e0c9dd1cee5008b665d22985004213f055941b395a2157107dfc"
+    },
+    {
+      "name": "2026-11-23_021058_Executor_handoff_child#0.ASRUN",
+      "bytes": 53496,
+      "sha256": "11b4fb0ec38b223d049d7cacee507c88eba93738f823373ff626671758ca2059"
+    }
+  ],
+  "native_result": {
+    "event": "native-finished",
+    "execution_id": "d3f21ed3-6b09-43cb-b820-9c13496f78d4",
+    "native_status": "FINISHED",
+    "hold_retained": true,
+    "external_driver_effects_enabled": false,
+    "native_driver_methods": [],
+    "context_audit_events_enabled": true,
+    "runtime_enabled": false,
+    "native_children_admitted": 1,
+    "native_lifecycle_receipts_settled": true,
+    "notifications_seen": 1860,
+    "full_family_qualified": false
+  },
+  "source_regression": {
+    "tests": 132,
+    "seconds": 58.995,
+    "mypy_1_18_2_source_files": 25,
+    "ruff_0_14_1_format_files": 28
+  },
+  "scope_limits": [
+    "Only this fixed opt-in single-host worker and trusted audit-only immutable procedures exercised live transfer.",
+    "The retained native execution hold is separate from terminal settlement or production failover.",
+    "Production Kubernetes, external driver effects, sustained sanitizer qualification and an independent security review retain separate gates."
+  ],
+  "artifacts": [
+    {
+      "archive": "public-launch/livefamily05/case.json",
+      "sha256": "dbea3d21f25e64903086e54ef5fd4936ab38831954f5f8303a271f3e006123ec"
+    },
+    {
+      "archive": "public-launch/livefamily05/live-browser/result.json",
+      "sha256": "866ca1e5db18214045b5e40140939ef7c70df88e8a31dcea6508942680ff886e"
+    },
+    {
+      "archive": "public-launch/livefamily05/kernel.json",
+      "sha256": "ccfc92f1eb655a80b8c6f46c553ac2c0745da206121e6d3426bc0d5f6e1ff2c3"
+    },
+    {
+      "archive": "public-launch/livefamily05/worker.log",
+      "sha256": "04d6f39054236a80afe05c246faab11ab19c65b02219ec50c3ccf817f237cd42"
+    },
+    {
+      "archive": "public-launch/livefamily05/fixture-cleanup.json",
+      "sha256": "ee1a879aca64d7475b23d8971ca939a03ca5b6731f39cc8579e944636c65878d"
+    },
+    {
+      "archive": "public-launch/livefamily05/live-browser/round-1.png",
+      "sha256": "3ad26974f1d4fee1a22f3e302aad251fc2b7c16597320a23dbb32e493b13734d"
+    },
+    {
+      "archive": "public-launch/livefamily05/live-browser/round-2.png",
+      "sha256": "c3ef587f2ff5cdeef0f5c137f8673c706e05e2cbc9b6df076dde962daa034d36"
+    },
+    {
+      "archive": "public-launch/livefamily05/live-browser/round-3.png",
+      "sha256": "8fd6109a3acd7e1d36ac97c1e51e3b29d8fdac2771486c7353a56a2c8d30ce9b"
+    },
+    {
+      "archive": "public-launch/prompt-tests-live02.xml",
+      "sha256": "2715b81d3fca60f0385aa285c3ad767ea5208819eb1050c1755e682c2bf5ad21"
+    },
+    {
+      "archive": "public-launch/mypy-4a28557a.log",
+      "sha256": "14f7b3e492c65485e65612ef5dcf9681b8c12755889c4514a2474a4510f74a10"
+    },
+    {
+      "archive": "public-launch/livefamily05/prompt-storage.json",
+      "sha256": "6d217c17eb534ec39a43a9bdc69de6a6e97f1bf4f1d4c47d62c8913c620b9165"
+    }
+  ],
+  "archive_root": "F:/openbexi-builds/qualification-20261122",
+  "preceding_browser_trial": {
+    "status": "FAIL",
+    "finding": "After the first successful live transfer, the public browser received no answer response; the original prompt remained open and no reply was admitted. The corrected browser re-enables the dialog controls when its owner read completes.",
+    "artifacts": [
+      {
+        "archive": "public-launch/livefamily04/live-browser/result.json",
+        "sha256": "2c3b70e3e12b53e77dbd04d7ddf75dd95ff382f0f8c04e3b1a7c8fae6a7905cc"
+      },
+      {
+        "archive": "public-launch/livefamily04/kernel.json",
+        "sha256": "ea86df3fcbe81980b64676c84dcfc778029c9dda2c1fd5ec8b4399f4269c19ce"
+      },
+      {
+        "archive": "public-launch/livefamily04/prompt-storage.json",
+        "sha256": "e146ed62190c2032fbeec0e4600e49c019e95d1ee40be2e9b0afcc0a843f1a8d"
+      },
+      {
+        "archive": "public-launch/livefamily04/fixture-cleanup.json",
+        "sha256": "12bb09a40892372fc4a9c8fb9679de4eb6453ddd0e8d81ee9a48bc61c2bc1d1f"
+      }
+    ]
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "status": "PASS",
+  "scope": "Single-Context writable state device in the published Linux Compose topology, with one native root paused. The original authority failed closed at ENOSPC. A rotated replacement preserved both execution holds and the original audit.",
+  "fixture": {
+    "spell_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+    "target_image": "sha256:a897af70ab6edf5aa6c8d05681111231f6c6b715e5da2f060bab02f149a91bbd",
+    "native_image": "sha256:b96d56321543bea4818529c0332aa8ced874751a2ab972f02a78213977c1e115",
+    "release_compose_sha256": "0bfc01ce47197d64f0a9aa940c79e8a553aa6d878ebb3106314d53f8e9bbae0f",
+    "operator_checkpoint_sha256": "02c20059d2f20b9cb375d284f5d89278d0237bae74ebf3789f928a0b5a6e2516",
+    "case_sha256": "fc7624dcb7000a8694136ca98af031b00b96000a46bbc02e51e0d6756be33248"
+  },
+  "installed_windows_client": {
+    "ide": {
+      "commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+      "manifest_sha256": "d0dfd65584ffb09c0f125940091ad606343abef7fbc989148d6f03845918ea09"
+    },
+    "spell": {
+      "commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+      "manifest_sha256": "a3c6d72b7640df1d6a843c800216bc905088ec3ba45d5a739b409a4dfaa2ae98"
+    }
+  },
+  "windows_ide_wheel_sha256": "397d46ae29e17814cceb27033f9f433367ac785c204cc890ec49af05017bace9",
+  "native_ready": {
+    "execution": "68acf856-43d4-4857-b3a3-9ee9edb441c7",
+    "container": "c5585e57b6ef5b828e6993eb46ead4bacde3bbf88cb0629d9e7583444e08be2c",
+    "namespace_pid": 7,
+    "native_status": "PAUSED"
+  },
+  "state_device": {
+    "type": "Docker local volume, Linux tmpfs, two MiB",
+    "before": {
+      "total": 2097152,
+      "available": 1826816
+    },
+    "at_enospc": {
+      "ballast": 1826816,
+      "available": 0
+    },
+    "after_free": {
+      "total": 2097152,
+      "available": 1826816
+    }
+  },
+  "public": {
+    "at_enospc": {
+      "one_fresh_write": {
+        "http": 503,
+        "code": "request_denied",
+        "elapsed_seconds": 0.01605
+      },
+      "observer_read": {
+        "http": 503,
+        "code": "request_denied",
+        "elapsed_seconds": 0.01625
+      }
+    },
+    "after_space_returned": {
+      "http": 503,
+      "code": "request_denied",
+      "elapsed_seconds": 0.02824
+    },
+    "after_authority_replacement": [
+      {
+        "id": "1f41ff6b-d271-4c06-b7c0-29698c466262",
+        "lifecycle": "RECOVERY_REQUIRED",
+        "control_state": "RECOVERY_REQUIRED"
+      },
+      {
+        "id": "68acf856-43d4-4857-b3a3-9ee9edb441c7",
+        "lifecycle": "RECOVERY_REQUIRED",
+        "control_state": "RECOVERY_REQUIRED"
+      }
+    ],
+    "original_owner_command_after_replacement": {
+      "http": 403,
+      "code": "request_denied",
+      "elapsed_seconds": 0.01589
+    }
+  },
+  "independent_read_only_verification": {
+    "before": {
+      "manifest_sha256": "be89c5fe71a035f44693b9178c0dd274b567a0d23731dc1585d7d7e8625e8761",
+      "database_sha256": "c426c89a06d023d236be306deebfb1db1270f5ce14c977376d5b9376e545e126",
+      "audit_sha256": "3ff61f87d33fb9370badfbf424a630ecc78ec3b1ae300afd319ec483fa44e3ca",
+      "incarnation": "a164ac8b-ab97-4fa1-ab2c-7a20fe207035",
+      "integrity": "ok"
+    },
+    "after": {
+      "manifest_sha256": "173bec2501b777d6facf9cf7f159cac939376c2f91f5384b0c8a7c52e35c1147",
+      "database_sha256": "a83eb5a2ef32d3b2885ea1ed7a86f01c86a4c2865c668cdc2cc527e2118657b9",
+      "audit_sha256": "cdaadce38d03a2beaaa01beb8f0d45f4cb6cc177f75f2d8302996e10ca244b21",
+      "incarnation": "daebc6e8-b50d-4c64-a83f-8fdce3cbad98",
+      "integrity": "ok"
+    },
+    "identical_original_event_rows": 12,
+    "appended_event_types": [
+      "CONTEXT_STARTED",
+      "EXECUTIONS_FENCED_ON_STARTUP"
+    ],
+    "identical_reservations": [
+      [
+        "procedure-01",
+        "68acf856-43d4-4857-b3a3-9ee9edb441c7"
+      ],
+      [
+        "procedure-02",
+        "1f41ff6b-d271-4c06-b7c0-29698c466262"
+      ]
+    ],
+    "preserved_worker_incarnations": [
+      [
+        "worker-01",
+        "instance-01",
+        0
+      ],
+      [
+        "worker-02",
+        "instance-02",
+        1
+      ]
+    ],
+    "added_worker_incarnations": [
+      [
+        "recovery-slot",
+        "incarnation-after-fence",
+        0
+      ]
+    ],
+    "session_open_audit_rows": 1,
+    "recovered_executions": [
+      [
+        "1f41ff6b-d271-4c06-b7c0-29698c466262",
+        "RECOVERY_REQUIRED",
+        "RECOVERY_REQUIRED"
+      ],
+      [
+        "68acf856-43d4-4857-b3a3-9ee9edb441c7",
+        "RECOVERY_REQUIRED",
+        "RECOVERY_REQUIRED"
+      ]
+    ]
+  },
+  "cleanup": {
+    "temporary_state_filesystem_removed": true,
+    "durable_snapshots_retained_in": "obx-qual-recovery-full01-archive"
+  },
+  "raw_receipts": {
+    "deployment.json": {
+      "local_path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery03\\deployment.json",
+      "sha256": "00eee6e4cf9c27cfaf1198c2fcee82091c51e72c1ee908cbb2d39b84920cd867"
+    },
+    "result.json": {
+      "local_path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery03\\probe\\result.json",
+      "sha256": "e44acb0025a0166d9459cd7c4919f6cee637ea736a0f0b7d39daa76bca9d03bc"
+    },
+    "archives.json": {
+      "local_path": "F:\\openbexi-builds\\qualification-20261122\\windows\\recovery03\\probe\\archives.json",
+      "sha256": "16af3020b969528e77f1111fd82dc7ddb57a77d2d201467d6ee6076b29d38f40"
+    }
+  },
+  "qualification_harnesses": {
+    "compose_fixture.py": "59502445625895264f682d9606cadc4cf1fcc1c47e54a757a75373e6f12d2da7",
+    "qualify_recovery.py": "b3f3ded417ea0425f144a1ee12500a6e4483cf48a11bb9a4eba11cdee745db42",
+    "active_storage_fault.py": "39aa4fe0fb465983fdf84149cb439adf857fec70fc45fa7d8028d6cefa79fdaf",
+    "verify_active_archives.py": "b8dcdaf8af656e331cb4d53508f5db0b72f57184a5ff7e4d8e8ab1a33a10e9b6"
+  },
+  "fixture_sources": {
+    "recovery/provision.py": "867a328d883c9e35975a447ec64ae78dbd4f6f410faf93cca1a01758be7b7ff7",
+    "api/provision.py": "0201f749dd186af23f4d8cde5a064a52876d52bc79fc64437cee3a07e0c2dc13"
+  },
+  "commands": [
+    "python -I recovery/compose_fixture.py --output <case> --spell-repo <verified SPELL checkout> --name obx-qual-recovery-full01 --subnet 77",
+    "<installed Windows interpreter> -I recovery/active_storage_fault.py --case <case> --output <case>/probe",
+    "<installed Windows interpreter> -I recovery/verify_active_archives.py --case <case> --probe <case>/probe"
+  ],
+  "boundary": "The archive volume remained writable during the Context state-volume failure. Captured volumes are local to one Docker engine. Independent or external DSS command effects and physical machine loss require separate evidence."
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "openbexi.v08.owner-prompt/1",
+  "status": "PASS",
+  "scope": "Original native YES/NO question, observer denial and owner browser answer on the exact delivered service images.",
+  "subject": {
+    "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+    "spell": "655f5b5a2de31bd4f8cba44794a1798342986512",
+    "gateway": "sha256:fdd6bf0f754c414d846b7199b1bddeaf4cea5d70a899ba7878a3de4bc6e80ac8",
+    "listener_context": "sha256:1426fbd0b032ebe86f128474f27ac20e2b12200a3c544a7467c5b8f05e98100d",
+    "worker": "sha256:a545c9617133bfc8034f385ef0ffb71c5eb2cfc9a74fd078838ee33bdf6753d4",
+    "service_uid": 65532
+  },
+  "browser": "158.0.8127.18",
+  "authenticated_roles": [
+    "alice",
+    "bob",
+    "observer"
+  ],
+  "execution": "c335830a-7d6b-4e38-be7b-7eb40b56179a",
+  "source_sha256": "bf0db88c1e0900f3150ab3b859118adbe93752ba4744f50f2844ef3e202e1154",
+  "observations": [
+    {
+      "action": "Three authenticated users connected, native original root PAUSED",
+      "at": "2026-11-23T01:55:39.370Z",
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ]
+      ]
+    },
+    {
+      "action": "Real native question displayed only after owner proof",
+      "at": "2026-11-23T01:55:41.008Z",
+      "question": "Continue the qualification procedure?",
+      "choices": [
+        "Y",
+        "N"
+      ],
+      "observer_view": 403
+    },
+    {
+      "action": "Single user-facing answer completed native root",
+      "at": "2026-11-23T01:55:42.075Z",
+      "native_outcome": [
+        "CLOSED",
+        "ANSWER_SELECTED"
+      ],
+      "binding_sha256": "6c1e3f36c7be08d98328c1fb9c9c7425b07a8ef7b2f42ec238c3e11bb4c0b5a7",
+      "native": [
+        [
+          "native-ready",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "PAUSED"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-running",
+          null
+        ],
+        [
+          "native-child-parent-status",
+          "PROMPT"
+        ],
+        [
+          "native-child-parent-status",
+          "RUNNING"
+        ],
+        [
+          "native-child-parent-status",
+          "FINISHED"
+        ],
+        [
+          "native-finished",
+          "FINISHED"
+        ]
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "archive": "public-launch/web655prompt/browser-boundary/owner-native-prompt.png",
+      "sha256": "3b61e92348dd9a6b78954724af4ac75b73a52fc1eadca5134fe680f8bddd2375"
+    }
+  ],
+  "receipt": {
+    "archive": "public-launch/web655prompt/browser-boundary/result.json",
+    "sha256": "7e9d8b4f944493e64117caedbb4225e7977f1a80cc2005c516b7f077754d15f7"
+  },
+  "baseline": "public-advanced-996.json",
+  "local_archive_root": "F:/openbexi-builds/qualification-20261122"
+}

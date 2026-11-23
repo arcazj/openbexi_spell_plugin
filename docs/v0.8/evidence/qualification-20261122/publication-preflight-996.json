@@ -1,0 +1,179 @@
+{
+  "clean_checkout": "fdb49eada1383e74baa18247f0bcddd7ee2b8ca6",
+  "runtime_subject": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+  "phase": "qualification hold",
+  "results": [
+    {
+      "name": "executable",
+      "exit_code": 1,
+      "command": "python scripts/check_v08_release.py --candidate 99686362f93fa1bbbadd70e7b74d52ed3b5da469 --output executable.json",
+      "sha256": "4229a18810ede71e7b9b556de866a52ad5f53b62c0748642ba9d1468d89e8050",
+      "result": {
+        "schema": "openbexi.v08.publication-preflight/1",
+        "version": "0.8.0",
+        "candidate_commit": "99686362f93fa1bbbadd70e7b74d52ed3b5da469",
+        "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+        "full_v08_qualified": false,
+        "eligible_for_publication": false,
+        "publication_performed": false,
+        "failures": [
+          "Candidate has tracked or untracked runtime source changes"
+        ],
+        "gates": {
+          "services": {
+            "qualified": false,
+            "errors": [
+              "Complete the remaining deployed isolation, partition and survival cases on the delivery topology."
+            ]
+          },
+          "native_family": {
+            "qualified": false,
+            "errors": [
+              "Establish a conforming sustained-memory correction, or obtain an explicitly approved evidence-backed amendment. Both original one-hour sanitizer cases depend on passing the five-minute cases. Verify deployed live family quiescence and transfer."
+            ]
+          },
+          "compatibility": {
+            "qualified": false,
+            "errors": [
+              "Finish the remaining native oracles and manual/source mappings for all 763 requirements. A migration check or an aggregate section alone cannot close a row."
+            ]
+          },
+          "driver_faults": {
+            "qualified": false,
+            "errors": [
+              "Demonstrate reliable original deadlines and complete deployed TC/ack/TM, recovery, isolation and uncertain-outcome oracles on the delivered driver and independent DSS."
+            ]
+          },
+          "ide_browser": {
+            "qualified": false,
+            "errors": [
+              "Qualify live-family handoff and supported user-facing prompts after fixes. Actual project Run/Debug in IDEA and PyCharm additionally needs the user to handle their initial vendor screens."
+            ]
+          },
+          "compose": {
+            "qualified": false,
+            "errors": [
+              "Complete the full managed-worker deployment, component loss, storage failure, restore and fencing in the supported Compose topology."
+            ]
+          },
+          "kubernetes": {
+            "qualified": false,
+            "errors": [
+              "Provide the representative cluster and operator. Native Jobs, admission, node and storage loss, old-authority fencing, upgrade and rollback remain required there."
+            ]
+          },
+          "recovery": {
+            "qualified": false,
+            "errors": [
+              "Verify independent DSS effect settlement, multi-host failure, and representative cluster restore/upgrade/fencing."
+            ]
+          },
+          "security": {
+            "qualified": false,
+            "errors": [
+              "Obtain independent implemented-system assessment, disposition the image advisories and license gaps, and complete the authorization and resource-isolation matrix."
+            ]
+          },
+          "ci": {
+            "qualified": false,
+            "errors": [
+              "Require all mandatory jobs and supported integration surfaces on the identified delivery pair within their original limits."
+            ]
+          },
+          "packaging": {
+            "qualified": false,
+            "errors": [
+              "Finish every supported online installation, license and advisory disposition. Stable publication and verification of downloads follow only after the complete release preflight passes."
+            ]
+          }
+        },
+        "qualification_checkout_commit": "fdb49eada1383e74baa18247f0bcddd7ee2b8ca6"
+      }
+    },
+    {
+      "name": "qualification-head",
+      "exit_code": 1,
+      "command": "python scripts/check_v08_release.py --candidate fdb49eada1383e74baa18247f0bcddd7ee2b8ca6 --output qualification-head.json",
+      "sha256": "df351e8f28750a2974c22cf73d394833e794f951e46b475863fa27b7dc1d8703",
+      "result": {
+        "schema": "openbexi.v08.publication-preflight/1",
+        "version": "0.8.0",
+        "candidate_commit": "fdb49eada1383e74baa18247f0bcddd7ee2b8ca6",
+        "ide_commit": "3ec9d4d998afa77f8590cd1e48c10b1a38561dca",
+        "full_v08_qualified": false,
+        "eligible_for_publication": false,
+        "publication_performed": false,
+        "failures": [],
+        "gates": {
+          "services": {
+            "qualified": false,
+            "errors": [
+              "Complete the remaining deployed isolation, partition and survival cases on the delivery topology."
+            ]
+          },
+          "native_family": {
+            "qualified": false,
+            "errors": [
+              "Establish a conforming sustained-memory correction, or obtain an explicitly approved evidence-backed amendment. Both original one-hour sanitizer cases depend on passing the five-minute cases. Verify deployed live family quiescence and transfer."
+            ]
+          },
+          "compatibility": {
+            "qualified": false,
+            "errors": [
+              "Finish the remaining native oracles and manual/source mappings for all 763 requirements. A migration check or an aggregate section alone cannot close a row."
+            ]
+          },
+          "driver_faults": {
+            "qualified": false,
+            "errors": [
+              "Demonstrate reliable original deadlines and complete deployed TC/ack/TM, recovery, isolation and uncertain-outcome oracles on the delivered driver and independent DSS."
+            ]
+          },
+          "ide_browser": {
+            "qualified": false,
+            "errors": [
+              "Qualify live-family handoff and supported user-facing prompts after fixes. Actual project Run/Debug in IDEA and PyCharm additionally needs the user to handle their initial vendor screens."
+            ]
+          },
+          "compose": {
+            "qualified": false,
+            "errors": [
+              "Complete the full managed-worker deployment, component loss, storage failure, restore and fencing in the supported Compose topology."
+            ]
+          },
+          "kubernetes": {
+            "qualified": false,
+            "errors": [
+              "Provide the representative cluster and operator. Native Jobs, admission, node and storage loss, old-authority fencing, upgrade and rollback remain required there."
+            ]
+          },
+          "recovery": {
+            "qualified": false,
+            "errors": [
+              "Verify independent DSS effect settlement, multi-host failure, and representative cluster restore/upgrade/fencing."
+            ]
+          },
+          "security": {
+            "qualified": false,
+            "errors": [
+              "Obtain independent implemented-system assessment, disposition the image advisories and license gaps, and complete the authorization and resource-isolation matrix."
+            ]
+          },
+          "ci": {
+            "qualified": false,
+            "errors": [
+              "Require all mandatory jobs and supported integration surfaces on the identified delivery pair within their original limits."
+            ]
+          },
+          "packaging": {
+            "qualified": false,
+            "errors": [
+              "Finish every supported online installation, license and advisory disposition. Stable publication and verification of downloads follow only after the complete release preflight passes."
+            ]
+          }
+        },
+        "qualification_checkout_commit": "fdb49eada1383e74baa18247f0bcddd7ee2b8ca6"
+      }
+    }
+  ]
+}

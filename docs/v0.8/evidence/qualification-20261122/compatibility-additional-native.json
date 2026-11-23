@@ -1,0 +1,1403 @@
+{
+  "schema": "openbexi.v08.additional-native-compatibility/1",
+  "spell": "655f5b5a2de31bd4f8cba44794a1798342986512",
+  "ide": "fadac70d574760cbe21c5e5512a384dddfa36e80",
+  "worker": "sha256:a545c9617133bfc8034f385ef0ffb71c5eb2cfc9a74fd078838ee33bdf6753d4",
+  "native_parent": "sha256:c2e3a540225ffec2404a086f62d3669391e1baf6378a9a620c0ecc3b2ecf3886",
+  "core": "sha256:1426fbd0b032ebe86f128474f27ac20e2b12200a3c544a7467c5b8f05e98100d",
+  "gateway": "sha256:fdd6bf0f754c414d846b7199b1bddeaf4cea5d70a899ba7878a3de4bc6e80ac8",
+  "context_with_simulation": "sha256:79208f72a4335dab86493d6ac3cf44ff1cd0ed7f6f0eb3a7e0bb19d477353e35",
+  "baseline_source": "compatibility-native-inventory.json",
+  "baseline_sha256": "b06628bc88cdbe27da23237e807eb392865ba225d25325583562620bcd595ee5",
+  "baseline_fresh": 253,
+  "inherited_requirements": 763,
+  "new_direct_requirements": 59,
+  "fresh_requirements_across_captures": 312,
+  "outstanding": 451,
+  "additional_rows": {
+    "CMP-LRM244-EXAMPLE-031": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "fresh:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "fresh:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "fresh:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "fresh:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-042": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-043": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-automatic:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-automatic:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-automatic:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-automatic:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-045": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "verify-delay:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "verify-delay:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "verify-delay:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "verify-delay:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-047": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-048": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-049": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-055": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-056": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-FUNCTION-CANDIDATE-AND": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-and:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-and:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-and:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-and:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-FUNCTION-CANDIDATE-OR": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-or:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-or:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-or:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "expression-or:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-DESCRIPTION": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-description:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-description:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-description:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-description:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-ENG": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-eng:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-eng:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-eng:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-eng:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-FULLNAME": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-fullname:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-fullname:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-fullname:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-fullname:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-NAME": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-name:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-name:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-name:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-name:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-RAW": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-raw:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-raw:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-raw:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-raw:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-REFRESH": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-refresh:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-refresh:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-refresh:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-refresh:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-STATUS": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-status:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-status:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-status:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-status:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-METHOD-TELEMETRY-ITEM-TIME": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-time:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-time:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-time:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "item-time:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-OUTCOME-VERIFY-FAIL": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "false-noaction:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SYNTAX-VERIFY-BOOLEAN-TREE": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SYNTAX-VERIFY-CONDITION-LIST": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "mixed-modifiers:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-TYPE-TELEMETRY-EXPRESSION": {
+      "suite": "obsmore",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/obs.json",
+          "check": "nested-expression:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-ACTION-CANCEL": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-cancel:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-cancel:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-cancel:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-cancel:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-ACTION-HANDLE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-ACTION-REPEAT": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "repeat:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "repeat:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "repeat:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "repeat:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-ACTION-SKIP": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-skip:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-skip:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-skip:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "action-skip:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-ERRATUM-HANDLEERROR-DEFAULT": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-ERRATUM-PROMPT-FAILURE-MODIFIERS": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-021": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-023": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-024": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-FAILURECODE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-HANDLEERROR": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-ONFAILURE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-ONFALSE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-ONTRUE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-PROMPTFAILURE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-MODIFIER-PROMPTUSER": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-OUTCOME-BOOLEAN-FALSE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-OUTCOME-BOOLEAN-TRUE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-OUTCOME-OPERATION-FAILURE": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SECTION-3-3-018": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SECTION-3-4-019": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "result-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SECTION-3-5-020": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SYNTAX-ACTION-COMBINATION": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "failure-policy:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-SYNTAX-TRY-EXCEPT-DRIVER": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-TYPE-DRIVEREXCEPTION": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "handle-error:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-TYPE-HANDLEEXCEPTION": {
+      "suite": "commonfull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/common.json",
+          "check": "custom-handle:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-ALPHA": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-alpha:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-alpha:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-alpha:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-alpha:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-CANCEL": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-cancel:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-cancel:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-cancel:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-cancel:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-DATE": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-date:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-date:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-date:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-date:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-NO": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-no:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-no:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-no:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-no:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-NUM": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-num:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-num:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-num:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-num:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-OK-CANCEL": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok-cancel:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok-cancel:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok-cancel:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok-cancel:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-CONSTANT-PROMPT-TYPE-YES-NO": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes-no:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes-no:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes-no:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-yes-no:recovery"
+        }
+      }
+    },
+    "CMP-LRM244-EXAMPLE-114": {
+      "suite": "uifull",
+      "oracles": {
+        "positive": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:positive"
+        },
+        "boundary": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:boundary"
+        },
+        "failure": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:failure"
+        },
+        "recovery": {
+          "report": "conformance/evidence/ui.json",
+          "check": "prompt-ok:recovery"
+        }
+      }
+    }
+  },
+  "runs": {
+    "obsmore": {
+      "case": "morec",
+      "execution_id": "5dc921ee-f2a0-442c-810d-00a71a693495",
+      "snapshot_git": "2f20d658326ff1d8479b9bfefbe5045c0c2ccc3a",
+      "snapshot_sha256": "0066026cac2cbe891e88da8f9596706c300241b1b9baa02f668a1332b2a657d3",
+      "results_sha256": "9f1709ea9dd7592ab924060e3f01fea6e7c792291561702ce1c8f2786ad168cd",
+      "identity_sha256": "8bb07903ee70441fa465c2729076528a43fde955a552f71971ef119f9fd5d54b",
+      "authority_sha256": "d9e0f350cae54b50ba045ba5dfbb12e851f0e515cb775ef0e6d57f7f0472b724",
+      "pid_namespace": "pid:[4026535838]",
+      "native_result": "FINISHED",
+      "assertions": 72,
+      "assertions_passed": 72,
+      "simulation": {
+        "context_driver_calls": {
+          "CreateTmItem": 6,
+          "RefreshItem": 105
+        },
+        "binary_packets": 200,
+        "ordered_stage_receipts": 0,
+        "commands": [],
+        "binary_capture_sha256": "3c273b9d0566ec4507815925cde221f3f416c7fdb33c0308f4dc3736661d2214",
+        "expected_read_timeout_events": 2
+      },
+      "original_report": "obs.json",
+      "original_report_sha256": "55a28ee127ada7949d90601fdc848fc7e0d7f7acaf8993d2b84238fa9eab203c",
+      "requirements_eligible_checks": 72,
+      "actual_owner_replies": 0,
+      "stored_reply_states": {}
+    },
+    "commonfull": {
+      "case": "commc",
+      "execution_id": "4f303c04-5db2-483a-aac5-ecc5d55a4446",
+      "snapshot_git": "2967b6b6fead8bfd56dfed4a329cca9a37fa02e8",
+      "snapshot_sha256": "b03fc8174367afcbbee6a661195129239f14003bf84b1b56bb12efce072fefff",
+      "results_sha256": "6d4151bdc3a0aa46c8e7dddf74ba93f5c7a009a90165c30024cb4f03e11d1567",
+      "identity_sha256": "980413afadd22079253bc6d61715f49dc0210b2b55f747eb5aa2b5e6eb0eef07",
+      "authority_sha256": "6dee609033a7f634de07c25c13ae903a88a96d3e0b3ee814dada4154e7bbf7aa",
+      "pid_namespace": "pid:[4026536269]",
+      "native_result": "FINISHED",
+      "assertions": 40,
+      "assertions_passed": 40,
+      "simulation": {
+        "context_driver_calls": {},
+        "binary_packets": 1,
+        "ordered_stage_receipts": 0,
+        "commands": [],
+        "binary_capture_sha256": "c0dbaa915155257e3d5621c704ef43b8c61f24c70a1293b6c61085d5feb3d799",
+        "expected_read_timeout_events": 0
+      },
+      "original_report": "common.json",
+      "original_report_sha256": "af72e48181d80e489503e4a6aca5f1af30e3d996faf20d1a2e6f5019dc31bf23",
+      "requirements_eligible_checks": 40,
+      "actual_owner_replies": 26,
+      "stored_reply_states": {
+        "CONSUMED_UNPROVEN": 26
+      }
+    },
+    "uifull": {
+      "case": "uia",
+      "execution_id": "7dc9ac79-50e0-4a82-9e4e-b855d32ade5f",
+      "snapshot_git": "1a672f92d37861a6a65d5825822333d1522d67c2",
+      "snapshot_sha256": "604468b8e2a37130dab5434f005de4d7f73a4d29f1ed57d8dc55d7c196956618",
+      "results_sha256": "d2527ececf880fcec2a2cde7cefd34735db575cd2d5b003adaafec86b31a0b39",
+      "identity_sha256": "004f47734c6fa551c3b985c9aeb294ec48237b93fcaf62ca51475996ca4add85",
+      "authority_sha256": "fc79c60ff472cd2803163d0f9291af1dbd6ffef05bd29085cbccdf4480cc07c8",
+      "pid_namespace": "pid:[4026538734]",
+      "native_result": "FINISHED",
+      "assertions": 56,
+      "assertions_passed": 56,
+      "simulation": {
+        "context_driver_calls": {},
+        "binary_packets": 1,
+        "ordered_stage_receipts": 0,
+        "commands": [],
+        "binary_capture_sha256": "f2f2c95cd13e69b5e6ee48326d9ea61a7134f5ed1764e94de73de355ae62c31c",
+        "expected_read_timeout_events": 0
+      },
+      "original_report": "ui.json",
+      "original_report_sha256": "59c36eea42d069cf22e344c248f985204f9dc4f35ff1f4795c508be795a313f4",
+      "requirements_eligible_checks": 48,
+      "actual_owner_replies": 52,
+      "stored_reply_states": {
+        "CONSUMED_UNPROVEN": 52
+      }
+    },
+    "limitprobe": {
+      "case": "histscopeb",
+      "execution_id": "e75d1899-5e09-4833-b2bf-821c62001a15",
+      "snapshot_git": "428e511f8f30adc9350799e23117002a475f477b",
+      "snapshot_sha256": "72f1e5fb5d9ac1187b92441a79bee51ad425bbd7b0343e36abb3c3e1df90b5f1",
+      "results_sha256": "990ad909eebbc75b2422506cf1445a65f7b684ed91d4617ffd19c8c1a1be1433",
+      "identity_sha256": "63199a6752ca7a31e2989042aa8d7d4dd516ec8e108029cc2e9210275b134f53",
+      "authority_sha256": "32d35d9399dbfe58d434a9944e81fc8358207d8eb4ffd5b3439232066af12335",
+      "pid_namespace": "pid:[4026537496]",
+      "native_result": "FINISHED",
+      "assertions": 4,
+      "assertions_passed": 0,
+      "simulation": {
+        "context_driver_calls": {
+          "CreateTmItem": 1
+        },
+        "binary_packets": 13,
+        "ordered_stage_receipts": 0,
+        "commands": [],
+        "binary_capture_sha256": "9a81184a22e034669f42530e2ab1261aa39bf2ab91213ee1ecb3d2ae93a1f5c4",
+        "expected_read_timeout_events": 0
+      },
+      "failed_originals": {
+        "named-limit": {
+          "error": "DriverException: Unqualified telemetry modifier: Limits ( unknown )",
+          "cause": "spell.lib.exception.DriverException: Unqualified telemetry modifier: Limits ( unknown )",
+          "report": "v05_limit_complete.json",
+          "check": "named:positive"
+        },
+        "ranging": {
+          "error": "TypeError: bad argument type for built-in operation",
+          "cause": "TypeError: bad argument type for built-in operation",
+          "report": "ranging_complete_review.json",
+          "check": "dual:positive"
+        },
+        "memory": {
+          "error": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+          "cause": "spell.lib.exception.DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+          "report": "memory_complete_review.json",
+          "check": "json-golden"
+        },
+        "scheduled-command": {
+          "error": "DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+          "cause": "spell.lib.exception.DriverException: DSS driver RPC failed ( StatusCode.FAILED_PRECONDITION )",
+          "report": "command_display_composed.json",
+          "check": "Time:positive"
+        }
+      },
+      "denied_driver_methods": {
+        "403 /spell.driver.SPELLDriverInterface_MEM/CreateGoldenImage": 1,
+        "403 /spell.driver.SPELLDriverInterface_TIME/GetUTC": 1
+      }
+    }
+  },
+  "reported_limitations": [
+    "The private original owner-reply ledger retains CONSUMED_UNPROVEN. Native assertion values and the separate FINISHED result were independently observed.",
+    "The UI run emitted 56 embedded verdicts. Only the 48 prompt assertions meet their independent controller oracle. Display and Notify need separate MSG_WRITE/ITEM capture.",
+    "The four diagnostic cases share no direct row credit. They preserve independent evidence for limits, ranging, memory and scheduling."
+  ]
+}
