@@ -35,6 +35,54 @@ class AssignedLaunch:
         self.store = self.authority.store
         self.slots: dict[str, Preparation] = {}
         self.lock = threading.Lock()
+        with self.store.transaction():
+            self.store.db.execute(
+                "CREATE TABLE IF NOT EXISTS assigned_native_results("
+                "execution_id TEXT PRIMARY KEY, member_hash TEXT NOT NULL, native_status TEXT NOT NULL)"
+            )
+        self.authority.assigned_launch = self
+
+    def require_active_target(self, execution_id, target):
+        if (
+            not target
+            and self.store.db.execute(
+                "SELECT 1 FROM assigned_native_results WHERE execution_id=?", (execution_id,)
+            ).fetchone()
+        ):
+            raise Fault(403, "native_root_already_terminal")
+
+    def record_result(self, grant, instance, status):
+        if (
+            not isinstance(instance, str)
+            or len(instance) > 256
+            or status not in ("FINISHED", "ABORTED", "ERROR")
+        ):
+            raise Fault(400, "invalid_native_root_observation")
+        with self.authority._execution_lock(grant.execution_id), self.store.transaction():
+            row = self.authority._original_grant(grant)
+            member = self.store.db.execute(
+                "SELECT binding_hash FROM native_members WHERE execution_id=? AND target_id='' "
+                "AND instance_id=? AND origin_hash=? AND state='REGISTERED_UNPROVEN'",
+                (grant.execution_id, instance, self.authority.family_origin(grant)),
+            ).fetchone()
+            if row["lifecycle"] != "STARTING" or member is None:
+                raise Fault(403, "native_root_result_fenced")
+            previous = self.store.db.execute(
+                "SELECT member_hash,native_status FROM assigned_native_results WHERE execution_id=?",
+                (grant.execution_id,),
+            ).fetchone()
+            if previous is None:
+                self.store.db.execute(
+                    "INSERT INTO assigned_native_results VALUES(?,?,?)",
+                    (grant.execution_id, member[0], status),
+                )
+                self.store._event(
+                    "NATIVE_ROOT_RESULT_OBSERVED",
+                    {"execution_id": grant.execution_id, "native_status": status},
+                )
+            elif tuple(previous) != (member[0], status):
+                raise Fault(409, "native_root_result_conflict")
+        return {"execution_id": grant.execution_id, "native_status": status}
 
     def controller(self, subject, method, key, payload):
         canonical_uuid(key)

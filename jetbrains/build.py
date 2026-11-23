@@ -51,7 +51,7 @@ def main():
     report = {'artifact': artifact.name, 'sha256': hashlib.sha256(package).hexdigest(),
         'sdk': {key: product[key] for key in ('name', 'version', 'buildNumber')},
         'inputs': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
-                   for p in [*sources, *(ROOT / 'resources').rglob('*.xml'), Path(__file__)]},
+                   for p in [*sources, *sorted(p for p in (ROOT / 'resources').rglob('*') if p.is_file()), Path(__file__)]},
         'status': 'Compiled candidate; verifier and actual host acceptance are separate gates'}
     report['editor_exporter_sha256'] = hashlib.sha256(editor_exporter.read_bytes()).hexdigest()
     (args.output / 'build.json').write_text(json.dumps(report, indent=2) + '\n')

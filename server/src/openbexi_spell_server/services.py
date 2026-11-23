@@ -217,6 +217,7 @@ class Context:
                     "/v1/worker/control-forward",
                     "/v1/worker/control-consume",
                     "/v1/worker/member-bind",
+                    "/v1/worker/root-result",
                     "/v1/worker/prompt-open",
                     "/v1/worker/prompt-poll",
                     "/v1/worker/prompt-forward",

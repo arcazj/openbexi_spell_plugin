@@ -1174,6 +1174,16 @@ def run(config):
             # until their real Context audit receipts arrive; never replay or
             # manufacture a missing event or treat this as a family barrier.
             lifecycle.wait(lambda: list(child_gate.started), pump)
+        if assigned:
+            # The trusted session read this state from the exact root
+            # Executor. Procedure-selected event messages cannot set it.
+            observed = route.call(
+                {**request, "instance_id": session.instance, "native_status": state},
+                path="/v1/worker/root-result",
+                schema="openbexi.worker/2",
+            )
+            if observed != {"execution_id": grant.execution_id, "native_status": state}:
+                raise RuntimeError("Native result receipt differs")
         if state != "FINISHED" or denied:
             terminal = session.request("REQ_EXEC_STATUS")
             emit(

@@ -62,6 +62,7 @@ class Route:
             ("/v1/worker/control-forward", "openbexi.worker/2"),
             ("/v1/worker/control-consume", "openbexi.worker/2"),
             ("/v1/worker/member-bind", "openbexi.worker/2"),
+            ("/v1/worker/root-result", "openbexi.worker/2"),
             ("/v1/worker/prompt-open", "openbexi.worker/2"),
             ("/v1/worker/prompt-poll", "openbexi.worker/2"),
             ("/v1/worker/prompt-forward", "openbexi.worker/2"),

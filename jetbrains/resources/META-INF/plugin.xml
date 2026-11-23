@@ -1,9 +1,9 @@
 <idea-plugin require-restart="true">
   <id>org.openbexi.spell</id>
   <name>OpenBEXI SPELL</name>
-  <version>0.7.0</version>
+  <version>0.8.0</version>
   <vendor>OpenBEXI</vendor>
-  <description><![CDATA[Run and debug explicit-import SPELL procedures through the separately installed OpenBEXI SPELL host runtime. Requires CPython 3.13, the host wheel and the native Docker image.]]></description>
+  <description><![CDATA[Connect the SPELL Server workspace to an authenticated v0.8 gateway to reserve approved procedures, start the native Executor, and operate its controls. Requires CPython 3.13 and the OpenBEXI IDE 1.2.2 core wheel. The separate procedure workspace supports the local host runtime.]]></description>
   <idea-version since-build="261" until-build="262.*"/>
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.xdebugger</depends>
@@ -13,6 +13,7 @@
     <additionalLibraryRootsProvider implementation="org.openbexi.spell.SpellEditorLibrary"/>
     <projectConfigurable id="org.openbexi.spell.settings" displayName="SPELL Runtime" instance="org.openbexi.spell.SpellConfigurable"/>
     <toolWindow id="SPELL" anchor="bottom" factoryClass="org.openbexi.spell.SpellToolWindow"/>
+    <toolWindow id="SPELL Server" anchor="bottom" factoryClass="org.openbexi.spell.SpellGatewayWindow"/>
     <xdebugger.breakpointType implementation="org.openbexi.spell.SpellBreakpointType"/>
   </extensions>
   <actions>
@@ -29,6 +30,7 @@
         <action id="OpenBEXI.Spell.Stop" class="org.openbexi.spell.SpellWorkspaceActions$Stop" text="Abort Procedure"/>
       </group>
       <action id="OpenBEXI.Spell.Workspace" class="org.openbexi.spell.SpellWorkspaceActions$Open" text="Procedure Workspace"/>
+      <action id="OpenBEXI.Spell.Gateway" class="org.openbexi.spell.SpellGatewayWindow$Open" text="v0.8 Server Workspace"/>
       <separator/>
       <action id="OpenBEXI.Spell.SyncEditor" class="org.openbexi.spell.SpellEditorSyncAction" text="Sync SPELL Editor Definitions"/>
       <action id="OpenBEXI.Spell.Settings" class="org.openbexi.spell.SpellSettingsAction" text="SPELL Runtime Settings"/>

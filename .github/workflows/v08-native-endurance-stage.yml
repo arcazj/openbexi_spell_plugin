@@ -1,0 +1,51 @@
+name: Original sanitized native endurance stage
+on:
+  workflow_call:
+    inputs:
+      duration:
+        required: true
+        type: number
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [handoff, ide]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13.17'
+      - name: Checkout pinned companion IDE
+        if: matrix.scenario == 'ide'
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: arcazj/openbexi_ide
+          ref: 3ec9d4d998afa77f8590cd1e48c10b1a38561dca
+          path: .qualification/companion-ide
+          persist-credentials: false
+      - name: Install exact IDE client
+        if: matrix.scenario == 'ide'
+        run: python scripts/install_paired_ide.py
+      - name: Run the original workload and limits
+        env:
+          SCENARIO: ${{ matrix.scenario }}
+          DURATION: ${{ inputs.duration }}
+        run: python scripts/qualify_v08_memory_comparison.py --profile asan-noswap --scenario "$SCENARIO" --soak-seconds "$DURATION"
+      - name: Preserve every outcome, sample, raw audit file and exact overlay
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: v08-audit-sanitized-${{ inputs.duration }}-${{ matrix.scenario }}-${{ github.sha }}
+          path: |
+            .qualification/environment/
+            .qualification/v08-memory-comparison/run-*/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

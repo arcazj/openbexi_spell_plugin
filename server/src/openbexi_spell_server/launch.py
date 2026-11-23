@@ -61,6 +61,10 @@ class WorkerLaunch:
         if children is not None:
             allowed.update({"/v1/worker/child-admit", "/v1/worker/child-consume"})
         controls = self.authority.native_controls
+        assigned = self.authority.assigned_launch
+        if assigned is not None:
+            allowed.add("/v1/worker/root-result")
+            safety_only = safety_only or path == "/v1/worker/root-result"
         if controls is not None:
             allowed.update(
                 {
@@ -114,7 +118,9 @@ class WorkerLaunch:
             if type(body) is not dict or "runtime_capability" not in body:
                 raise Fault(403, "worker_consumption_proof_required")
         extra = set()
-        if path.endswith("prompt-open"):
+        if path.endswith("root-result"):
+            extra = {"instance_id", "native_status"}
+        elif path.endswith("prompt-open"):
             extra = {"prompt_id", "target_admission_id", "instance_id", "definition_sha256"}
             if "native_timeout_microseconds" in body:
                 extra.add("native_timeout_microseconds")
@@ -181,6 +187,8 @@ class WorkerLaunch:
             raise Fault(403, "worker_assignment_mismatch")
         if not root_consume:
             self._runtime(grant, body["runtime_capability"], safety_only=safety_only)
+        if path.endswith("root-result") and assigned is not None:
+            return assigned.record_result(grant, body["instance_id"], body["native_status"])
         if path.endswith("prompt-open"):
             return prompts.register(grant, body)
         if path.endswith("prompt-poll"):

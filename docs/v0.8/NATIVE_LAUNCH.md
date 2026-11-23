@@ -10,6 +10,12 @@ configured with the v0.8.0 assigned-worker profile. Select the procedure, click
 checks for registration of the root Executor. **Run / Continue** sends a
 separate command using the controller proof held by that panel.
 
+The **Native result** column displays `FINISHED`, `ABORTED` or `ERROR` after
+the consumed worker reports the terminal state it observed for the registered root
+Executor. Context persists that observation and fences further commands to that
+root. The execution reservation and worker incarnation stay held until independent
+host settlement. A missing result remains unconfirmed.
+
 Configure the Context with `worker_launch: "assigned-single-use"`,
 `native_children: "admission-only"`, `native_controls: "run-journal"` and
 `native_commands: "owner-queue"`. Set its existing `approved_sources`,

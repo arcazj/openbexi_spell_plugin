@@ -17,6 +17,7 @@ from openbexi_spell_server.store import ContextStore
 from openbexi_spell_server.transport import Route
 from openbexi_spell_server.worker import preflight, wait_for_assignment
 from test_ide_integration import reserve
+from test_members import member
 from test_preflight import proof
 from test_services import ALL, request, serving
 
@@ -128,16 +129,39 @@ def test_public_launch_uses_a_private_one_shot_delivery_and_original_worker_proo
         == 409
     )
     consume = {"schema": "openbexi.worker/2", "context_id": "A", "grant": asdict(grant)}
-    assert (
-        request(cs, pki["worker"]["client"], "/v1/worker/consume", subject=None, payload=consume)[0]
-        == 200
-    )
+
+    def private(path, body):
+        return request(
+            cs, pki["worker"]["client"], "/v1/worker/" + path, subject=None, payload=body
+        )
+
+    status, consumed = private("consume", consume)
+    assert status == 200
+    session = {**consume, "runtime_capability": consumed["result"]["runtime_capability"]}
     assert (
         request(cs, pki["worker"]["client"], "/v1/worker/consume", subject=None, payload=consume)[0]
         == 403
     )
     assert context.store.db.execute("SELECT SUM(spent) FROM workers").fetchone()[0] == 1
     assert alice.read("A", "executions")["executions"][0]["lifecycle"] == "STARTING"
+    terminal = {"instance_id": "main#1", "native_status": "FINISHED"}
+    assert private("root-result", {**consume, **terminal})[0] == 403
+    assert private("root-result", {**session, **terminal})[0] == 403
+    assert private("member-bind", {**session, **member()})[0] == 200
+    assert private("root-result", {**session, **terminal, "instance_id": "other#1"})[0] == 403
+    assert private("root-result", {**session, **terminal})[0] == 200
+    assert private("root-result", {**session, **terminal})[0] == 200
+    assert private("root-result", {**session, **terminal, "native_status": "ERROR"})[0] == 409
+    reported = observer.read("A", "executions")["executions"][0]
+    assert reported["native_root_result"] == "FINISHED" and reported["lifecycle"] == "STARTING"
+    with pytest.raises(SpellServerError):
+        alice.command("A", eid, "CMD_RUN", key=str(uuid.uuid4()))
+    assert (
+        context.store.db.execute(
+            "SELECT count(*) FROM events WHERE type='NATIVE_ROOT_RESULT_OBSERVED'"
+        ).fetchone()[0]
+        == 1
+    )
     with pytest.raises(SpellServerError):
         alice.authority("A", "execution.launch", proof(execution), key=key)
 
