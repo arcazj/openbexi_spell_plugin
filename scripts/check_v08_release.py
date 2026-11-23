@@ -109,7 +109,9 @@ def assess(root, candidate, ide_commit, *, dirty=False):
             continue
         version = tomllib.loads(metadata.read_text())["project"]["version"]
         if version != expected:
-            failures.append(f"{project}/pyproject.toml has version {version}, expected {expected}")
+            failures.append(
+                f"{project}/pyproject.toml has version {version}, expected {expected}"
+            )
     if dirty:
         failures.append("Candidate has tracked or untracked runtime source changes")
     results = {}
